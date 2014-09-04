@@ -6,7 +6,7 @@
 	<title>grumblr</title>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="style.css">
+	<!-- <link rel="stylesheet" href="style.css"> -->
 	<link rel="stylesheet/less" type="text/css" href="style.less">
 </head>
 <body>
@@ -58,7 +58,57 @@
 			</div>
 
 			<div class="col-md-9">
-				
+				<section class="panel panel-default panel-grumblr panel-form">
+					
+					<div class="row">
+						<div class="col-md-6">
+							<label for="edit-picture">Profile Picture</label>
+							<div id="edit-picture" class="bob"></div>
+						</div>
+						<div class="col-md-6">
+							<button id="edit-upload-picture" class="btn-edit-profile btn-submit">Upload Picture</button>
+						</div>
+					</div>
+
+					<!-- <div class="clearfix"></div> -->
+					
+					<input type="file" class="input-file-upload hidden" id="edit-upload-picture-hidden" accept="image/*">
+
+					<div class="row">
+						<div class="col-md-6">
+							<label for="edit-firstname">First Name</label>
+							<input type="text" id="edit-firstname" placeholder="Bob">
+						</div>
+						<div class="col-md-6">
+							<label for="edit-lastname">Last Name</label>
+							<input type="text" id="edit-lastname" placeholder="Belcher">
+						</div>
+					</div>
+
+					<label for="edit-username">Username</label>
+					<input type="text" id="edit-username" placeholder="bobbbbbb">
+
+					<label for="edit-email">Email</label>
+					<input type="email" id="edit-email" placeholder="bob.belcher@gmail.com">
+
+					<label for="edit-location">Location</label>
+					<input type="text" id="edit-location" placeholder="Seymour's Bay">
+
+					<label for="edit-about-blurb">About Me Blurb</label>
+					<textarea id="edit-about-blurb" placeholder="Hey! My name is Bob. I have a restaurant named Bob's Burgers. This is my daily stream of burger puns and grumbls."></textarea>
+
+					<label for="edit-current-password">Current Password</label>
+					<input type="text" id="edit-current-password" placeholder="••••••••••••">
+
+					<label for="edit-new-password">New Password</label>
+					<input type="text" id="edit-new-passowrd" placeholder="••••••••••••">
+
+					<label for="edit-confirm-password">Confirm Password</label>
+					<input type="text" id="edit-confirm-passowrd" placeholder="••••••••••••">
+
+					<button class="btn-edit-profile btn-submit">Save Changes</button>
+
+				</section>
 			</div>
 		</div>
 	</div>
