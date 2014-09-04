@@ -241,12 +241,19 @@ textarea {
 
 	// }
 
-	.grumbl-text {
+	&.grumbl-text {
 
 	}
 
-	.grumbl-photo-text {
-
+	&.grumbl-photo {
+		padding: 0;
+		img {
+			width: 100%;
+			height: auto;
+		}
+		p {
+			padding: 30px;
+		}
 	}
 }
 
@@ -294,6 +301,7 @@ textarea {
 		font-size: 14px;
 		text-transform: none;
 		font-weight: bold;
+		letter-spacing: 2px;
 		//margin-left: 20px;
 
 	}
@@ -329,6 +337,38 @@ textarea {
 		margin-top: 15px;
 		box-shadow: @borderWidth @borderWidth 0 darken(@yellow, 6%);
 	}
+}
+
+
+	
+.profile-action {
+	color: #fff;
+	&:hover {
+		cursor: pointer;
+		.glyphicon {
+			color: darken(@turquoise, 15%);
+		}	
+	}
+}
+
+.profile-follow,
+.profile-block {
+	margin-top: 10px;
+	//margin-bottom: 5px;
+
+	.glyphicon {
+		transition: color 0.2s ease-in-out 0;
+		color: @turquoise;
+		margin-right: 4px;
+	}
+
+	//display: inline-block;
+	//background-color: red;
+	text-align: left;
+	font-size: 14px;
+	letter-spacing: 2px;
+	text-transform: none;
+	font-weight: bold;
 }
 
 .profile-divider {
@@ -407,16 +447,28 @@ ul {
 }
 
 
+
+
+
+
 .profile-stats {
+	li {
+		&:hover {
+			cursor: pointer;
+			.profile-number {
+				color: darken(@turquoise, 15%);
+			}	
+		}
+	}
 	.profile-number {
+		transition: color 0.2s ease-in-out 0;
 		color: @turquoise;
 		text-align: right;
 		width: 40px;
 		display: inline-block;
 		//font-size: 24px;
-		
-
 	}
+
 	line-height: 0.8;
 	.glyphicon-heart {
 		margin: 0;
