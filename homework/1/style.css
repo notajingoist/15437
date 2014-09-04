@@ -98,9 +98,10 @@ input {
   height: 100px;
   display: block;
   border-left: 4px solid #95decb;
+  box-shadow: 4px 4px 0 #ffd47a;
 }
 .grumbl-author-photo.bob {
-  background: url('images/bob.jpg') center center no-repeat;
+  background: url('images/bob.png') center center no-repeat;
   background-size: cover;
 }
 .grumbl-author-photo.tina {
@@ -109,6 +110,14 @@ input {
 }
 .grumbl-author-photo.linda {
   background: url('images/linda.gif') center center no-repeat;
+  background-size: cover;
+}
+.grumbl-author-photo.gene {
+  background: url('images/gene.png') center center no-repeat;
+  background-size: cover;
+}
+.grumbl-author-photo.louise {
+  background: url('images/louise.gif') center center no-repeat;
   background-size: cover;
 }
 .panel-grumbl {
@@ -123,6 +132,7 @@ input {
   border: none;
 }
 .panel-grumbl .dislike {
+  transition: color 0.2s ease-in-out 0;
   transform: rotate(-180deg);
   position: absolute;
   right: 15px;
@@ -138,7 +148,47 @@ input {
 .sidebar-nav {
   padding: 20px;
 }
-.nav-list {
+.profile-about .profile-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  margin-top: 0;
+  display: inline-block;
+  border-bottom: 4px solid #95decb;
+  margin-bottom: 0;
+}
+.profile-about h3 {
+  margin-top: 0;
+  font-size: 14px;
+  text-transform: none;
+  font-weight: bold;
+}
+.profile-about .profile-username {
+  color: #fff;
+}
+.profile-about .profile-username:before {
+  content: 'g';
+  color: #95decb;
+  margin-right: 16px;
+  margin-left: 2px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.profile-about .profile-location {
+  text-transform: none;
+}
+.profile-about .profile-blurb {
+  font-size: 14px;
+  text-transform: none;
+  font-weight: normal;
+  letter-spacing: 1px;
+  color: #95decb;
+  background-color: #fff;
+  padding: 10px;
+  margin-top: 15px;
+  box-shadow: 4px 4px 0 #ffd47a;
+}
+ul {
   list-style: none;
   text-align: left;
   display: block;
@@ -150,31 +200,31 @@ input {
   color: #fff;
   padding: 0;
 }
-.nav-list li {
+ul li {
   margin-bottom: 10px;
 }
-.nav-list li:last-child {
+ul li:last-child {
   margin-bottom: 0;
 }
-.nav-list li.active .nav-link:after {
+ul li.active .nav-link:after {
   content: '';
   width: 100%;
   display: block;
   border-top: 4px solid #95decb;
   position: absolute;
 }
-.nav-list li .nav-link {
+ul li .nav-link {
   display: inline-block;
   position: relative;
 }
-.nav-list li .nav-link:hover:after {
+ul li .nav-link:hover:after {
   content: '';
   width: 100%;
   display: block;
   border-top: 4px solid #95decb;
   position: absolute;
 }
-.nav-list .glyphicon {
+ul .glyphicon {
   margin-right: 8px;
   color: #95decb;
 }
@@ -189,6 +239,16 @@ input {
 }
 .search-stream #search-input {
   padding-left: 34px;
+}
+.profile-picture {
+  background: url('images/bob.png') center center no-repeat;
+  background-size: cover;
+  display: block;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 20px;
+  border-radius: 100%;
+  border: 4px solid #ffffff;
 }
 .panel-login-register {
   margin: 0 auto 50px;

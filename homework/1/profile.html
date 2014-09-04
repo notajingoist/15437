@@ -6,7 +6,7 @@
 	<title>grumblr</title>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="style.css">
+	<!-- <link rel="stylesheet" href="style.css"> -->
 	<link rel="stylesheet/less" type="text/css" href="style.less">
 </head>
 <body>
@@ -15,56 +15,68 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-3">
-				<nav class="panel panel-default panel-grumblr sidebar-nav">
-					<div class="search-stream">
-						<span class="glyphicon glyphicon-search search-icon"></span>
-						<input type="text" id="search-input" placeholder="search your stream...">
+				<div class="panel panel-default panel-grumblr sidebar-profile">
+					<div class="profile-picture">
 					</div>
 
-					<ul class="nav-list">
+					<ul class="profile-about">
 						<li>
-							<a href="home.html">
-								<span class="glyphicon glyphicon-home"></span>
-								<span class="nav-link">Home</span>
-							</a>
+							<h2 class="profile-name">Bob Belcher</h2>
 						</li>
 						<li>
-							<a href="stream.html">
-								<span class="glyphicon glyphicon-list-alt">
-								</span>
-								<span class="nav-link">Stream</span>
-							</a>
-						</li>
-						<li class="active">
-							<a href="profile.html">
-								<span class="glyphicon glyphicon-user"></span>
-								<span class="nav-link">Profile</span>
-							</a>
+							<h3 class="profile-username">bobbbbbb</h3>
 						</li>
 						<li>
-							<a href="edit-profile.html">
-								<span class="glyphicon glyphicon-pencil"></span>
-								<span class="nav-link">Edit Profile</span>
-							</a>
+							<h3 class="profile-location">
+								<span class="glyphicon glyphicon-map-marker"></span>
+								Seymour's Bay
+							</h3>
 						</li>
 						<li>
-							<a href="login-register.html">
-								<span class="glyphicon glyphicon-log-out"></span>
-								<span class="nav-link">Logout</span>
-							</a>
+							<p class="profile-blurb">
+								Hey! My name is Bob. I have a restaurant named Bob's Burgers. This is my daily stream of burger puns and grumbls.
+							</p>
 						</li>
 					</ul>
-				</nav>
+
+					<div class="profile-divider"></div>
+
+					<ul class="profile-stats">
+						<li><span class="profile-number">47</span> followers</li>
+						<li><span class="profile-number">10</span> following</li>
+						<li><span class="profile-number">203</span> grumbls</li>
+						<li><span class="profile-number">6</span> dislikes <span class="glyphicon glyphicon-heart"></span></li>
+					</ul>
+
+					<div class="profile-divider"></div>
+
+					<div class="search-stream">
+						<span class="glyphicon glyphicon-search search-icon"></span>
+						<input type="text" id="search-input" placeholder="search bob's stream...">
+					</div>
+				</div>
 			</div>
 
 			<div class="col-md-9">
-				
+				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
+					Gotta finish this web apps homework... ah grumble bumble rawr.
+					<span class="dislike">♥</span>
+					</article>
+				</section>
+				<!-- 
+				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
+					Gotta finish this web apps homework... ah grumble bumble rawr.
+					<span class="dislike">♥</span>
+					<article class="grumbl-author-photo tina">
+					</article>
+				</section> -->
+
 			</div>
 		</div>
 	</div>
 	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="bootsrap/js/bootstrap.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="util.js"></script>
 	<script src="scripts.js"></script>
 	<script src="less.js"></script>
