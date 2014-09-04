@@ -131,6 +131,158 @@ input {
 	//padding: 30px;
 }
 
+.grumbl-author-photo {
+	&.bob {
+		background: url('images/bob.jpg') center center no-repeat;
+		background-size: cover;
+	}
+	&.tina {
+		background: url('images/tina.jpg') center center no-repeat;
+		background-size: cover;
+	}
+	&.linda {
+		background: url('images/linda.gif') center center no-repeat;
+		background-size: cover;
+	}
+
+	position: absolute;
+	//right: -104px;
+	right: -100px;
+	top: 0;
+
+	//margin-left: -30px;
+
+	width: 100px;
+	height: 100px;
+	
+	display: block;
+	border-left: @borderWidth solid @turquoise;
+	//margin-left: -@borderWidth;
+}
+
+
+.panel-grumbl {
+	font-size: 18px;
+	background-color: #fff;
+	padding: 30px;// 100px+30px 30px 30px;
+	width: calc(100% - 12px);
+	text-align: left;
+	position: relative;
+	letter-spacing: 1px;
+	min-height: 100px;
+	border: none;
+	//border-right: @borderWidth solid @turquoise;
+
+	//margin-bottom: 30px;
+	
+	.dislike {
+		//display: block;
+		transform: rotate(-180deg);
+		position: absolute;
+		right: 15px;// + 100px;
+		bottom: 5px;
+		font-size: 24px;
+		display: block;
+		color: @turquoise;
+		//background-color: red;
+		&:hover {
+			color: @yellow;
+			cursor: pointer;
+		}
+	}
+
+	// &:after {
+	// 	content: '♥';
+	// 	display: block;
+	// 	transform: rotate(-180deg);
+	// 	position: absolute;
+	// 	right: 18px;// + 100px;
+	// 	bottom: 5px;
+	// 	font-size: 24px;
+	// 	color: @turquoise;
+
+	// }
+
+	.grumbl-text {
+
+	}
+
+	.grumbl-photo-text {
+
+	}
+}
+
+.sidebar-nav {
+	//width: 200px;
+	padding: 20px;
+}
+
+.nav-list {
+	list-style: none;
+	text-align: left;
+	//background-color: red;
+	display: block;
+	font-size: 18px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	margin-top: 20px;
+	color: #fff;
+	padding: 0;// 20px 0;
+
+	li {
+		margin-bottom: 10px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		&.active {
+			.nav-link {
+				&:after {
+					content: '';
+					width: 100%;
+					display: block;
+					border-top: @borderWidth solid @turquoise;
+					position: absolute;
+				}
+			}
+		}
+
+		.nav-link {
+			display: inline-block;
+			position: relative;
+			&:hover {
+				&:after {
+					content: '';
+					width: 100%;
+					display: block;
+					border-top: @borderWidth solid @turquoise;
+					position: absolute;
+				}
+			}
+		}
+	}
+
+	.glyphicon {
+		margin-right: 8px;
+		color: @turquoise;
+	}
+}
+
+.search-stream {
+	position: relative;
+	.search-icon {
+		position: absolute;
+		left: 10px;
+		top: calc(50% - 18px);
+		color: @turquoise;
+	}
+
+	#search-input {
+		padding-left: 34px;
+	}
+}
 
 .panel-login-register {
 	// margin: 150px auto 0;
