@@ -11,7 +11,45 @@
 </head>
 <body>
 
-	
+	<header>
+		<h1><a href="">grumblr</a></h1>
+	</header>
+
+	<section class="panel panel-default panel-grumblr panel-login-register">
+		<div class="buttons">
+			<button id="btn-register" class="btn btn-default btn-login-register">Register</button>
+			<div class="or-divider">
+				<div class="line line-left"></div>
+				<div class="or">or</div>			
+				<div class="line line-right"></div>
+			</div>
+			<button id="btn-login" class="btn btn-default btn-login-register">Login</button>
+		</div>
+		<div class="forms">
+			<form id="form-register" class="form-register-login hidden">
+				<label for="register-username">Username</label>
+				<input type="text" id="register-username" placeholder="username">
+
+				<label for="register-email">Email</label>
+				<input type="text" id="register-email" placeholder="example@gmail.com">
+
+				<label for="register-password">Password</label>
+				<input type="password" id="register-password" placeholder="password">
+
+				<button class="btn btn-default btn-login-register btn-submit">Register</button>
+			</form>
+
+			<form id="form-login" class="form-register-login hidden">
+				<label for="login-username">Username</label>
+				<input type="text" id="login-username" placeholder="username">
+
+				<label for="login-password">Password</label>
+				<input type="password" id="login-password" placeholder="password">
+
+				<button class="btn btn-default btn-login-register btn-submit">Login</button>
+			</form>
+		</div>
+	</section>
 
 	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

@@ -1,0 +1,190 @@
+@yellow: #FFDE99;
+@turquoise: #95DECB;
+@bodyColor: #555;
+@borderWidth: 4px;
+
+* {
+	box-sizing: border-box;
+}
+
+.blah {
+	border: 1px solid black;
+}
+
+body {
+	margin: 0 auto;
+	padding: 50px 0;
+	width: 100%;
+	max-width: 1080px;
+	font-family: 'Source Sans Pro';
+	background-color: @yellow;
+	text-align: center;
+	color: @bodyColor;
+}
+
+a {
+	text-decoration: none;
+	color: #fff;
+
+	&:hover {
+		color: #fff;//@turquoise;
+		text-decoration: none;
+	}
+}
+
+header {
+	margin: 25px auto 40px;//75px auto 40px;
+	display: inline-block;
+	h1 {
+		color: #fff;
+		font-size: 24px;
+		letter-spacing: 2px;
+		font-weight: bold;
+		position: relative;
+
+		&:after {
+			content: '';
+			width: 100%;
+			display: block;
+			border-top: @borderWidth solid @turquoise;
+			position: absolute;
+		}
+		//text-align: center;
+		// margin: 0;
+	}
+	
+}
+
+
+:focus {
+	outline: none !important;
+}
+
+.hidden {
+	opacity: 0;
+	visibility: hidden;
+}
+
+.buttons {
+	transition: opacity 0.2s ease-in-out 0;
+	opacity: 1;
+	visibility: visible;
+}
+
+label {	
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	color: #fff;
+	font-weight: bold;
+	width: 100%;
+	margin: 0 0 5px;
+	//border-radius: none !important;
+}
+
+input {
+	border: none;
+	border-radius: 0;
+	padding: 10px 12px;
+	letter-spacing: 0.8px;
+	width: 100%;
+	display: block;
+	
+}
+
+.forms {
+	
+	// opacity: 0;
+	// visibility: hidden;
+
+	width: 100%;
+	font-size: 14px;
+	text-align: left;
+	//display: none;
+	
+	input {
+		margin-bottom: 15px;
+	}
+	
+
+	form {
+		transition: opacity 1s ease-in-out 0;
+		opacity: 1;
+		visibility: visible;
+		// &.shown {
+		// 	opacity: 1;
+		// 	visibility: visible;
+		// 	display: block;
+		// }
+	}
+
+	.btn-submit {
+		margin-top: 10px;
+	}
+}
+
+.panel-grumblr {
+	border-radius: 0;
+	border: @borderWidth solid #fff;
+	background-color: @yellow;//#FFC8DF;//#FFC877; //
+	box-shadow: @borderWidth @borderWidth 0 darken(@yellow, 6%);
+	
+	//padding: 30px;
+}
+
+
+.panel-login-register {
+	// margin: 150px auto 0;
+	margin: 0 auto 50px;
+	width: 350px;
+	max-width: 100%;
+	padding: 30px;
+
+	
+
+	.btn-login-register {
+		transition: background-color 0.2s ease-in-out 0;
+		border: @borderWidth solid #fff;
+		color: #fff;
+		background-color: @turquoise;
+		border-radius: 0;
+		width: 100%;
+		padding: 10px;
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: 3px;
+		font-size: 18px;
+
+		&:hover {
+			
+			background-color: darken(@turquoise, 15%);
+		}
+	}
+
+	.or-divider {
+		position: relative;
+		padding: 10px 0;
+		text-align: center;
+		.or {
+			color: #fff;
+			text-transform: uppercase;
+			font-size: 14px;
+			letter-spacing: 2px;
+		}
+
+		.line {
+			border-bottom: 1px solid #fff;
+			width: 42%;
+			position: absolute;
+			top: 50%;
+		}
+
+		.line-left {
+			left: 0;
+		}
+
+		.line-right {
+			right: 0;
+		}
+	}
+}
+
