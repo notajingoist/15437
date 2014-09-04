@@ -1,0 +1,237 @@
+* {
+  box-sizing: border-box;
+}
+.blah {
+  border: 1px solid black;
+}
+body {
+  margin: 0 auto;
+  padding: 50px 0;
+  width: 100%;
+  max-width: 1080px;
+  font-family: 'Source Sans Pro';
+  background-color: #ffde99;
+  text-align: center;
+  color: #555555;
+}
+a {
+  text-decoration: none;
+  color: #fff;
+}
+a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+header {
+  margin: 25px auto 40px;
+  display: inline-block;
+}
+header h1 {
+  color: #fff;
+  font-size: 24px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  position: relative;
+}
+header h1:after {
+  content: '';
+  width: 100%;
+  display: block;
+  border-top: 4px solid #95decb;
+  position: absolute;
+}
+:focus {
+  outline: none !important;
+}
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.buttons {
+  transition: opacity 0.2s ease-in-out 0;
+  opacity: 1;
+  visibility: visible;
+}
+label {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #fff;
+  font-weight: bold;
+  width: 100%;
+  margin: 0 0 5px;
+}
+input {
+  border: none;
+  border-radius: 0;
+  padding: 10px 12px;
+  letter-spacing: 0.8px;
+  width: 100%;
+  display: block;
+}
+.forms {
+  width: 100%;
+  font-size: 14px;
+  text-align: left;
+}
+.forms input {
+  margin-bottom: 15px;
+}
+.forms form {
+  transition: opacity 1s ease-in-out 0;
+  opacity: 1;
+  visibility: visible;
+}
+.forms .btn-submit {
+  margin-top: 10px;
+}
+.panel-grumblr {
+  border-radius: 0;
+  border: 4px solid #ffffff;
+  background-color: #ffde99;
+  box-shadow: 4px 4px 0 #ffd47a;
+}
+.grumbl-author-photo {
+  position: absolute;
+  right: -100px;
+  top: 0;
+  width: 100px;
+  height: 100px;
+  display: block;
+  border-left: 4px solid #95decb;
+}
+.grumbl-author-photo.bob {
+  background: url('images/bob.jpg') center center no-repeat;
+  background-size: cover;
+}
+.grumbl-author-photo.tina {
+  background: url('images/tina.jpg') center center no-repeat;
+  background-size: cover;
+}
+.grumbl-author-photo.linda {
+  background: url('images/linda.gif') center center no-repeat;
+  background-size: cover;
+}
+.panel-grumbl {
+  font-size: 18px;
+  background-color: #fff;
+  padding: 30px;
+  width: calc(88%);
+  text-align: left;
+  position: relative;
+  letter-spacing: 1px;
+  min-height: 100px;
+  border: none;
+}
+.panel-grumbl .dislike {
+  transform: rotate(-180deg);
+  position: absolute;
+  right: 15px;
+  bottom: 5px;
+  font-size: 24px;
+  display: block;
+  color: #95decb;
+}
+.panel-grumbl .dislike:hover {
+  color: #ffde99;
+  cursor: pointer;
+}
+.sidebar-nav {
+  padding: 20px;
+}
+.nav-list {
+  list-style: none;
+  text-align: left;
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 20px;
+  color: #fff;
+  padding: 0;
+}
+.nav-list li {
+  margin-bottom: 10px;
+}
+.nav-list li:last-child {
+  margin-bottom: 0;
+}
+.nav-list li.active .nav-link:after {
+  content: '';
+  width: 100%;
+  display: block;
+  border-top: 4px solid #95decb;
+  position: absolute;
+}
+.nav-list li .nav-link {
+  display: inline-block;
+  position: relative;
+}
+.nav-list li .nav-link:hover:after {
+  content: '';
+  width: 100%;
+  display: block;
+  border-top: 4px solid #95decb;
+  position: absolute;
+}
+.nav-list .glyphicon {
+  margin-right: 8px;
+  color: #95decb;
+}
+.search-stream {
+  position: relative;
+}
+.search-stream .search-icon {
+  position: absolute;
+  left: 10px;
+  top: calc(32%);
+  color: #95decb;
+}
+.search-stream #search-input {
+  padding-left: 34px;
+}
+.panel-login-register {
+  margin: 0 auto 50px;
+  width: 350px;
+  max-width: 100%;
+  padding: 30px;
+}
+.panel-login-register .btn-login-register {
+  transition: background-color 0.2s ease-in-out 0;
+  border: 4px solid #ffffff;
+  color: #fff;
+  background-color: #95decb;
+  border-radius: 0;
+  width: 100%;
+  padding: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 18px;
+}
+.panel-login-register .btn-login-register:hover {
+  background-color: #5bccae;
+}
+.panel-login-register .or-divider {
+  position: relative;
+  padding: 10px 0;
+  text-align: center;
+}
+.panel-login-register .or-divider .or {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+.panel-login-register .or-divider .line {
+  border-bottom: 4px solid #ffffff;
+  width: 42%;
+  position: absolute;
+  top: 50%;
+}
+.panel-login-register .or-divider .line-left {
+  left: 0;
+}
+.panel-login-register .or-divider .line-right {
+  right: 0;
+}

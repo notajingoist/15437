@@ -133,7 +133,7 @@ input {
 
 .grumbl-author-photo {
 	&.bob {
-		background: url('images/bob.jpg') center center no-repeat;
+		background: url('images/bob.png') center center no-repeat;
 		background-size: cover;
 	}
 	&.tina {
@@ -144,6 +144,16 @@ input {
 		background: url('images/linda.gif') center center no-repeat;
 		background-size: cover;
 	}
+	&.gene {
+		background: url('images/gene.png') center center no-repeat;
+		background-size: cover;
+	}
+	&.louise {
+		background: url('images/louise.gif') center center no-repeat;
+		background-size: cover;
+	}
+
+
 
 	position: absolute;
 	//right: -104px;
@@ -157,6 +167,8 @@ input {
 	
 	display: block;
 	border-left: @borderWidth solid @turquoise;
+
+	box-shadow: @borderWidth @borderWidth 0 darken(@yellow, 6%);
 	//margin-left: -@borderWidth;
 }
 
@@ -176,6 +188,7 @@ input {
 	//margin-bottom: 30px;
 	
 	.dislike {
+		transition: color 0.2s ease-in-out 0;
 		//display: block;
 		transform: rotate(-180deg);
 		position: absolute;
@@ -316,6 +329,7 @@ input {
 		position: relative;
 		padding: 10px 0;
 		text-align: center;
+
 		.or {
 			color: #fff;
 			text-transform: uppercase;
@@ -324,7 +338,7 @@ input {
 		}
 
 		.line {
-			border-bottom: 1px solid #fff;
+			border-bottom: @borderWidth solid #fff;
 			width: 42%;
 			position: absolute;
 			top: 50%;

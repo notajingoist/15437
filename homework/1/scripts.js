@@ -13,8 +13,12 @@ var GRUMBLR = {
 		var e = arguments[1];
 		var el = $(e.currentTarget);
 
-		$(formId).removeClass('hidden');
+		
 		$('.buttons').addClass('hidden');
+
+		setTimeout(function(){
+			$(formId).removeClass('hidden');
+		});
 
 		console.log(formId);
 		console.log(el);
