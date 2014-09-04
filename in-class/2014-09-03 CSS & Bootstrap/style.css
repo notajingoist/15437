@@ -1,0 +1,41 @@
+blockquote {
+  border: 1px solid #000000;
+  padding: 40px 40px 50px;
+  margin: 30px auto;
+  width: 400px;
+}
+blockquote h1 {
+  margin: 0;
+  font-size: 32px;
+}
+blockquote p {
+  font-size: 15px;
+}
+blockquote cite {
+  font-style: italic;
+  font-size: 15px;
+  float: right;
+}
+blockquote cite:before {
+  content: "-";
+}
+.boxes {
+  margin: 0 auto;
+  text-align: center;
+}
+.box {
+  width: 75px;
+  height: 75px;
+  display: inline-block;
+  margin: 10px;
+}
+.box.box-1 {
+  box-shadow: 5px 5px 10px #000000;
+  background-color: #cccccc;
+}
+.box.box-2 {
+  background-color: #999999;
+}
+.box.box-3 {
+  background-color: #666666;
+}

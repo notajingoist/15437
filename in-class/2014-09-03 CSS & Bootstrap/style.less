@@ -1,0 +1,56 @@
+@white: #fff;
+@black: #000;
+
+.createShadow(@color) {
+	box-shadow: 5px 5px 10px @color;
+}
+
+blockquote {
+	border: 1px solid @black;
+	padding: 40px 40px 50px;
+	margin: 30px auto;
+	width: 400px;
+
+	h1 {
+		margin: 0;
+		font-size: 32px;
+	}
+
+	p {
+		font-size: 15px;
+	}
+
+	cite {
+		font-style: italic;
+		font-size: 15px;
+		float: right;
+		&:before {
+			content: "-";
+		}
+	}
+}
+
+.boxes {
+	margin: 0 auto;
+	text-align: center;
+}
+
+.box {
+	width: 75px;
+	height: 75px;
+	display: inline-block;
+	margin: 10px;
+
+	&.box-1 {
+		.createShadow(@black);
+		background-color: darken(@white, 20%)
+	}
+
+	&.box-2 {
+		background-color: darken(@white, 40%)
+	}
+
+	&.box-3 {
+		background-color: darken(@white, 60%)
+	}
+}
