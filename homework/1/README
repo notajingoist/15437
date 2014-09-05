@@ -1,6 +1,29 @@
-To turn in homework 1, create files (and subdirectories if needed) in
-this directory, add and commit those files to your cloned repository,
-and push your commit to your bare repository on GitHub.
+Homework 1 - Jing Xiao
+9/4/14
 
-Add any general notes or instructions for the TAs to this README file.
-The TAs will read this file before evaluating your work.
+-Wireframe pictures:
+    -before-feedback.jpg
+    -after-feedback.jpg
+
+-Feedback from my roommate:
+    -feedback.pdf
+
+-Relevant files:
+    HTML:
+        -login-register.html
+        -home.html
+        -stream.html
+        -profile.html
+        -edit-profile.html
+    CSS:
+        -style.less (mine)
+        -style.css (compiled) 
+    JS: 
+        -js/src/scripts.js (mine)
+    OTHER: 
+        -bootstrap
+        -js/vendor/util.js (not mine)
+        -js/vendor/less.js (not mine)
+        -images
+        -google webfonts
+
