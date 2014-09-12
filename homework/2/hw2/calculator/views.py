@@ -5,7 +5,7 @@ def calculate(request):
 	divide_by_zero_error = 'Divide by zero error. Calculator has been reset.'
 	invalid_input_error = 'Invalid input error. Calculator has been reset.'
 	malformed_input_error = 'Malformed data received. Calculator has been reset.'
-	valid_arg_pattern = re.compile(r'^$|^-?[0-9]+$')
+	calculation_error = 'Calculation error. Calculator has been reset.'
 
 	context = {}
 
@@ -111,7 +111,16 @@ def calculate(request):
 					context['error_message'] = invalid_input_error
 					return render(request, 'index.html', context)
 				else:
-					context['answer_display'] = eval(arg1 + op + arg2)
+					try: 
+						context['answer_display'] = eval(arg1 + op + arg2)
+					except:
+						# reset everything
+						context['answer_display'] = ''
+						context['answer_arg1'] = ''
+						context['answer_op'] = ''
+						context['answer_arg2'] = ''
+						context['error_message'] = calculation_error
+						return render(request, 'index.html', context)
 					context['answer_arg1'] = context['answer_display'] #set answer to be new arg1
 					context['answer_arg2'] = '' #reset arg2
 

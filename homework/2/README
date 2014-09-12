@@ -13,3 +13,4 @@ Homework 2 - Jing Xiao
 	-Malformed input error gets displayed/calculator gets reset when you send invalid things in the hidden inputs
 	-Invalid input error gets displayed/calculator gets reset when you send invalid things in the input parameter
 	-Divide by zero error gets displayed/calculator gets reset when you try to divide by zero
+	-Calculation error gets displayed/calculator gets reset when the server throws an exception when attempting to evaluate the math expression 
