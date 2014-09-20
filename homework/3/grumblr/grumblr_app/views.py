@@ -99,7 +99,7 @@ def register(request):
     new_user = authenticate(username=request.POST['username'], \
                             password=request.POST['password-1'])
     login(request, new_user)
-    return redirect('/home')
+    return redirect('/')
 
 
 @login_required
