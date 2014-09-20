@@ -16,15 +16,26 @@
 	</header>
 
 	<section class="panel panel-default panel-grumblr panel-login-register">
-		<div class="buttons">
-			<a href="/register-form"><button id="btn-register" class="btn-login-register">Register</button></a>
-			<div class="or-divider">
-				<div class="line line-left"></div>
-				<div class="or">or</div>			
-				<div class="line line-right"></div>
-			</div>
-			<a href="/login-form"><button id="btn-login" class="btn-login-register">Login</button></a>
-			<a href="/reset-form"><div id="btn-reset" class="footnote"><span id="reset-text">Forgot your password?</span></div></a>
+		<div class="forms">
+			{% if form.errors %}
+			<p class="footnote message login-error-message">
+				Incorrect username and password.
+			</p>
+			{% endif %}
+
+			{% load myfilters %}
+			<form action="{% url 'django.contrib.auth.views.login' %}" method="post" id="form-login" class="form-register-login">
+				{{ form.username.label_tag }}
+				{{ form.username|addplaceholder:'username' }}
+
+				{{ form.password.label_tag }}
+				{{ form.password|addplaceholder:'••••••••••••' }}
+
+				<input id="submit-login" class="btn-login-register btn-submit" type="submit" value="Login">
+				<input type="hidden" name="next" value="{{ next }}">
+
+				{% csrf_token %}
+			</form>
 		</div>
 	</section>
 

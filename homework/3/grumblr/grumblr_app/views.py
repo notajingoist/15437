@@ -11,6 +11,11 @@ from django.contrib.auth import login, authenticate
 from grumblr_app.models import *
 
 # Create your views here.
+# @register.filter(is_safe=True)
+# def label_with_classes(value, arg):
+#     return value.label_tag(attrs{'class': arg})
+
+
 @login_required
 def home(request):
     context = {}
@@ -47,11 +52,21 @@ def login_register(request):
     #if request.method == 'GET':
     return render(request, 'login-register.html', context)
 
+def reset_form(request):
+    context = {}
+
+    return render(request, 'reset.html', context)
+
 def reset(request):
     context = {}
     context['resetMessage'] = 'You have been sent an email with instructions on how to reset your password.'
 
-    return render(request, 'login-register.html', context)
+    return render(request, 'reset.html', context)
+
+def register_form(request):
+    context = {}
+
+    return render(request, 'register.html', context) 
 
 def register(request):
     context = {}
@@ -99,7 +114,7 @@ def register(request):
         errors.append('Email is already taken.')
 
     if errors:
-        return render(request, 'login-register.html', context)
+        return render(request, 'register.html', context)
 
     # Creates the new user from the valid form data
     new_user = User.objects.create_user(username=request.POST['username'], \

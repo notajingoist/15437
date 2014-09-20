@@ -4,9 +4,9 @@ var GRUMBLR = {
 	},
 
 	bindEvents: function() {
-		$('#btn-register').on('click', this.expandForm.bind(this, '#form-register'));
-		$('#btn-login').on('click', this.expandForm.bind(this, '#form-login'));
-		$('#btn-reset').on('click', this.expandForm.bind(this, '#form-reset'));
+		// $('#btn-register').on('click', this.expandForm.bind(this, '#form-register'));
+		// $('#btn-login').on('click', this.expandForm.bind(this, '#form-login'));
+		// $('#btn-reset').on('click', this.expandForm.bind(this, '#form-reset'));
 		$('#reset-text').on('mouseover', this.activateHover.bind(this));
 		$('#reset-text').on('mouseout', this.deactivateHover.bind(this));
 	},

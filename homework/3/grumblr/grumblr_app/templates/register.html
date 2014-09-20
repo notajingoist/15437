@@ -16,15 +16,29 @@
 	</header>
 
 	<section class="panel panel-default panel-grumblr panel-login-register">
-		<div class="buttons">
-			<a href="/register-form"><button id="btn-register" class="btn-login-register">Register</button></a>
-			<div class="or-divider">
-				<div class="line line-left"></div>
-				<div class="or">or</div>			
-				<div class="line line-right"></div>
-			</div>
-			<a href="/login-form"><button id="btn-login" class="btn-login-register">Login</button></a>
-			<a href="/reset-form"><div id="btn-reset" class="footnote"><span id="reset-text">Forgot your password?</span></div></a>
+		<div class="forms">
+			{% for error in errors %}
+			<p class="footnote message register-error-message">
+				{{error}}
+			</p>
+			{% endfor %}
+			<form action="/register" method="post" id="form-register" class="form-register-login">
+				<label for="username">Username</label>
+				<input type="text" name="username" placeholder="username">
+
+				<label for="email">Email</label>
+				<input type="email" name="email" placeholder="example@gmail.com">
+
+				<label for="password-1">Password</label>
+				<input type="password" name="password-1" placeholder="••••••••••••">
+
+				<label for="password-2">Confirm Password</label>
+				<input type="password" name="password-2" placeholder="••••••••••••">
+
+				<input id="submit-register" class="btn-login-register btn-submit" type="submit" value="Register">
+
+				{% csrf_token %}
+			</form>
 		</div>
 	</section>
 

@@ -9,10 +9,12 @@ urlpatterns = patterns('',
     url(r'^edit-profile$', 'grumblr_app.views.edit_profile'),
     url(r'^login-register$', 'grumblr_app.views.login_register'),
     url(r'^register$', 'grumblr_app.views.register'),
+    url(r'^register-form$', 'grumblr_app.views.register_form'),
     # Route for built-in authentication with our own custom login page
-    url(r'^login$', 'django.contrib.auth.views.login', {'template_name':'login-register.html'}),
+    url(r'^login-form$', 'django.contrib.auth.views.login', {'template_name':'login.html'}),
 	 # Route to logout a user and send them back to the login page
     url(r'^logout$', 'django.contrib.auth.views.logout_then_login'),
+    url(r'^reset-form$', 'grumblr_app.views.reset_form'),
     url(r'^reset$', 'grumblr_app.views.reset'),
     url(r'^text-post$', 'grumblr_app.views.text_post'),
 
