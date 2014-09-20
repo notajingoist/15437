@@ -8,4 +8,7 @@ urlpatterns = patterns('',
     url(r'^profile$', 'grumblr_app.views.profile'),
     url(r'^edit-profile$', 'grumblr_app.views.edit_profile'),
     url(r'^login-register$', 'grumblr_app.views.login_register'),
+    url(r'^text-post$', 'grumblr_app.views.text_post'),
+    url(r'^image-post$', 'grumblr_app.views.image_post'),
+    url(r'^video-post$', 'grumblr_app.views.video_post'),
 )

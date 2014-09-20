@@ -28,3 +28,11 @@ def login_register(request):
     context = {}
 
     return render(request, 'login-register.html', context)
+
+
+def text_post(request):
+    context = {}
+
+    return render(request, 'text-post.html', context)
+
+

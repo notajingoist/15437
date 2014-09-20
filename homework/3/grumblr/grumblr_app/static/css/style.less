@@ -116,7 +116,14 @@ textarea {
 
 textarea {
 	margin-bottom: 15px;
-	height: 100px;
+	
+	&.textarea-text-post {
+		height: 200px;
+	}
+
+	&#edit-about-blurb {
+		height: 100px;
+	}
 }
 
 .forms {
@@ -159,6 +166,61 @@ textarea {
 	//padding: 30px;
 }
 
+.panel-post {
+	background-color: @yellow;
+	font-size: 18px;
+	letter-spacing: 1px;
+	padding: 30px;
+	text-align: left;
+}
+
+.panel-text-post {
+
+}
+
+.panel-tool {
+	transition: background-color 0.2s ease-in-out 0;
+	font-size: 14px;
+	background-color: #fff;//@turquoise;
+	padding: 20px;// 100px+30px 30px 30px;
+	//width: calc(100% - 12px);
+	text-align: center;
+	position: relative;
+	letter-spacing: 1px;
+	min-height: 100px;
+	border: @borderWidth solid #fff;
+
+	.glyphicon {
+		transition: color 0.2s ease-in-out 0;
+		font-size: 32px;
+		color: @turquoise;
+
+		&.glyphicon-heart {
+			transform: rotate(-180deg);
+		}
+	}
+
+	.tool-text {
+		transition: color 0.2s ease-in-out 0;
+		margin-top: 5px;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		font-weight: bold;
+		color: @bodyColor;//@turquoise;
+	}
+
+	&:hover {
+		background-color: @yellow;//@yellow;//@bodyColor;
+		cursor: pointer;
+		.tool-text {
+			//color: @yellow;
+		}
+		.glyphicon {
+			//color: @turquoise;
+		}
+	}
+}
+
 .grumbl-author-photo {
 	&.bob {
 		background: url('images/bob.png') center center no-repeat;
@@ -188,13 +250,13 @@ textarea {
 
 	position: absolute;
 	//right: -104px;
-	right: -100px;
+	right: -110px;
 	top: 0;
 
 	//margin-left: -30px;
 
-	width: 100px;
-	height: 100px;
+	width: 110px;
+	height: 110px;
 	
 	display: block;
 	border-left: @borderWidth solid @turquoise;
@@ -223,24 +285,46 @@ textarea {
 .panel-grumbl {
 	font-size: 18px;
 	background-color: #fff;
-	padding: 30px;// 100px+30px 30px 30px;
+	padding: 30px 30px 50px;// 100px+30px 30px 30px;
 	//width: calc(100% - 12px);
 	text-align: left;
 	position: relative;
 	letter-spacing: 1px;
-	min-height: 100px;
+	min-height: 110px;
 	border: none;
 	//border-right: @borderWidth solid @turquoise;
 
 	//margin-bottom: 30px;
+	.post-info {
+		position: absolute;
+		left: 20px;// + 100px;
+		bottom: 15px;
+		font-size: 14px;
+		display: block;
+		color: @yellow;
+		text-transform: uppercase;
+		font-weight: bold;
+		letter-spacing: 1px;
+		.author {
+			transition: color 0.2s ease-in-out 0;
+			color: @turquoise;
+			&:hover {
+				color: @yellow;
+				cursor: pointer;
+			}
+		}
+
+		//background-color: red;
+		
+	}
 	
 	.dislike {
 		transition: color 0.2s ease-in-out 0;
 		//display: block;
 		transform: rotate(-180deg);
 		position: absolute;
-		right: 15px;// + 100px;
-		bottom: 5px;
+		right: 20px;//15px;// + 100px;
+		bottom: 10px;//5px;
 		font-size: 24px;
 		display: block;
 		color: @turquoise;
@@ -274,7 +358,7 @@ textarea {
 			height: auto;
 		}
 		p {
-			padding: 30px;
+			padding: 30px 30px 50px;
 		}
 	}
 }
@@ -503,8 +587,8 @@ ul {
 
 
 .profile-picture {
-	background: url('images/bob.png') center center no-repeat;
-	background-size: cover;
+	//background: url('images/bob.png') center center no-repeat;
+	//background-size: cover;
 	display: block;
 	width: 150px;
 	height: 150px;
@@ -523,7 +607,8 @@ ul {
 }
 
 .btn-login-register,
-.btn-edit-profile {
+.btn-edit-profile,
+.btn-post {
 	transition: background-color 0.2s ease-in-out 0;
 	border: @borderWidth solid #fff;
 	color: #fff;
@@ -561,7 +646,10 @@ ul {
 	font-weight: bold;
 
 	&:hover {
-		cursor: pointer;
+		span {
+			cursor: pointer;
+		}
+
 		.glyphicon {
 			color: darken(@turquoise, 15%);
 		}
@@ -639,10 +727,10 @@ ul {
 }
 
 #edit-picture {
-	&.bob {
-		background: url('images/bob.png') center center no-repeat;
-		background-size: cover;
-	}
+	// &.bob {
+	// 	background: url('images/bob.png') center center no-repeat;
+	// 	background-size: cover;
+	// }
 	width: 100%;
 	height: 200px;
 	//max-width: 200px;
