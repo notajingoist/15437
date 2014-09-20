@@ -13,7 +13,9 @@ urlpatterns = patterns('',
     url(r'^login$', 'django.contrib.auth.views.login', {'template_name':'login-register.html'}),
 	 # Route to logout a user and send them back to the login page
     url(r'^logout$', 'django.contrib.auth.views.logout_then_login'),
+    url(r'^reset$', 'grumblr_app.views.reset'),
     url(r'^text-post$', 'grumblr_app.views.text_post'),
+
     # url(r'^image-post$', 'grumblr_app.views.image_post'),
     # url(r'^video-post$', 'grumblr_app.views.video_post'),
 )

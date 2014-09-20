@@ -35,10 +35,22 @@ def edit_profile(request):
 
     return render(request, 'edit-profile.html', context)
 
+@login_required
+def text_post(request):
+    context = {}
+
+    return render(request, 'text-post.html', context)
+
 def login_register(request):
     context = {}
 
     #if request.method == 'GET':
+    return render(request, 'login-register.html', context)
+
+def reset(request):
+    context = {}
+    context['resetMessage'] = 'You have been sent an email with instructions on how to reset your password.'
+
     return render(request, 'login-register.html', context)
 
 def register(request):
@@ -102,11 +114,7 @@ def register(request):
     return redirect('/')
 
 
-@login_required
-def text_post(request):
-    context = {}
 
-    return render(request, 'text-post.html', context)
 
 
 

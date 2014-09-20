@@ -12,13 +12,19 @@
 <body>
 
 	<header>
-		<h1><a href="">grumblr</a></h1>
+		<h1><a href="/">grumblr</a></h1>
 	</header>
 
 	<section class="panel panel-default panel-grumblr panel-login-register">
 		<div class="buttons">
+			{% if resetMessage %}
+			<p class="footnote message reset-message">
+				{{resetMessage}}
+			</p>
+			{% endif %}
+
 			{% for error in errors %}
-			<p class="footnote error-message">
+			<p class="footnote message error-message">
 				{{error}}
 			</p>
 			{% endfor %}
