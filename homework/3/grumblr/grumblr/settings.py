@@ -51,6 +51,13 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'grumblr.urls'
 
+# Used by the authentication system for the private-todo-list application.
+# URL to use if the authentication system requires a user to log in.
+LOGIN_URL = '/'
+
+# Default URL to redirect to after a user logs in.
+LOGIN_REDIRECT_URL = '/home'
+
 WSGI_APPLICATION = 'grumblr.wsgi.application'
 
 

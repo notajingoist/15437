@@ -8,7 +8,12 @@ urlpatterns = patterns('',
     url(r'^profile$', 'grumblr_app.views.profile'),
     url(r'^edit-profile$', 'grumblr_app.views.edit_profile'),
     url(r'^login-register$', 'grumblr_app.views.login_register'),
+    url(r'^register$', 'grumblr_app.views.register'),
+    # Route for built-in authentication with our own custom login page
+    url(r'^login$', 'django.contrib.auth.views.login', {'template_name':'login-register.html'}),
+	 # Route to logout a user and send them back to the login page
+    url(r'^logout$', 'django.contrib.auth.views.logout_then_login'),
     url(r'^text-post$', 'grumblr_app.views.text_post'),
-    url(r'^image-post$', 'grumblr_app.views.image_post'),
-    url(r'^video-post$', 'grumblr_app.views.video_post'),
+    # url(r'^image-post$', 'grumblr_app.views.image_post'),
+    # url(r'^video-post$', 'grumblr_app.views.video_post'),
 )
