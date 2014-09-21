@@ -57,6 +57,8 @@ def profile(request, user_id):
 @login_required
 def edit_profile(request):
     context = {}
+    user = request.user
+    user_profile = UserProfile.objects.get_or_create(user=user)
 
     return render(request, 'edit-profile.html', context)
 

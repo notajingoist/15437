@@ -62,7 +62,7 @@
 					<span class="glyphicon glyphicon-exclamation-sign"></span> {{ error }}
 				</section>
 				{% endfor %}
-				
+
 				<section class="panel panel-default panel-grumblr panel-form">
 					
 					<form action="/save-profile-changes" method="post">
@@ -97,10 +97,10 @@
 						<input type="email" name="email" placeholder="{{ user.email }}">
 
 						<label for="location">Location</label>
-						<input type="text" name="location" placeholder="{{ user.location }}">
+						<input type="text" name="location" placeholder="{{ user_profile.location }}">
 
 						<label for="about">About</label>
-						<textarea name="about" id="edit-about-blurb" placeholder="{{ user.about }}"></textarea>
+						<textarea name="about" id="edit-about-blurb" placeholder="{{ user_profile.about }}"></textarea>
 
 						<!-- <label for="current-password">Current Password</label>
 						<input type="text" name="current-password" placeholder="••••••••••••">
