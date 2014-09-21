@@ -16,8 +16,10 @@
 			<div class="col-md-3">
 				<nav class="panel panel-default panel-grumblr sidebar-nav">
 					<div class="search-stream">
-						<span class="glyphicon glyphicon-search search-icon"></span>
-						<input type="text" id="search-input" placeholder="search your stream...">
+						<form action="/search-stream" method="get">
+							<span class="glyphicon glyphicon-search search-icon"></span>
+							<input type="text" name="keyword" id="search-input" placeholder="search your stream...">
+						</form>
 					</div>
 
 					<ul class="nav-list">
@@ -70,6 +72,12 @@
 						</div>
 					</div>
 				</div>
+
+				{% for error in errors %}
+				<section class="panel panel-default panel-grumblr panel-message">
+					<span class="glyphicon glyphicon-exclamation-sign"></span> {{ error }}
+				</section>
+				{% endfor %}
 
 				{% for text_post in text_posts %}
 				<section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-text">
