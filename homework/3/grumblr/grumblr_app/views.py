@@ -49,8 +49,8 @@ def profile(request, user_id):
     context['text_posts'] = text_posts.order_by('-date_created')
     context['user'] = user
 
-    user_profile = UserProfile.objects.get_or_create(user=user)
-    context['user_profile']  = user_profile
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
+    context['user_profile'] = user_profile
 
     return render(request, 'profile.html', context)
 
@@ -58,7 +58,8 @@ def profile(request, user_id):
 def edit_profile(request):
     context = {}
     user = request.user
-    user_profile = UserProfile.objects.get_or_create(user=user)
+    #user_profile = user.userprofile#UserProfile.objects.get_or_create(user=user)
+    #context['user_profile'] = user_profile
 
     return render(request, 'edit-profile.html', context)
 
@@ -70,7 +71,7 @@ def save_profile_changes(request):
     context['user'] = user
     context['errors'] = errors
 
-    user_profile = UserProfile.objects.get_or_create(user=user)
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
     
     if 'firstname' in request.POST and request.POST['firstname']:
         user.first_name = request.POST['firstname']
@@ -91,14 +92,15 @@ def save_profile_changes(request):
         user.email = request.POST['email']
         user.save()
 
-    # if 'about' in request.POST and request.POST['about']:
-    #     user_profile.about = request.POST['about']
-    #     user_profile.save()
+    if 'about' in request.POST and request.POST['about']:
+        user_profile.about = request.POST['about']
+        user_profile.save()
 
-    # if 'location' in request.POST and request.POST['location']:
-    #     user_profile.location = request.POST['location']
-    #     user_profile.save()
+    if 'location' in request.POST and request.POST['location']:
+        user_profile.location = request.POST['location']
+        user_profile.save()
 
+    context['user_profile'] = user_profile
     # request.user.userprofile = UserProfile()
     return render(request, 'edit-profile.html', context)
 
