@@ -71,6 +71,45 @@ def search_home(request):
     return render(request, 'home.html', context)
 
 @login_required
+def search_profile(request, user_id):
+    context = {}
+    errors = []
+    context['errors'] = errors
+
+    if len(User.objects.filter(id=user_id)) <= 0:
+        errors.append('User does not exist.')
+
+    if errors:
+        text_posts = TextPost.objects.filter(user=request.user)
+        context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
+        return render(request, 'home.html', context)
+
+    user = User.objects.filter(id=user_id)[0]
+    text_posts = TextPost.objects.filter(user=user_id)
+    context['text_posts'] = text_posts.order_by('-date_created')
+    context['user'] = user
+
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
+    context['user_profile'] = user_profile
+
+    if len(user.email) > 16:
+        new_end_index = 13
+        context['email_curtailed'] = user.email[:new_end_index]
+
+
+    if 'keyword' in request.GET and request.GET['keyword']:
+        context['keyword'] = request.GET['keyword']
+        text_posts = text_posts.filter(text__icontains=request.GET['keyword'])
+
+        if len(text_posts) <= 0:
+            errors.append('No search results found for ' + request.GET['keyword'])
+
+    context['text_posts'] = text_posts.order_by('-date_created')
+
+    return render(request, 'profile.html', context)
+
+
+@login_required
 def profile(request, user_id):
     context = {}
     errors = []

@@ -16,11 +16,12 @@
 		<div class="row">
 			<div class="col-md-3">
 				<div class="panel panel-default panel-grumblr sidebar-profile">
-					<div class="profile-picture" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
-					</div>
+					<a href="/profile/{{user.id}}"><div class="profile-picture" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
+					</div></a>
 
 					<ul class="profile-about">
 						<li>
+							<a href="/profile/{{user.id}}"
 							{% if user.first_name and user.last_name %}
 								<h2 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h2>
 							{% elif user.first_name %}
@@ -30,6 +31,7 @@
 							{% else %}
 								<h2 class="profile-name">{{ user }}</h2>
 							{% endif %}
+							</a>
 						</li>
 						<li>
 							<h3 class="profile-username">{{ user }}</h3>
@@ -77,8 +79,10 @@
 					<div class="profile-divider"></div>
 
 					<div class="search-stream">
-						<span class="glyphicon glyphicon-search search-icon"></span>
-						<input type="text" id="search-input" placeholder="search stream...">
+						<form action="/search-profile/{{user.id}}" method="get">
+							<span class="glyphicon glyphicon-search search-icon"></span>
+							<input type="text" name="keyword" id="search-input" placeholder="search stream...">
+						</form>
 					</div>
 
 					<div class="row">
@@ -113,6 +117,12 @@
 					</div>
 				</div>
 
+				{% for error in errors %}
+				<section class="panel panel-default panel-grumblr panel-message">
+					<span class="glyphicon glyphicon-exclamation-sign"></span> {{ error }}
+				</section>
+				{% endfor %}
+
 				{% if text_posts|length > 0 %}
 					{% for text_post in text_posts %}
 					<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
@@ -120,7 +130,7 @@
 						<span class="dislike">♥</span>
 					</section>
 					{% endfor %}
-				{% else %}
+				{% elif errors|length <= 0 %}
 					<section class="panel panel-default panel-grumblr panel-message">
 						Looks like {{ user }} has nothing to grumble about.
 					</section>
