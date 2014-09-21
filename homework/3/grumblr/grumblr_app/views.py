@@ -16,28 +16,19 @@ def home(request):
     context = {}
     
     text_posts = TextPost.objects.filter(user=request.user)
-    context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
+    context['text_posts'] = text_posts.filter(user=request.user).order_by('-date_created')
 
     return render(request, 'home.html', context)
 
 @login_required
 def stream(request):
     context = {}
-    context['user'] = request.user;
+    context['user'] = request.user
 
-    text_posts = TextPost.objects.filter(user=request.user)
-    context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
+    text_posts = TextPost.objects.all()
+    context['text_posts'] = text_posts.order_by('-date_created')
 
     return render(request, 'stream.html', context)
-
-# @login_required
-# def profile(request):
-#     context = {}
-
-#     text_posts = TextPost.objects.filter(user=request.user)
-#     context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
-
-#     return render(request, 'profile.html', context)
 
 @login_required
 def profile(request, user_id):
@@ -53,11 +44,13 @@ def profile(request, user_id):
         context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
         return render(request, 'home.html', context)
 
-    user = User.objects.filter(id=user_id)
+    user = User.objects.filter(id=user_id)[0]
     text_posts = TextPost.objects.filter(user=user_id)
-    context['text_posts'] = TextPost.objects.filter(user=user).order_by('-date_created')
-    context['user'] = user[0]
-    # context['u']
+    context['text_posts'] = text_posts.order_by('-date_created')
+    context['user'] = user
+
+    user_profile = UserProfile.objects.get_or_create(user=user)
+    context['user_profile']  = user_profile
 
     return render(request, 'profile.html', context)
 
@@ -65,6 +58,46 @@ def profile(request, user_id):
 def edit_profile(request):
     context = {}
 
+    return render(request, 'edit-profile.html', context)
+
+@login_required
+def save_profile_changes(request):
+    context = {}
+    errors = []
+    user = request.user
+    context['user'] = user
+    context['errors'] = errors
+
+    user_profile = UserProfile.objects.get_or_create(user=user)
+    
+    if 'firstname' in request.POST and request.POST['firstname']:
+        user.first_name = request.POST['firstname']
+        user.save()
+
+    if 'lastname' in request.POST and request.POST['lastname']:
+        user.last_name = request.POST['lastname']
+        user.save()
+    
+    if 'username' in request.POST and request.POST['username']:
+        if len(User.objects.filter(username = request.POST['username'])) > 0:
+            errors.append('Username is already taken.')
+        else:
+            user.username = request.POST['username']
+            user.save()
+
+    if 'email' in request.POST and request.POST['email']:
+        user.email = request.POST['email']
+        user.save()
+
+    # if 'about' in request.POST and request.POST['about']:
+    #     user_profile.about = request.POST['about']
+    #     user_profile.save()
+
+    # if 'location' in request.POST and request.POST['location']:
+    #     user_profile.location = request.POST['location']
+    #     user_profile.save()
+
+    # request.user.userprofile = UserProfile()
     return render(request, 'edit-profile.html', context)
 
 @login_required

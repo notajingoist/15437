@@ -21,8 +21,12 @@
 
 					<ul class="profile-about">
 						<li>
-							{% if user.first_name %}
+							{% if user.first_name and user.last_name %}
+								<h2 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h2>
+							{% elif user.first_name %}
 								<h2 class="profile-name">{{ user.first_name }}</h2>
+							{% elif user.last_name %}
+								<h2 class="profile-name">{{ user.last_name }}</h2>
 							{% else %}
 								<h2 class="profile-name">{{ user }}</h2>
 							{% endif %}
@@ -30,19 +34,28 @@
 						<li>
 							<h3 class="profile-username">{{ user }}</h3>
 						</li>
+						{% if user_profile.location %}
 						<li>
 							<h3 class="profile-location">
 								<span class="glyphicon glyphicon-map-marker"></span>
-								{% if user.location %}
-									{{ user.location }}
-								{% else %}
-									The Universe
-								{% endif %}
+								{{ user_profile.location }}
 							</h3>
 						</li>
-						{% if user.about %}
+						{% endif %}
+
+						{% if user.email %}
+						<!-- <li>
+							<h3 class="profile-location">
+								<span class="glyphicon glyphicon-envelope"></span>
+								{{ user.email }}
+							</h3>
+						</li> -->
+						{% endif %}
+						
+						{% if user_profile.about %}
 						<li>
-							<p class="profile-blurb">					{{ user.about }}
+							<p class="profile-blurb">
+								{{ user_profile.about }}
 							</p>
 						</li>
 						{% endif %}

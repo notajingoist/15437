@@ -57,56 +57,64 @@
 			</div>
 
 			<div class="col-md-9">
+				{% for error in errors %}
+				<section class="panel panel-default panel-grumblr panel-message">
+					<span class="glyphicon glyphicon-exclamation-sign"></span> {{ error }}
+				</section>
+				{% endfor %}
+				
 				<section class="panel panel-default panel-grumblr panel-form">
 					
-					<div class="row">
-						<div class="col-md-6">
-							<label for="edit-picture">Profile Picture</label>
-							<div id="edit-picture" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;"></div>
+					<form action="/save-profile-changes" method="post">
+
+						<div class="row">
+							<div class="col-md-6">
+								<label for="edit-picture">Profile Picture</label>
+								<div id="edit-picture" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;"></div>
+							</div>
+							<div class="col-md-6">
+								<button id="edit-upload-picture" class="btn-edit-profile btn-submit">Upload Picture</button>
+							</div>
 						</div>
-						<div class="col-md-6">
-							<button id="edit-upload-picture" class="btn-edit-profile btn-submit">Upload Picture</button>
+						
+						<input type="file" class="input-file-upload hidden" id="edit-upload-picture-hidden" accept="image/*">
+
+						<div class="row">
+							<div class="col-md-6">
+								<label for="firstname">First Name</label>
+								<input type="text" name="firstname" placeholder="{% if user.first_name %}{{ user.first_name }}{% else %}First Name{% endif %}">
+							</div>
+							<div class="col-md-6">
+								<label for="lastname">Last Name</label>
+								<input type="text" name="lastname" placeholder="{% if user.last_name %}{{ user.last_name }}{% else %}Last Name{% endif %}">
+							</div>
 						</div>
-					</div>
-					
-					<input type="file" class="input-file-upload hidden" id="edit-upload-picture-hidden" accept="image/*">
 
-					<div class="row">
-						<div class="col-md-6">
-							<label for="edit-firstname">First Name</label>
-							<input type="text" id="edit-firstname" placeholder="Bob">
-						</div>
-						<div class="col-md-6">
-							<label for="edit-lastname">Last Name</label>
-							<input type="text" id="edit-lastname" placeholder="Belcher">
-						</div>
-					</div>
+						<label for="username">Username</label>
+						<input type="text" name="username" placeholder="{{ user }}">
 
-					<label for="edit-username">Username</label>
-					<input type="text" id="edit-username" placeholder="bobbbbbb">
+						<label for="email">Email</label>
+						<input type="email" name="email" placeholder="{{ user.email }}">
 
-					<label for="edit-email">Email</label>
-					<input type="email" id="edit-email" placeholder="bob.belcher@gmail.com">
+						<label for="location">Location</label>
+						<input type="text" name="location" placeholder="{{ user.location }}">
 
-					<label for="edit-location">Location</label>
-					<input type="text" id="edit-location" placeholder="Seymour's Bay">
+						<label for="about">About</label>
+						<textarea name="about" id="edit-about-blurb" placeholder="{{ user.about }}"></textarea>
 
-					<label for="edit-about-blurb">About Me Blurb</label>
-					<textarea id="edit-about-blurb" placeholder="Hey! My name is Bob. I have a restaurant named Bob's Burgers. This is my daily stream of burger puns and grumbls."></textarea>
+						<!-- <label for="current-password">Current Password</label>
+						<input type="text" name="current-password" placeholder="••••••••••••">
 
-					<label for="edit-current-password">Current Password</label>
-					<input type="text" id="edit-current-password" placeholder="••••••••••••">
+						<label for="new-password">New Password</label>
+						<input type="text" name="password-1" placeholder="••••••••••••">
 
-					<label for="edit-new-password">New Password</label>
-					<input type="text" id="edit-new-passowrd" placeholder="••••••••••••">
+						<label for="confirm-password">Confirm Password</label>
+						<input type="text" name="password-2" placeholder="••••••••••••"> -->
 
-					<label for="edit-confirm-password">Confirm Password</label>
-					<input type="text" id="edit-confirm-passowrd" placeholder="••••••••••••">
+						<input class="btn-edit-profile btn-submit" type="submit" value="Save Changes">
 
-					<!-- <button class="btn-edit-profile btn-submit">Save Changes</button> -->
-
-					<input class="btn-edit-profile btn-submit" type="submit" value="Save Changes">
-
+						{% csrf_token %}
+					</form>
 				</section>
 			</div>
 		</div>
