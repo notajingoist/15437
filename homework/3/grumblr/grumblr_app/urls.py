@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     url(r'^reset-form$', 'grumblr_app.views.reset_form'),
     url(r'^reset$', 'grumblr_app.views.reset'),
     url(r'^text-post$', 'grumblr_app.views.text_post'),
-
+    url(r'^create-text-post$', 'grumblr_app.views.create_text_post'),
     # url(r'^image-post$', 'grumblr_app.views.image_post'),
     # url(r'^video-post$', 'grumblr_app.views.video_post'),
 )

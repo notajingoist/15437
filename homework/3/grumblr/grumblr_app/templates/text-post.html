@@ -17,7 +17,7 @@
 				<nav class="panel panel-default panel-grumblr sidebar-nav">
 					<div class="search-stream">
 						<span class="glyphicon glyphicon-search search-icon"></span>
-						<input type="text" id="search-input" placeholder="search your stream...">
+						<input type="text" id="search-input" placeholder="search your grumbls...">
 					</div>
 
 					<ul class="nav-list">
@@ -57,15 +57,21 @@
 			</div>
 
 			<div class="col-md-9">
+				{% for error in errors %}
+				<section class="panel panel-default panel-grumblr panel-message">
+					<span class="glyphicon glyphicon-exclamation-sign"></span> {{ error }}
+				</section>
+				{% endfor %}
+
 				<section class="panel panel-default panel-grumblr panel-form">
-					<label for="edit-about-blurb">Text Grumbl</label>
-					<textarea class="textarea-text-post" placeholder="Grumble grumble grumble..."></textarea>
-
-					<!-- <button class="btn-post btn-submit">Post Text Grumbl</button> -->
-
-					<input class="btn-post btn-submit" type="submit" value="Post Text Grumbl">
+					<form action="/create-text-post" method="post">
+						<label for="text-body">Text Grumbl</label>
+						<textarea name="text-body" class="textarea-text-post" placeholder="Grumble grumble grumble..."></textarea>
 						
-					{% csrf_token %}
+						<input class="btn-post btn-submit" type="submit" value="Post Text Grumbl">
+						
+						{% csrf_token %}
+					</form>
 				</section>
 
 			</div>		

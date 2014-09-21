@@ -17,7 +17,7 @@
 				<nav class="panel panel-default panel-grumblr sidebar-nav">
 					<div class="search-stream">
 						<span class="glyphicon glyphicon-search search-icon"></span>
-						<input type="text" id="search-input" placeholder="search your stream...">
+						<input type="text" id="search-input" placeholder="search your grumbls...">
 					</div>
 
 					<ul class="nav-list">
@@ -57,13 +57,7 @@
 			</div>
 
 			<div class="col-md-9">
-				<!-- <section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
-					<p>Home page is under construction!</p>
-					
-					<p>Still need an interface for creating new grumbls. Also need a way to leave and view comments.</p>
-				</section>
- -->
-				<!-- <div class="container-fluid"> -->
+
 				<div class="row">
 					<div class="col-md-4">
 						<a href="/text-post"><div class="panel panel-default panel-grumblr  panel-tool">
@@ -84,7 +78,6 @@
 						</div>
 					</div>
 				</div>
-				<!-- </div> -->
 
 				<div class="row">
 					<div class="col-md-6">
@@ -101,39 +94,18 @@
 					</div>
 				</div>
 
+				{% for text_post in text_posts %}
 				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
-					Gotta finish this web apps homework... ah grumble bumble rawr.
+					{{ text_post.text }}
 					<span class="dislike">♥</span>
 				</section>
+				{% endfor %}
 				
-				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-photo">
+				<!-- <section class="panel panel-default panel-grumblr panel-grumbl grumbl-photo">
 					<img src="/static/images/family2.jpg">
 					<p>The Belcher family. From left to right: me, Louise, Linda, Tina, and Gene.</p>
 					<span class="dislike">♥</span>
-				</section>
-
-				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
-					Lobsterfest sucks!
-					<span class="dislike">♥</span>
-				</section>
-
-
-				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
-					Today was the grand re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-reopening of Bob's Burgers. 
-					<span class="dislike">♥</span>
-				</section>
-
-				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-photo">
-					<img src="/static/images/burger.jpg">
-					<p>I make burgers. Though not this one specifically. It's just a photo from Google.</p>
-					<span class="dislike">♥</span>
-				</section>
-
-				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
-					Hello world! This is my first grumbl. How do I grumbl? Ooh my last name is Belcher, kind of like belching... which is related to grumbling in a way. Ha ha... 
-					<span class="dislike">♥</span>
-				</section>
-
+				</section> -->
 			</div>		
 		</div>
 	</div>

@@ -1,4 +1,7 @@
 from django.db import models
+from django.utils import timezone
+from datetime import datetime
+
 
 # Create your models here.
 from django.contrib.auth.models import User
@@ -13,12 +16,15 @@ class UserProfile(models.Model):
 	#dislikes
 	#grumblrs
 
-class Post(models.Model):
-	author = models.ForeignKey(User, related_name='posts')
+class TextPost(models.Model):
+	user = models.ForeignKey(User, related_name='posts')
 	text = models.TextField(max_length=20000)
+	date_created = models.DateTimeField(auto_now_add=True, default=timezone.now)
+
+	def __unicode__(self):
+		return self.text
 	#type
-	#date DateField
-	#picture FileField
+	#comments
 	#dislikes
 
 

@@ -11,14 +11,12 @@ from django.contrib.auth import login, authenticate
 from grumblr_app.models import *
 
 # Create your views here.
-# @register.filter(is_safe=True)
-# def label_with_classes(value, arg):
-#     return value.label_tag(attrs{'class': arg})
-
-
 @login_required
 def home(request):
     context = {}
+    
+    text_posts = TextPost.objects.filter(user=request.user)
+    context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
 
     return render(request, 'home.html', context)
 
@@ -41,6 +39,27 @@ def edit_profile(request):
     return render(request, 'edit-profile.html', context)
 
 @login_required
+def create_text_post(request):
+    context = {}
+    errors = []
+
+    if not 'text-body' in request.POST or not request.POST['text-body']:
+        errors.append('You must grumble about something in your text post!')
+    else:
+        new_text_post = TextPost(text=request.POST['text-body'], user=request.user)
+        new_text_post.save()
+
+    text_posts = TextPost.objects.filter(user=request.user).order_by('-date_created')
+    
+    context['text_posts'] = text_posts
+    context['errors'] = errors
+
+    if len(errors) > 0:
+        return render(request, 'text-post.html', context)
+
+    return render(request, 'home.html', context)
+
+@login_required
 def text_post(request):
     context = {}
 
@@ -59,7 +78,7 @@ def reset_form(request):
 
 def reset(request):
     context = {}
-    context['resetMessage'] = 'You have been sent an email with instructions on how to reset your password.'
+    context['reset_message'] = 'You have been sent an email with instructions on how to reset your password.'
 
     return render(request, 'reset.html', context)
 
@@ -127,18 +146,3 @@ def register(request):
                             password=request.POST['password-1'])
     login(request, new_user)
     return redirect('/')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
