@@ -16,8 +16,10 @@
 			<div class="col-md-3">
 				<nav class="panel panel-default panel-grumblr sidebar-nav">
 					<div class="search-stream">
-						<span class="glyphicon glyphicon-search search-icon"></span>
-						<input type="text" id="search-input" placeholder="search your grumbls...">
+						<form action="/search-stream" method="get">
+							<span class="glyphicon glyphicon-search search-icon"></span>
+							<input type="text" name="keyword" id="search-input" placeholder="search your stream...">
+						</form>
 					</div>
 
 					<ul class="nav-list">
