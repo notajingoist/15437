@@ -148,6 +148,13 @@ def reset_form(request):
 
 def reset(request):
     context = {}
+    errors = []
+    context['errors'] = errors
+    
+    if not 'email' in request.POST or not request.POST['email']:
+        errors.append('Email is required.')
+        return render(request, 'reset.html', context)
+
     context['reset_message'] = 'You have been sent an email with instructions on how to reset your password.'
 
     return render(request, 'reset.html', context)

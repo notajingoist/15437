@@ -17,6 +17,12 @@
 
 	<section class="panel panel-default panel-grumblr panel-login-register">
 		<div class="forms">
+			{% for error in errors %}
+			<p class="footnote message error-message">
+				{{error}}
+			</p>
+			{% endfor %}
+
 			{% if reset_message %}
 			<p class="footnote message reset-message">
 				{{reset_message}}
