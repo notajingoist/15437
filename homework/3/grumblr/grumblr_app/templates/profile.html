@@ -6,7 +6,7 @@
 	<title>grumblr</title>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
-	<!-- <link rel="stylesheet" href="/static/css/style.css"> -->
+	<link rel="stylesheet" href="/static/css/style.css">
 	<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
 </head>
 <body>
@@ -21,22 +21,31 @@
 
 					<ul class="profile-about">
 						<li>
-							<h2 class="profile-name">Bob Belcher</h2>
+							{% if user.first_name %}
+								<h2 class="profile-name">{{ user.first_name }}</h2>
+							{% else %}
+								<h2 class="profile-name">{{ user }}</h2>
+							{% endif %}
 						</li>
 						<li>
-							<h3 class="profile-username">bobbbbbb</h3>
+							<h3 class="profile-username">{{ user }}</h3>
 						</li>
 						<li>
 							<h3 class="profile-location">
 								<span class="glyphicon glyphicon-map-marker"></span>
-								Seymour's Bay
+								{% if user.location %}
+									{{ user.location }}
+								{% else %}
+									The Universe
+								{% endif %}
 							</h3>
 						</li>
+						{% if user.about %}
 						<li>
-							<p class="profile-blurb">
-								Hey! My name is Bob. I have a restaurant named Bob's Burgers. This is my daily stream of burger puns and grumbls.
+							<p class="profile-blurb">					{{ user.about }}
 							</p>
 						</li>
+						{% endif %}
 					</ul>
 
 					<div class="profile-divider"></div>
@@ -52,7 +61,7 @@
 
 					<div class="search-stream">
 						<span class="glyphicon glyphicon-search search-icon"></span>
-						<input type="text" id="search-input" placeholder="search bob's stream...">
+						<input type="text" id="search-input" placeholder="search stream...">
 					</div>
 
 					<div class="row">
@@ -87,41 +96,29 @@
 					</div>
 				</div>
 
-				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
+				{% if text_posts|length > 0 %}
+					{% for text_post in text_posts %}
+					<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
+						{{ text_post.text }}
+						<span class="dislike">♥</span>
+					</section>
+					{% endfor %}
+				{% else %}
+					<section class="panel panel-default panel-grumblr panel-message">
+						Looks like {{ user }} has nothing to grumble about.
+					</section>
+				{% endif %}
+
+				<!-- <section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
 					Gotta finish this web apps homework... ah grumble bumble rawr.
 					<span class="dislike">♥</span>
-				</section>
-				
-				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-photo">
-					<img src="/static/images/family2.jpg">
-					<p>The Belcher family. From left to right: me, Louise, Linda, Tina, and Gene.</p>
-					<span class="dislike">♥</span>
-				</section>
+				</section> -->
 
-				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
-					Lobsterfest sucks!
-					<span class="dislike">♥</span>
-				</section>
-
-
-				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
-					Today was the grand re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-re-reopening of Bob's Burgers. 
-					<span class="dislike">♥</span>
-				</section>
-
-
-				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-photo">
+				<!-- <section class="panel panel-default panel-grumblr panel-grumbl grumbl-photo">
 					<img src="/static/images/burger.jpg">
 					<p>I make burgers. Though not this one specifically. It's just a photo from Google.</p>
 					<span class="dislike">♥</span>
-				</section>
-
-				
-
-				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
-					Hello world! This is my first grumbl. How do I grumbl? Ooh my last name is Belcher, kind of like belching... which is related to grumbling in a way. Ha ha... 
-					<span class="dislike">♥</span>
-				</section>
+				</section> -->
 
 			</div>
 		</div>

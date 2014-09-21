@@ -23,12 +23,41 @@ def home(request):
 @login_required
 def stream(request):
     context = {}
+    context['user'] = request.user;
+
+    text_posts = TextPost.objects.filter(user=request.user)
+    context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
 
     return render(request, 'stream.html', context)
 
+# @login_required
+# def profile(request):
+#     context = {}
+
+#     text_posts = TextPost.objects.filter(user=request.user)
+#     context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
+
+#     return render(request, 'profile.html', context)
+
 @login_required
-def profile(request):
+def profile(request, user_id):
     context = {}
+    errors = []
+    context['errors'] = errors
+
+    if len(User.objects.filter(id=user_id)) <= 0:
+        errors.append('User does not exist.')
+
+    if errors:
+        text_posts = TextPost.objects.filter(user=request.user)
+        context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
+        return render(request, 'home.html', context)
+
+    user = User.objects.filter(id=user_id)
+    text_posts = TextPost.objects.filter(user=user_id)
+    context['text_posts'] = TextPost.objects.filter(user=user).order_by('-date_created')
+    context['user'] = user[0]
+    # context['u']
 
     return render(request, 'profile.html', context)
 

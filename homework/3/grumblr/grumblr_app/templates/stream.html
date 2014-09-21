@@ -6,7 +6,7 @@
 	<title>grumblr</title>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
-	<!-- <link rel="stylesheet" href="/static/css/style.css"> -->
+	<link rel="stylesheet" href="/static/css/style.css">
 	<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
 </head>
 <body>
@@ -35,7 +35,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="/profile">
+							<a href="/profile/{{user.id}}">
 								<span class="glyphicon glyphicon-user"></span>
 								<span class="nav-link">Profile</span>
 							</a>
@@ -71,37 +71,19 @@
 					</div>
 				</div>
 
-				<!-- <div class="col-md-10"> -->
-
+				{% for text_post in text_posts %}
 				<section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-text">
-					Uhhhhhhhhhhhhhhhhhhhh.
+					{{ text_post.text }}
 
-					<span class="post-info">Posted by <span class="author">Bob</span></span>
+					<span class="post-info">Posted by <span class="author"><a href="/profile/{{user.id}}">{{ text_post.user }}</a></span></span>
+					<!-- <span class="glyphicon glyphicon-plus"></span> -->
 					<span class="dislike">♥</span>
 					<article class="grumbl-author-photo" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
 					</article>
 				</section>
-				
-				<section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-photo">
-					<img src="/static/images/revenge.gif">
-					<p>Hehe.</p>
+				{% endfor %}
 
-					<span class="post-info">Posted by <span class="author">Bob</span></span>
-					<span class="dislike">♥</span>
-					<article class="grumbl-author-photo" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
-					</article>
-				</section>
-
-				<section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-text">
-					Gotta finish this web apps homework... ah grumble bumble rawr. 
-
-					<span class="post-info">Posted by <span class="author">Bob</span></span>
-					<span class="dislike">♥</span>
-					<article class="grumbl-author-photo" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
-					</article>
-				</section>
-
-				<section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-photo">
+				<!-- <section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-photo">
 					<img src="/static/images/allright.jpg">
 					<p>All riiight!</p>
 
@@ -109,16 +91,7 @@
 					<span class="dislike">♥</span>
 					<article class="grumbl-author-photo" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
 					</article>
-				</section>
-
-				<section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-text">
-					What kind of bees make milk? Boobies!
-
-					<span class="post-info">Posted by <span class="author">Bob</span></span>
-					<span class="dislike">♥</span>
-					<article class="grumbl-author-photo" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
-					</article>
-				</section>
+				</section> -->
 
 
 			</div>

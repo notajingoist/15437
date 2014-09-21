@@ -353,11 +353,13 @@ input {
 		font-weight: bold;
 		letter-spacing: 1px;
 		.author {
-			transition: color 0.2s ease-in-out 0;
-			color: @turquoise;
-			&:hover {
-				color: @yellow;
-				cursor: pointer;
+			// color: @turquoise;
+			a {
+				transition: color 0.2s ease-in-out 0;
+				color: @turquoise;// !important;
+				&:hover {
+					color: @yellow;
+				}
 			}
 		}
 
@@ -423,9 +425,11 @@ input {
 }
 
 .profile-about {
-	//text-align: center;
+	text-align: center;
 	.profile-name {
-		font-size: 24px;
+		font-size: 18px;
+		line-height: 1.4;
+
 		font-weight: bold;
 		color: #fff;
 		//margin-bottom: 0;
@@ -446,6 +450,7 @@ input {
 		margin-bottom: 0;
 		// margin: 0 auto;
 		// width: 100%;
+		
 	}
 
 	h3 {
@@ -460,6 +465,7 @@ input {
 	}
 
 	.profile-username {
+		//text-align: left;
 		color: #fff;
 		margin-top: 15px;
 		//font-weight: bold;
@@ -476,10 +482,12 @@ input {
 	}
 
 	.profile-location {
+		//text-align: left;
 		text-transform: none;
 	}
 
 	.profile-blurb {
+		text-align: left;
 		font-size: 14px;
 		text-transform: none;
 		font-weight: normal;
@@ -605,6 +613,7 @@ ul {
 
 
 .profile-stats {
+	//text-align: center;
 	li {
 		&:hover {
 			cursor: pointer;

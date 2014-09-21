@@ -4,6 +4,29 @@
 .blah {
   border: 1px solid black;
 }
+.footnote {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  margin: 30px 0 3px;
+  line-height: 0;
+}
+.footnote.message {
+  color: #95decb;
+  margin: 0 0 20px;
+  line-height: 1.4;
+}
+.footnote.message.register-error-message {
+  margin: 0 0 20px;
+}
+#reset-text {
+  cursor: pointer;
+}
+#reset-text.hover-state {
+  border-bottom: 4px solid #95decb;
+}
 body {
   margin: 0 auto;
   padding: 50px 0;
@@ -72,6 +95,11 @@ textarea {
 }
 textarea {
   margin-bottom: 15px;
+}
+textarea.textarea-text-post {
+  height: 200px;
+}
+textarea#edit-about-blurb {
   height: 100px;
 }
 .forms {
@@ -87,8 +115,13 @@ textarea {
   opacity: 1;
   visibility: visible;
 }
+input.btn-submit {
+  margin-top: 25px;
+  margin-bottom: 0;
+}
 .btn-submit {
   margin-top: 10px;
+  margin-bottom: 0;
 }
 .panel-grumblr {
   border-radius: 0;
@@ -96,12 +129,50 @@ textarea {
   background-color: #ffde99;
   box-shadow: 4px 4px 0 #ffd47a;
 }
+.panel-post {
+  background-color: #ffde99;
+  font-size: 18px;
+  letter-spacing: 1px;
+  padding: 30px;
+  text-align: left;
+}
+.panel-tool {
+  transition: background-color 0.2s ease-in-out 0;
+  font-size: 14px;
+  background-color: #fff;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  letter-spacing: 1px;
+  min-height: 100px;
+  border: 4px solid #ffffff;
+}
+.panel-tool .glyphicon {
+  transition: color 0.2s ease-in-out 0;
+  font-size: 32px;
+  color: #95decb;
+}
+.panel-tool .glyphicon.glyphicon-heart {
+  transform: rotate(-180deg);
+}
+.panel-tool .tool-text {
+  transition: color 0.2s ease-in-out 0;
+  margin-top: 5px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+  color: #555555;
+}
+.panel-tool:hover {
+  background-color: #ffde99;
+  cursor: pointer;
+}
 .grumbl-author-photo {
   position: absolute;
-  right: -100px;
+  right: -110px;
   top: 0;
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   display: block;
   border-left: 4px solid #95decb;
   box-shadow: 4px 4px 0 #ffd47a;
@@ -140,22 +211,61 @@ textarea {
 .panel-form input {
   margin-bottom: 15px;
 }
-.panel-grumbl {
-  font-size: 18px;
-  background-color: #fff;
+.panel-message {
+  background-color: #95decb;
   padding: 30px;
   text-align: left;
   position: relative;
   letter-spacing: 1px;
-  min-height: 100px;
+  border: 4px solid #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+}
+.panel-message .glyphicon {
+  color: #ffde99;
+  font-size: 28px;
+  line-height: -4;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+.panel-grumbl {
+  font-size: 18px;
+  background-color: #fff;
+  padding: 30px 30px 50px;
+  text-align: left;
+  position: relative;
+  letter-spacing: 1px;
+  min-height: 110px;
   border: none;
+}
+.panel-grumbl .post-info {
+  position: absolute;
+  left: 20px;
+  bottom: 15px;
+  font-size: 14px;
+  display: block;
+  color: #ffde99;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.panel-grumbl .post-info .author {
+  transition: color 0.2s ease-in-out 0;
+  color: #95decb;
+}
+.panel-grumbl .post-info .author:hover {
+  color: #ffde99;
+  cursor: pointer;
 }
 .panel-grumbl .dislike {
   transition: color 0.2s ease-in-out 0;
   transform: rotate(-180deg);
   position: absolute;
-  right: 15px;
-  bottom: 5px;
+  right: 20px;
+  bottom: 10px;
   font-size: 24px;
   display: block;
   color: #95decb;
@@ -172,7 +282,7 @@ textarea {
   height: auto;
 }
 .panel-grumbl.grumbl-photo p {
-  padding: 30px;
+  padding: 30px 30px 50px;
 }
 .sidebar-profile {
   padding: 20px;
@@ -183,8 +293,12 @@ textarea {
 .sidebar-nav {
   padding: 20px;
 }
+.profile-about {
+  text-align: center;
+}
 .profile-about .profile-name {
-  font-size: 24px;
+  font-size: 18px;
+  line-height: 1.4;
   font-weight: bold;
   color: #fff;
   margin-top: 0;
@@ -216,6 +330,7 @@ textarea {
   text-transform: none;
 }
 .profile-about .profile-blurb {
+  text-align: left;
   font-size: 14px;
   text-transform: none;
   font-weight: normal;
@@ -332,8 +447,6 @@ ul .glyphicon {
   color: #fff;
 }
 .profile-picture {
-  background: url('images/bob.png') center center no-repeat;
-  background-size: cover;
   display: block;
   width: 150px;
   height: 150px;
@@ -349,7 +462,8 @@ ul .glyphicon {
   padding: 30px;
 }
 .btn-login-register,
-.btn-edit-profile {
+.btn-edit-profile,
+.btn-post {
   transition: background-color 0.2s ease-in-out 0;
   border: 4px solid #ffffff;
   color: #fff;
@@ -362,9 +476,11 @@ ul .glyphicon {
   letter-spacing: 3px;
   font-size: 18px;
   box-shadow: 4px 4px 0 #ffd47a;
+  margin-bottom: 0 !important;
 }
 .btn-login-register:hover,
-.btn-edit-profile:hover {
+.btn-edit-profile:hover,
+.btn-post:hover {
   border: 4px solid #ffffff;
   color: #fff;
   background-color: #5bccae;
@@ -386,8 +502,8 @@ ul .glyphicon {
   position: absolute;
   top: 3px;
 }
-.previous-page:hover,
-.next-page:hover {
+.previous-page:hover span,
+.next-page:hover span {
   cursor: pointer;
 }
 .previous-page:hover .glyphicon,
@@ -422,6 +538,7 @@ ul .glyphicon {
   text-transform: uppercase;
   font-size: 14px;
   letter-spacing: 2px;
+  font-weight: bold;
 }
 .or-divider .line {
   border-bottom: 1px solid #fff;
@@ -446,8 +563,4 @@ ul .glyphicon {
   background-color: #95decb;
   margin-bottom: 15px;
   box-shadow: 4px 4px 0 #ffd47a;
-}
-#edit-picture.bob {
-  background: url('images/bob.png') center center no-repeat;
-  background-size: cover;
 }
