@@ -16,7 +16,7 @@ def home(request):
     context = {}
     
     text_posts = TextPost.objects.filter(user=request.user)
-    context['text_posts'] = text_posts.filter(user=request.user).order_by('-date_created')
+    context['text_posts'] = text_posts.order_by('-date_created')
 
     return render(request, 'home.html', context)
 
@@ -49,6 +49,26 @@ def search_stream(request):
     context['text_posts'] = text_posts.order_by('-date_created')
 
     return render(request, 'stream.html', context)
+
+@login_required
+def search_home(request):
+    context = {}
+    errors = []
+    context['errors'] = errors
+    context['user'] = request.user
+
+    text_posts = TextPost.objects.filter(user=request.user)
+
+    if 'keyword' in request.GET and request.GET['keyword']:
+        context['keyword'] = request.GET['keyword']
+        text_posts = text_posts.filter(text__icontains=request.GET['keyword'])
+
+        if len(text_posts) <= 0:
+            errors.append('No search results found for ' + request.GET['keyword'])
+
+    context['text_posts'] = text_posts.order_by('-date_created')
+
+    return render(request, 'home.html', context)
 
 @login_required
 def profile(request, user_id):
