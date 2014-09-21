@@ -52,14 +52,18 @@ def profile(request, user_id):
     user_profile, created = UserProfile.objects.get_or_create(user=user)
     context['user_profile'] = user_profile
 
+    if len(user.email) > 16:
+        new_end_index = 13
+        context['email_curtailed'] = user.email[:new_end_index]
+
     return render(request, 'profile.html', context)
 
 @login_required
 def edit_profile(request):
     context = {}
     user = request.user
-    #user_profile = user.userprofile#UserProfile.objects.get_or_create(user=user)
-    #context['user_profile'] = user_profile
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
+    context['user_profile'] = user_profile
 
     return render(request, 'edit-profile.html', context)
 
@@ -206,6 +210,9 @@ def register(request):
                                         email=request.POST['email'], \
                                         password=request.POST['password-1'])
     new_user.save()
+
+    user_profile, created = UserProfile.objects.get_or_create(user=new_user)
+    user_profile.save()
 
     # Logs in the new user and redirects to his/her home stream
     new_user = authenticate(username=request.POST['username'], \

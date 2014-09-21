@@ -63,12 +63,6 @@
 				</section>
 				{% endfor %}
 
-				{% if user_profile %}
-				<section class="panel panel-default panel-grumblr panel-message">
-					<span class="glyphicon glyphicon-exclamation-sign"></span> {{ user_profile.location }}
-				</section>
-				{% endif %}
-
 				<section class="panel panel-default panel-grumblr panel-form">
 					
 					<form action="/save-profile-changes" method="post">

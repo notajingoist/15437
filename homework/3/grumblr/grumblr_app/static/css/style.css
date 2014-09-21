@@ -252,13 +252,12 @@ input.btn-submit {
   font-weight: bold;
   letter-spacing: 1px;
 }
-.panel-grumbl .post-info .author {
+.panel-grumbl .post-info .author a {
   transition: color 0.2s ease-in-out 0;
   color: #95decb;
 }
-.panel-grumbl .post-info .author:hover {
+.panel-grumbl .post-info .author a:hover {
   color: #ffde99;
-  cursor: pointer;
 }
 .panel-grumbl .dislike {
   transition: color 0.2s ease-in-out 0;
@@ -315,6 +314,7 @@ input.btn-submit {
   letter-spacing: 2px;
 }
 .profile-about .profile-username {
+  text-align: left;
   color: #fff;
   margin-top: 15px;
 }
@@ -326,7 +326,10 @@ input.btn-submit {
   font-size: 18px;
   font-weight: bold;
 }
-.profile-about .profile-location {
+.profile-about .profile-username,
+.profile-about .profile-location,
+.profile-about .profile-email {
+  text-align: left;
   text-transform: none;
 }
 .profile-about .profile-blurb {
@@ -338,7 +341,7 @@ input.btn-submit {
   color: #95decb;
   background-color: #fff;
   padding: 10px;
-  margin-top: 15px;
+  margin-top: 20px;
   box-shadow: 4px 4px 0 #ffd47a;
 }
 .profile-action {

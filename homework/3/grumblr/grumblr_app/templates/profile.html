@@ -44,12 +44,16 @@
 						{% endif %}
 
 						{% if user.email %}
-						<!-- <li>
-							<h3 class="profile-location">
+						<li>
+							<h3 class="profile-email">
 								<span class="glyphicon glyphicon-envelope"></span>
-								{{ user.email }}
+								{% if email_curtailed %}
+									{{ email_curtailed }}...
+								{% else %}
+									{{ user.email }}
+								{% endif %}
 							</h3>
-						</li> -->
+						</li>
 						{% endif %}
 						
 						{% if user_profile.about %}
@@ -66,7 +70,7 @@
 					<ul class="profile-stats">
 						<li><span class="profile-number">47</span> followers</li>
 						<li><span class="profile-number">10</span> following</li>
-						<li><span class="profile-number">6</span> grumbls</li>
+						<li><span class="profile-number">{{ text_posts|length }}</span> grumbls</li>
 						<li><span class="profile-number">203</span> dislikes <span class="glyphicon glyphicon-heart"></span></li>
 					</ul>
 
