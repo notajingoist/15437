@@ -60,6 +60,7 @@ LOGIN_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = 'grumblr.wsgi.application'
 
+AUTH_PROFILE_MODULE = 'grumblr_app.UserProfile'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
