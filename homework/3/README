@@ -1,21 +1,6 @@
-Homework 3 - Jing Xiao
-9/21/14
+To turn in homework 3, create files (and subdirectories if needed) in
+this directory, add and commit those files to your cloned repository,
+and push your commit to your bare repository on GitHub.
 
--Relevant files:
-    -grumblr/grumblr_app/
-        templates/*
-        views.py
-        urls.py
-        models.py
-        templatetags/myfilters.py
-        static/css/*
-        static/js/*
-    -grumblr/
-        grumblr/settings.py
-        grumblr/urls.py
-
-I didn't get to implement search and the user profile updating stuff until after my extended deadline, however, I would appreciate if you would still check out my most recent commit and let me know how it is. You can give me a grade corresponding to the pre-11:59pm commit, but I'd still like to get feedback on my more finished version.
-
-Basically, the root url redirects you to the login/register screen if you're not already logged in. You can click through to either register, log in, or reset password (not implemented yet but the form and page are there). Once you've registered, you land on your home stream. Here you can see all of your own grumbls. There are also buttons that you can click to create new grumbls (only text grumbls work right now). Click on that button and you'll be taken to a page where you can write your grumblr and post it. The posted grumbl appears on your home stream and profile, as well as on the stream that others see when they're logged in. It's fairly intuitive to navigate around the site. For editing your profile, you simply hit save changes on the edit profile page after filling in the text field or text area with whatever it is you want to change. Then on your profile, you'll be able to see the updated values. Search on your home stream searches your own posts, and search on the other pages searches all posts besides yours, and search on your profile searches your own posts and displays them on your profile. Everything's pretty standard. When there are errors or when you have no search results, etc., usually there will be a redirect to some page with a panel with a message. You can also log out and directly sign in. 
-
-
+Add any general notes or instructions for the TAs to this README file.
+The TAs will read this file before evaluating your work.
