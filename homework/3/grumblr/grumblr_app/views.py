@@ -86,6 +86,7 @@ def search_profile(request, user_id):
 
     user = User.objects.filter(id=user_id)[0]
     text_posts = TextPost.objects.filter(user=user_id)
+    context['text_posts_count'] = len(text_posts)
     context['text_posts'] = text_posts.order_by('-date_created')
     context['user'] = user
 
@@ -126,6 +127,7 @@ def profile(request, user_id):
     user = User.objects.filter(id=user_id)[0]
     text_posts = TextPost.objects.filter(user=user_id)
     context['text_posts'] = text_posts.order_by('-date_created')
+    context['text_posts_count'] = len(text_posts)
     context['user'] = user
 
     user_profile, created = UserProfile.objects.get_or_create(user=user)
