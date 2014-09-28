@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
+from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 
 # Decorator to use built-in authentication system
@@ -8,25 +10,24 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 
-from grumblr_app.models import *
+from models import *
+from forms import *
 
 # Create your views here.
+
+# home
 @login_required
 def home(request):
     context = {}
-    
-    text_posts = TextPost.objects.filter(user=request.user)
-    context['text_posts'] = text_posts.order_by('-date_created')
-
+    context['text_posts'] = TextPost.get_posts_from_user(request.user)
     return render(request, 'home.html', context)
 
+# stream
 @login_required
 def stream(request):
     context = {}
     context['user'] = request.user
-
-    text_posts = TextPost.objects.exclude(user=request.user)
-    context['text_posts'] = text_posts.order_by('-date_created')
+    context['text_posts'] = TextPost.get_posts_without_user(request.user)
 
     return render(request, 'stream.html', context)
 
@@ -208,7 +209,7 @@ def create_text_post(request):
     if len(errors) > 0:
         return render(request, 'text-post.html', context)
 
-    return render(request, 'home.html', context)
+    return redirect(reverse('home'))
 
 @login_required
 def text_post(request):
@@ -231,9 +232,16 @@ def reset(request):
     context = {}
     errors = []
     context['errors'] = errors
-    
-    if not 'email' in request.POST or not request.POST['email']:
-        errors.append('Email is required.')
+
+    if request.method == 'GET':
+        context['form'] = ResetForm()
+        return render(request, 'reset.html', context)
+
+
+    form = ResetForm(request.POST)
+    context['form'] = form
+
+    if not form.is_valid():
         return render(request, 'reset.html', context)
 
     context['reset_message'] = 'You have been sent an email with instructions on how to reset your password.'
@@ -242,61 +250,29 @@ def reset(request):
 
 def register_form(request):
     context = {}
-
     return render(request, 'register.html', context) 
 
+@transaction.atomic
 def register(request):
     context = {}
     errors = []
     context['errors'] = errors
 
-    # return render(request, 'login-register.html', context)
-
     if request.method == 'GET':
-        return render(request, 'login-register.html', context)
+        context['form'] = RegistrationForm()
+        return render(request, 'register.html', context)
 
-    if not 'username' in request.POST or not request.POST['username']:
-        errors.append('Username is required.')
-    else:
-        # Save the username in the request context to re-fill the username
-        # field in case the form has errrors
-        context['username'] = request.POST['username']
 
-    if not 'email' in request.POST or not request.POST['email']:
-        errors.append('Email is required.')
-    else:
-        # Save the email in the request context to re-fill the email
-        # field in case the form has errrors
-        context['email'] = request.POST['email']
+    form = RegistrationForm(request.POST)
+    context['form'] = form
 
-    if not 'password-1' in request.POST \
-        or not request.POST['password-1']:
-        errors.append('Password is required.')
-    if not 'password-2' in request.POST \
-        or not request.POST['password-2']:
-        errors.append('Confirm password is required.')
-
-    if 'password-1' in request.POST \
-        and 'password-2'in request.POST \
-        and request.POST['password-1'] \
-        and request.POST['password-2'] \
-        and request.POST['password-1'] \
-        != request.POST['password-2']:
-        errors.append('Passwords did not match.')
-
-    if len(User.objects.filter(username = request.POST['username'])) > 0:
-        errors.append('Username is already taken.')
-
-    if len(User.objects.filter(email = request.POST['email'])) > 0:
-        errors.append('Email is already taken.')
-
-    if errors:
+    if not form.is_valid():
         return render(request, 'register.html', context)
 
     # Creates the new user from the valid form data
     new_user = User.objects.create_user(username=request.POST['username'], \
                                         email=request.POST['email'], \
-                                        password=request.POST['password-1'])
+                                        password=request.POST['password1'])
     new_user.save()
 
     user_profile, created = UserProfile.objects.get_or_create(user=new_user)
@@ -304,6 +280,7 @@ def register(request):
 
     # Logs in the new user and redirects to his/her home stream
     new_user = authenticate(username=request.POST['username'], \
-                            password=request.POST['password-1'])
+                            password=request.POST['password1'])
     login(request, new_user)
-    return redirect('/')
+
+    return redirect(reverse('home'))

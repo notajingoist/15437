@@ -1,9 +1,9 @@
-{% extends "base-template.html" %}
+{% extends 'base-template.html' %}
 {% block content %}
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-3">
-				{% include "navbar-template.html" with stream='active' placeholder='search your stream...' search_action='search-stream' %}
+				{% include 'navbar-template.html' with stream='active' placeholder='search your stream...' search_action='search-stream' %}
 			</div>
 
 			<div class="col-md-9">
@@ -31,7 +31,7 @@
 				<section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-text">
 					{{ text_post.text }}
 
-					<span class="post-info">Posted by <span class="author"><a href="/profile/{{text_post.user.id}}">{{ text_post.user }}</a></span></span>
+					<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' text_post.user.id %}">{{ text_post.user }}</a></span></span>
 					<!-- <span class="glyphicon glyphicon-plus"></span> -->
 					<span class="dislike">♥</span>
 					<article class="grumbl-author-photo" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">

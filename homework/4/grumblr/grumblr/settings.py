@@ -56,7 +56,7 @@ ROOT_URLCONF = 'grumblr.urls'
 LOGIN_URL = '/login-register'
 
 # Default URL to redirect to after a user logs in.
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/home'
 
 WSGI_APPLICATION = 'grumblr.wsgi.application'
 

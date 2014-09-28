@@ -1,19 +1,17 @@
-{% extends "base-template.html" %}
+{% extends 'base-template.html' %}
 {% block content %}
-	<header>
-		<h1><a href="/">grumblr</a></h1>
-	</header>
+	{% include 'header-template.html' with redirect='home' %}
 
 	<section class="panel panel-default panel-grumblr panel-login-register">
 		<div class="buttons">
-			<a href="/register-form"><button id="btn-register" class="btn-login-register">Register</button></a>
+			<a href="{% url 'register' %}"><button id="btn-register" class="btn-login-register">Register</button></a>
 			<div class="or-divider">
 				<div class="line line-left"></div>
 				<div class="or">or</div>			
 				<div class="line line-right"></div>
 			</div>
-			<a href="/login-form"><button id="btn-login" class="btn-login-register">Login</button></a>
-			<a href="/reset-form"><div id="btn-reset" class="footnote"><span id="reset-text">Forgot your password?</span></div></a>
+			<a href="{% url 'login-form' %}"><button id="btn-login" class="btn-login-register">Login</button></a>
+			<a href="{% url 'reset' %}"><div id="btn-reset" class="footnote"><span id="reset-text">Forgot your password?</span></div></a>
 		</div>
 	</section>
 {% endblock %}

@@ -1,9 +1,9 @@
-{% extends "base-template.html" %}
+{% extends 'base-template.html' %}
 {% block content %}
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-3">
-				{% include "navbar-template.html" with edit_profile='active' placeholder='search your stream...' search_action='search-stream' %}
+				{% include 'navbar-template.html' with edit_profile='active' placeholder='search your stream...' search_action='search-stream' %}
 			</div>
 
 			<div class="col-md-9">
@@ -15,7 +15,7 @@
 
 				<section class="panel panel-default panel-grumblr panel-form">
 					
-					<form action="/save-profile-changes" method="post">
+					<form action="{% url 'save-profile-changes' %}" method="post">
 
 						<div class="row">
 							<div class="col-md-6">

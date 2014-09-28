@@ -1,9 +1,9 @@
-{% extends "base-template.html" %}
+{% extends 'base-template.html' %}
 {% block content %}
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-3">
-				{% include "navbar-template.html" with home='active' placeholder='search your grumbls...' search_action='search-home' %}
+				{% include 'navbar-template.html' with home='active' placeholder='search your grumbls...' search_action='search-home' %}
 			</div>
 
 			<div class="col-md-9">

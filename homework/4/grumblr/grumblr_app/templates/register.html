@@ -1,18 +1,32 @@
-{% extends "base-template.html" %}
+{% extends 'base-template.html' %}
 {% block content %}
-	<header>
-		<h1><a href="/">grumblr</a></h1>
-	</header>
+	{% include 'header-template.html' with redirect='login-register' %}
 
 	<section class="panel panel-default panel-grumblr panel-login-register">
 		<div class="forms">
-			{% for error in errors %}
-			<p class="footnote message register-error-message">
+			{% for error in form.non_field_errors %}
+			<p class="footnote message error-message">
 				{{error}}
 			</p>
 			{% endfor %}
-			<form action="/register" method="post" id="form-register" class="form-register-login">
-				<label for="username">Username</label>
+			<form action="{% url 'register' %}" method="post" id="form-register" class="form-register-login">
+				{% for field in form.visible_fields %}
+					{{field.label_tag}}
+
+					{% for error in field.errors %}
+					<p class="footnote message field-message">
+						{{error}}
+					</p>
+					{% endfor %}
+
+					{{field}}
+				{% endfor %}
+
+				{% for field in form.hidden_fields %}
+					{{field}}
+				{% endfor %}
+
+				<!-- <label for="username">Username</label>
 				<input type="text" name="username" placeholder="username">
 
 				<label for="email">Email</label>
@@ -22,11 +36,10 @@
 				<input type="password" name="password-1" placeholder="••••••••••••">
 
 				<label for="password-2">Confirm Password</label>
-				<input type="password" name="password-2" placeholder="••••••••••••">
-
-				<input id="submit-register" class="btn-login-register btn-submit" type="submit" value="Register">
+				<input type="password" name="password-2" placeholder="••••••••••••"> -->
 
 				{% csrf_token %}
+				<input id="submit-register" class="btn-login-register btn-submit" type="submit" value="Register">	
 			</form>
 		</div>
 	</section>

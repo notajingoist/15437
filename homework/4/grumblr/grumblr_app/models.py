@@ -23,6 +23,14 @@ class TextPost(models.Model):
 
 	def __unicode__(self):
 		return self.text
+
+	@staticmethod
+	def get_posts_from_user(user):
+		return TextPost.objects.filter(user=user).order_by('-date_created')
+
+	@staticmethod
+	def get_posts_without_user(user):
+		return TextPost.objects.exclude(user=user).order_by('-date_created')
 	#type
 	#comments
 	#dislikes

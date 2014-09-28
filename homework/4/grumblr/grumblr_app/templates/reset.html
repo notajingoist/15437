@@ -1,15 +1,15 @@
-{% extends "base-template.html" %}
+{% extends 'base-template.html' %}
 {% block content %}
-	<header>
-		<h1><a href="/">grumblr</a></h1>
-	</header>
+	{% include 'header-template.html' with redirect='login-register' %}
 
 	<section class="panel panel-default panel-grumblr panel-login-register">
 		<div class="forms">
-			{% for error in errors %}
-			<p class="footnote message error-message">
-				{{error}}
-			</p>
+			{% for field in form.visible_fields %}
+				{% for error in field.errors %}
+					<p class="footnote message error-message">
+						{{error}}
+					</p>
+				{% endfor %}
 			{% endfor %}
 
 			{% if reset_message %}
@@ -17,13 +17,19 @@
 				{{reset_message}}
 			</p>
 			{% endif %}
-			<form action="/reset" method="post" id="form-reset" class="form-register-login">
-				<label for="email">Username</label>
-				<input type="email" name="email" placeholder="example@gmail.com">
+			<form action="{% url 'reset' %}" method="post" id="form-reset" class="form-register-login">
+				{% for field in form.visible_fields %}
+					{{field.label_tag}}
+					
+					{{field}}
+				{% endfor %}
 
-				<input id="submit-reset" class="btn-login-register btn-submit" type="submit" value="Reset Password">
+				{% for field in form.hidden_fields %}
+					{{field}}
+				{% endfor %}
 
 				{% csrf_token %}
+				<input id="submit-reset" class="btn-login-register btn-submit" type="submit" value="Reset Password">
 			</form>
 		</div>
 	</section>

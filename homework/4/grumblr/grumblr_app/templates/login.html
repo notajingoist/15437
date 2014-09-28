@@ -1,8 +1,6 @@
-{% extends "base-template.html" %}
+{% extends 'base-template.html' %}
 {% block content %}
-	<header>
-		<h1><a href="/">grumblr</a></h1>
-	</header>
+	{% include 'header-template.html' with redirect='login-register' %}
 
 	<section class="panel panel-default panel-grumblr panel-login-register">
 		<div class="forms">

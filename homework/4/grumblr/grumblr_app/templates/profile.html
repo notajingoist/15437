@@ -1,15 +1,15 @@
-{% extends "base-template.html" %}
+{% extends 'base-template.html' %}
 {% block content %}
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-3">
 				<div class="panel panel-default panel-grumblr sidebar-profile">
-					<a href="/profile/{{user.id}}"><div class="profile-picture" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
+					<a href="{% url 'profile' user.id %}"><div class="profile-picture" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
 					</div></a>
 
 					<ul class="profile-about">
 						<li>
-							<a href="/profile/{{user.id}}"
+							<a href="{% url 'profile' user.id %}"
 							{% if user.first_name and user.last_name %}
 								<h2 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h2>
 							{% elif user.first_name %}
@@ -66,8 +66,8 @@
 
 					<div class="profile-divider"></div>
 
-					{% include "searchbar-template.html" with placeholder='search stream...' search_action='search-profile' search_param=user.id %}
-					
+					{% include 'searchbar-template.html' with placeholder='search stream...' search_action='search-profile' search_param=user.id %}
+
 					<div class="row">
 						<div class="col-md-6">
 							<div class="profile-action profile-follow">
