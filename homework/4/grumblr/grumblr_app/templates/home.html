@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>grumblr</title>
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
+</head>
+<body>
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-3">
+				<nav class="panel panel-default panel-grumblr sidebar-nav">
+					<div class="search-stream">
+						<form action="/search-home" method="get">
+							<span class="glyphicon glyphicon-search search-icon"></span>
+							<input type="text" name="keyword" id="search-input" placeholder="search your grumbls...">
+							{% csrf_token %}
+						</form>
+					</div>
+
+					<ul class="nav-list">
+						<li class="active">
+							<a href="/">
+								<span class="glyphicon glyphicon-home"></span>
+								<span class="nav-link">Home</span>
+							</a>
+						</li>
+						<li>
+							<a href="/stream">
+								<span class="glyphicon glyphicon-list-alt">
+								</span>
+								<span class="nav-link">Stream</span>
+							</a>
+						</li>
+						<li>
+							<a href="/profile/{{user.id}}">
+								<span class="glyphicon glyphicon-user"></span>
+								<span class="nav-link">Profile</span>
+							</a>
+						</li>
+						<li>
+							<a href="/edit-profile">
+								<span class="glyphicon glyphicon-pencil"></span>
+								<span class="nav-link">Edit Profile</span>
+							</a>
+						</li>
+						<li>
+							<a href="/logout">
+								<span class="glyphicon glyphicon-log-out"></span>
+								<span class="nav-link">Logout</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+
+			<div class="col-md-9">
+				{% for error in errors %}
+				<section class="panel panel-default panel-grumblr panel-message">
+					<span class="glyphicon glyphicon-exclamation-sign"></span> {{ error }}
+				</section>
+				{% endfor %}
+
+				<div class="row">
+					<div class="col-md-4">
+						<a href="/text-post"><div class="panel panel-default panel-grumblr  panel-tool">
+							<span class="glyphicon glyphicon-font"></span>
+							<div class="tool-text">+ Text Grumbl</div>
+						</div></a>
+					</div>
+					<div class="col-md-4">
+						<div class="panel panel-default panel-grumblr  panel-tool">
+							<span class="glyphicon glyphicon-camera"></span>
+							<div class="tool-text">+ Image Grumbl</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="panel panel-default panel-grumblr panel-tool">
+							<span class="glyphicon glyphicon-facetime-video"></span>
+							<div class="tool-text">+ Video Grumbl</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="previous-page">
+							<span class="glyphicon glyphicon-arrow-left"></span>
+							<span class="page-label">Previous Page</span>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="next-page">
+							<span class="page-label">Next Page</span>
+							<span class="glyphicon glyphicon-arrow-right"></span>
+						</div>
+					</div>
+				</div>
+
+				{% for text_post in text_posts %}
+				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
+					{{ text_post.text }}
+					<span class="dislike">♥</span>
+				</section>
+				{% endfor %}
+				
+				<!-- <section class="panel panel-default panel-grumblr panel-grumbl grumbl-photo">
+					<img src="/static/images/family2.jpg">
+					<p>The Belcher family. From left to right: me, Louise, Linda, Tina, and Gene.</p>
+					<span class="dislike">♥</span>
+				</section> -->
+			</div>		
+		</div>
+	</div>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="static/bootstrap/js/bootstrap.min.js"></script>
+	<script src="static/js/vendor/util.js"></script>
+	<script src="static/js/src/scripts.js"></script>
+	<script src="static/js/vendor/less.js"></script>
+	<script type="text/javascript">
+	  less.watch();
+	</script>
+	
+</body>
+</html>

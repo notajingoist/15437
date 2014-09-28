@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>grumblr</title>
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
+</head>
+<body>
+
+	<header>
+		<h1><a href="/">grumblr</a></h1>
+	</header>
+
+	<section class="panel panel-default panel-grumblr panel-login-register">
+		<div class="buttons">
+			<a href="/register-form"><button id="btn-register" class="btn-login-register">Register</button></a>
+			<div class="or-divider">
+				<div class="line line-left"></div>
+				<div class="or">or</div>			
+				<div class="line line-right"></div>
+			</div>
+			<a href="/login-form"><button id="btn-login" class="btn-login-register">Login</button></a>
+			<a href="/reset-form"><div id="btn-reset" class="footnote"><span id="reset-text">Forgot your password?</span></div></a>
+		</div>
+	</section>
+
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="static/bootstrap/js/bootstrap.min.js"></script>
+	<script src="static/js/vendor/util.js"></script>
+	<script src="static/js/src/scripts.js"></script>
+	<script src="static/js/vendor/less.js"></script>
+	<script type="text/javascript">
+	  less.watch();
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>grumblr</title>
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
+</head>
+<body>
+
+	<header>
+		<h1><a href="/">grumblr</a></h1>
+	</header>
+
+	<section class="panel panel-default panel-grumblr panel-login-register">
+		<div class="forms">
+			{% for error in errors %}
+			<p class="footnote message register-error-message">
+				{{error}}
+			</p>
+			{% endfor %}
+			<form action="/register" method="post" id="form-register" class="form-register-login">
+				<label for="username">Username</label>
+				<input type="text" name="username" placeholder="username">
+
+				<label for="email">Email</label>
+				<input type="email" name="email" placeholder="example@gmail.com">
+
+				<label for="password-1">Password</label>
+				<input type="password" name="password-1" placeholder="••••••••••••">
+
+				<label for="password-2">Confirm Password</label>
+				<input type="password" name="password-2" placeholder="••••••••••••">
+
+				<input id="submit-register" class="btn-login-register btn-submit" type="submit" value="Register">
+
+				{% csrf_token %}
+			</form>
+		</div>
+	</section>
+
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="static/bootstrap/js/bootstrap.min.js"></script>
+	<script src="static/js/vendor/util.js"></script>
+	<script src="static/js/src/scripts.js"></script>
+	<script src="static/js/vendor/less.js"></script>
+	<script type="text/javascript">
+	  less.watch();
+	</script>
+	
+</body>
+</html>
