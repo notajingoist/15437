@@ -1,62 +1,9 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>grumblr</title>
-	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/static/css/style.css">
-	<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
-</head>
-<body>
-	
+{% extends "base-template.html" %}
+{% block content %}
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-3">
-				<nav class="panel panel-default panel-grumblr sidebar-nav">
-					<div class="search-stream">
-						<form action="/search-stream" method="get">
-							<span class="glyphicon glyphicon-search search-icon"></span>
-							<input type="text" name="keyword" id="search-input" placeholder="search your stream...">
-							{% csrf_token %}
-						</form>
-					</div>
-
-					<ul class="nav-list">
-						<li class="active">
-							<a href="/">
-								<span class="glyphicon glyphicon-home"></span>
-								<span class="nav-link">Home</span>
-							</a>
-						</li>
-						<li>
-							<a href="/stream">
-								<span class="glyphicon glyphicon-list-alt">
-								</span>
-								<span class="nav-link">Stream</span>
-							</a>
-						</li>
-						<li>
-							<a href="/profile/{{user.id}}">
-								<span class="glyphicon glyphicon-user"></span>
-								<span class="nav-link">Profile</span>
-							</a>
-						</li>
-						<li>
-							<a href="/edit-profile">
-								<span class="glyphicon glyphicon-pencil"></span>
-								<span class="nav-link">Edit Profile</span>
-							</a>
-						</li>
-						<li>
-							<a href="/logout">
-								<span class="glyphicon glyphicon-log-out"></span>
-								<span class="nav-link">Logout</span>
-							</a>
-						</li>
-					</ul>
-				</nav>
+				{% include "navbar-template.html" with home='active' placeholder='search your stream...' search_action='search-stream' %}
 			</div>
 
 			<div class="col-md-9">
@@ -80,15 +27,4 @@
 			</div>		
 		</div>
 	</div>
-	
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="static/bootstrap/js/bootstrap.min.js"></script>
-	<script src="static/js/vendor/util.js"></script>
-	<script src="static/js/src/scripts.js"></script>
-	<script src="static/js/vendor/less.js"></script>
-	<script type="text/javascript">
-	  less.watch();
-	</script>
-	
-</body>
-</html>
+{% endblock %}

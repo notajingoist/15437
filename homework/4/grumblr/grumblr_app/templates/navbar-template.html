@@ -1,0 +1,39 @@
+<nav class="panel panel-default panel-grumblr sidebar-nav">
+	<div class="search-stream">
+		{% include "searchbar-template.html" with placeholder=placeholder search_action=search_action %}
+	</div>
+
+	<ul class="nav-list">
+		<li class="{% if home %}active{% endif %}">
+			<a href="/home">
+				<span class="glyphicon glyphicon-home"></span>
+				<span class="nav-link">Home</span>
+			</a>
+		</li>
+		<li class="{% if stream %}active{% endif %}">
+			<a href="/stream">
+				<span class="glyphicon glyphicon-list-alt">
+				</span>
+				<span class="nav-link">Stream</span>
+			</a>
+		</li>
+		<li class="{% if profile %}active{% endif %}">
+			<a href="/profile/{{user.id}}">
+				<span class="glyphicon glyphicon-user"></span>
+				<span class="nav-link">Profile</span>
+			</a>
+		</li>
+		<li class="{% if edit_profile %}active{% endif %}">
+			<a href="/edit-profile">
+				<span class="glyphicon glyphicon-pencil"></span>
+				<span class="nav-link">Edit Profile</span>
+			</a>
+		</li>
+		<li class="{% if logout %}active{% endif %}">
+			<a href="/logout">
+				<span class="glyphicon glyphicon-log-out"></span>
+				<span class="nav-link">Logout</span>
+			</a>
+		</li>
+	</ul>
+</nav>

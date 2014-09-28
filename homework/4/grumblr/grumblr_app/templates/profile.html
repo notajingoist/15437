@@ -1,17 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>grumblr</title>
-	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/static/css/style.css">
-	<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
-</head>
-<body>
-	
-
+{% extends "base-template.html" %}
+{% block content %}
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-3">
@@ -151,14 +139,4 @@
 			</div>
 		</div>
 	</div>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="static/bootstrap/js/bootstrap.min.js"></script>
-	<script src="static/js/vendor/util.js"></script>
-	<script src="static/js/src/scripts.js"></script>
-	<script src="static/js/vendor/less.js"></script>
-	<script type="text/javascript">
-	  less.watch();
-	</script>
-	
-</body>
-</html>
+{% endblock %}
