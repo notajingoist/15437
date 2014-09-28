@@ -66,14 +66,8 @@
 
 					<div class="profile-divider"></div>
 
-					<div class="search-stream">
-						<form action="/search-profile/{{user.id}}" method="get">
-							<span class="glyphicon glyphicon-search search-icon"></span>
-							<input type="text" name="keyword" id="search-input" placeholder="search stream...">
-							{% csrf_token %}
-						</form>
-					</div>
-
+					{% include "searchbar-template.html" with placeholder='search stream...' search_action='search-profile' search_param=user.id %}
+					
 					<div class="row">
 						<div class="col-md-6">
 							<div class="profile-action profile-follow">
