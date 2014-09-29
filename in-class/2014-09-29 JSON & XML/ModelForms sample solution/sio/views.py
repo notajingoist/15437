@@ -4,6 +4,9 @@ from django.db import transaction
 from models import *
 from forms import *
 
+from django.http import HttpResponse
+from django.core import serializers
+
 def make_view(request, 
               messages=[], 
               create_student_form=CreateStudentForm(), 
@@ -60,4 +63,28 @@ def register_student(request):
 
 # Complete this action to generate a JSON response containing all courses
 def get_all_courses(request):
-    return None  
+    # manual way:
+    # context = {}
+    # courses = Course.objects.all()
+    # context['courses'] = courses
+    # return render(request, 'courses.json', context, content_type='application/json')
+
+    # with django serialization:
+    data = serializers.serialize('json', Course.objects.all()) #, fields=('course_number', 'course_name', 'instructor'))
+    return HttpResponse(data, content_type='application/json')
+    
+
+# ,
+#         "students": [ {{course.students}}
+#           {% for student in course.students %}
+#             {
+#               "andrew_id": {{student.andrew_id}},
+#               "first_name": {{student.first_name}},
+#               "last_name": {{student.last_name}}
+#             } {% if not forloop.last %},{% endif %}
+#           {% endfor %}
+#         ]
+
+
+
+
