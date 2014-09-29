@@ -13,7 +13,7 @@
 			{% load myfilters %}
 			<form action="{% url 'django.contrib.auth.views.login' %}" method="post" id="form-login" class="form-register-login">
 				{{ form.username.label_tag }}
-				{{ form.username|addplaceholder:'username' }}
+				{{ form.username|addplaceholder:'Username' }}
 
 				{{ form.password.label_tag }}
 				{{ form.password|addplaceholder:'••••••••••••' }}

@@ -15,8 +15,7 @@
 
 				<section class="panel panel-default panel-grumblr panel-form">
 					
-					<form action="{% url 'save-profile-changes' %}" method="post">
-
+					<form action="{% url 'edit-profile' %}" method="post">
 						<div class="row">
 							<div class="col-md-6">
 								<label for="edit-picture">Profile Picture</label>
@@ -30,6 +29,36 @@
 						<input type="file" class="input-file-upload hidden" id="edit-upload-picture-hidden" accept="image/*">
 
 						<div class="row">
+							{% for field in form.visible_fields %}
+							
+								{% if field.label == 'First Name' or field.label == 'Last Name' %}
+									<div class="col-md-6">
+										{{field.label_tag}}
+										{{field}}
+									</div>
+								{% endif %}
+							{% endfor %}
+						</div>
+
+						{% for field in form.visible_fields %}
+							{% if field.label != 'First Name' and field.label != 'Last Name' %}
+								{{field.label_tag}}
+								{{field}}
+							{% endif %}
+						{% endfor %}
+
+
+						{% for field in form.hidden_fields %}
+							{{field}}
+						{% endfor %}
+
+						{% csrf_token %}
+
+
+
+						
+
+						<!-- <div class="row">
 							<div class="col-md-6">
 								<label for="firstname">First Name</label>
 								<input type="text" name="firstname" placeholder="{% if user.first_name %}{{ user.first_name }}{% else %}First Name{% endif %}">
@@ -38,9 +67,9 @@
 								<label for="lastname">Last Name</label>
 								<input type="text" name="lastname" placeholder="{% if user.last_name %}{{ user.last_name }}{% else %}Last Name{% endif %}">
 							</div>
-						</div>
+						</div> -->
 
-						<label for="username">Username</label>
+						<!-- <label for="username">Username</label>
 						<input type="text" name="username" placeholder="{{ user }}">
 
 						<label for="email">Email</label>
@@ -50,20 +79,20 @@
 						<input type="text" name="location" placeholder="{{ user_profile.location }}">
 
 						<label for="about">About</label>
-						<textarea name="about" id="edit-about-blurb" placeholder="{{ user_profile.about }}"></textarea>
+						<textarea name="about" id="edit-about-blurb" placeholder="{{ user_profile.about }}"></textarea> -->
 <!-- 
 						<label for="current-password">Current Password</label>
 						<input type="text" name="current-password" placeholder="••••••••••••"> -->
 
-						<label for="password-1">New Password</label>
+						<!-- <label for="password-1">New Password</label>
 						<input type="text" name="password-1" placeholder="••••••••••••">
 
 						<label for="password-2">Confirm Password</label>
 						<input type="text" name="password-2" placeholder="••••••••••••">
-
+ -->
 						<input class="btn-edit-profile btn-submit" type="submit" value="Save Changes">
 
-						{% csrf_token %}
+						<!-- {% csrf_token %} -->
 					</form>
 				</section>
 			</div>

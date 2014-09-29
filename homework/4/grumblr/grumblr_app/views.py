@@ -147,6 +147,15 @@ def edit_profile(request):
     user_profile, created = UserProfile.objects.get_or_create(user=user)
     context['user_profile'] = user_profile
 
+    if request.method == 'GET':
+        context['form'] = UserProfileForm(instance=request.user)
+        return render(request, 'edit-profile.html', context)
+
+    form = UserProfileForm(request.POST, instance=request.user)
+    context['form'] = form
+
+    form.save()
+
     return render(request, 'edit-profile.html', context)
 
 @login_required
@@ -270,17 +279,11 @@ def register(request):
         return render(request, 'register.html', context)
 
     # Creates the new user from the valid form data
-    new_user = User.objects.create_user(username=request.POST['username'], \
-                                        email=request.POST['email'], \
-                                        password=request.POST['password1'])
-    new_user.save()
-
-    user_profile, created = UserProfile.objects.get_or_create(user=new_user)
-    user_profile.save()
+    new_user = form.save()
 
     # Logs in the new user and redirects to his/her home stream
     new_user = authenticate(username=request.POST['username'], \
-                            password=request.POST['password1'])
+                            password=request.POST['password'])
     login(request, new_user)
 
     return redirect(reverse('home'))
