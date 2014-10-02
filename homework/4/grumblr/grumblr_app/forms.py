@@ -8,6 +8,7 @@ class ResetForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(ResetForm, self).clean()
+        return cleaned_data
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -56,45 +57,99 @@ class RegistrationForm(forms.ModelForm):
         return new_user
 
 
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ()
+class UserProfileForm(forms.Form):
+    # class Meta:
+    #     model = UserProfile
+    #     fields = ()
 
-    first_name = forms.CharField(max_length=20, label='First Name', widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
-    last_name = forms.CharField(max_length=20, label='Last Name', widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
-    username = forms.CharField(max_length=20, label='Username', widget=forms.TextInput(attrs={'placeholder': 'Username'}))
-    email = forms.CharField(max_length=200, label='Email', widget=forms.EmailInput(attrs={'placeholder': 'example@gmail.com'}))
-    location = forms.CharField(max_length=200, label='Location', widget=forms.TextInput(attrs={'placeholder': 'The Universe'}))
-    about = forms.CharField(max_length=200, label='About', widget=forms.Textarea(attrs={'placeholder': 'Write a little about yourself...', 'id': 'edit-about-blurb'}))
-    password = forms.CharField(max_length=200, label='New Password', widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}))
-    password2 = forms.CharField(max_length=200, label='Confirm Password', widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}))  
+    first_name = forms.CharField(max_length=20, 
+                                label='First Name', 
+                                widget=forms.TextInput(attrs={'placeholder': 'First Name'}),
+                                required=False)
+    last_name = forms.CharField(max_length=20, 
+                                label='Last Name', 
+                                widget=forms.TextInput(attrs={'placeholder': 'Last Name'}),
+                                required=False)
+    username = forms.CharField(max_length=20, 
+                                label='Username', 
+                                widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    email = forms.CharField(max_length=200, 
+                                label='Email', 
+                                widget=forms.EmailInput(attrs={'placeholder': 'example@gmail.com'}))
+    location = forms.CharField(max_length=200, 
+                                label='Location', 
+                                widget=forms.TextInput(attrs={'placeholder': 'The Universe'}),
+                                required=False)
+    about = forms.CharField(max_length=200, 
+                                label='About', 
+                                widget=forms.Textarea(attrs={'placeholder': 'Write a little about yourself...', 'id': 'edit-about-blurb'}),
+                                required=False)
+    # password = forms.CharField(max_length=200, 
+    #                             label='New Password', 
+    #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}))
+    # password2 = forms.CharField(max_length=200, 
+    #                             label='Confirm Password', 
+    #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'})) 
 
-    def clean(self):
-        cleaned_data = super(RegistrationForm, self).clean()
-        password = cleaned_data.get('password')
-        password2 = cleaned_data.get('password2')
-        if password and password2 and password != password2:
-            raise forms.ValidationError('Passwords did not match.')
-        return cleaned_data
+    # def clean(self):
+    #     cleaned_data = super(UserProfileForm, self).clean()
+    #     password = cleaned_data.get('password')
+    #     password2 = cleaned_data.get('password2')
+    #     if password and password2 and password != password2:
+    #         raise forms.ValidationError('Passwords did not match.')
+    #     return cleaned_data
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if User.objects.filter(username__exact=username):
+        user_exists = User.objects.filter(username__exact=username)
+        if user_exists and self.initial['username'] != username:
             raise forms.ValidationError('Username is already taken.')
         return username
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if User.objects.filter(email__exact=email):
+        email_exists = User.objects.filter(email__exact=email)
+        if email_exists and self.initial['email'] != email:
             raise forms.ValidationError('Email is already taken.')
         return email
 
-    def save(self):
-        user_profile, created = UserProfile.objects.get_or_create(user=new_user)
-        user_profile.save()
 
-        return new_user
+    def save(self, user_instance, user_profile_instance):
+        # user = User.objects.get(username=user_instance.username)
+        # user_profile = UserProfile.objects.get(user=)
+        user_instance.last_name = self.cleaned_data.get('last_name')
+        user_instance.first_name = self.cleaned_data.get('first_name')
+        user_instance.username = self.cleaned_data.get('username')
+        user_instance.email = self.cleaned_data.get('email')
+        # user_instance.password = self.cleaned_data.get('password')
+        # user_instance.password2 = self.cleaned_data.get('password2')
+
+        user_profile_instance.location = self.cleaned_data.get('location')
+        user_profile_instance.about = self.cleaned_data.get('about')
+        
+        user_instance.save()
+        user_profile_instance.save()
+        
+        return user_instance
+    
+        #self.cleaned_data.get('username')
+        # for field in self:
+        #     if field.has_changed:
+        #         user_instance[]
+
+        # if self.has_changed():
+
+        # user_profile, created = UserProfile.objects.get_or_create(user=new_user)
+        # user_profile.save()
+
+        # proper way to associate user profile with user?
+        # when to create user profile? I keep using this get or create method
+        # can i pass multiple model instances to the model form constructor?
+        # how to combine user and user profile into the model form?
+        # proper way to specify other fields for model form? etc.
+        # 
+
+        # return new_user
 
 # class TextPostForm(forms.ModelForm):
 

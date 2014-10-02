@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 # Used to create and manually log in a user
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
+from django.contrib.auth import update_session_auth_hash
 
 from models import *
 from forms import *
@@ -141,20 +142,34 @@ def profile(request, user_id):
     return render(request, 'profile.html', context)
 
 @login_required
+@transaction.atomic
 def edit_profile(request):
     context = {}
     user = request.user
-    user_profile, created = UserProfile.objects.get_or_create(user=user)
+    user_profile = UserProfile.objects.get(user=user)
     context['user_profile'] = user_profile
 
+    initial_user = {
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'username': user.username,
+                    'email': user.email,
+                    'location': user_profile.location,
+                    'about': user_profile.about
+                }
+
     if request.method == 'GET':
-        context['form'] = UserProfileForm(instance=request.user)
+        context['form'] = UserProfileForm(initial=initial_user)
         return render(request, 'edit-profile.html', context)
 
-    form = UserProfileForm(request.POST, instance=request.user)
+    form = UserProfileForm(request.POST, initial=initial_user)
     context['form'] = form
 
-    form.save()
+    if not form.is_valid():
+        return render(request, 'home.html', context)
+
+    form.save(user_instance=request.user, user_profile_instance=user_profile)
+    update_session_auth_hash(request, user)
 
     return render(request, 'edit-profile.html', context)
 

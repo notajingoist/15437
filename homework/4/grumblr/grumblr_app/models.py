@@ -6,15 +6,21 @@ from datetime import datetime
 # Create your models here.
 from django.contrib.auth.models import User
 
+
+
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
-	location = models.CharField(max_length=200)
-	about = models.TextField(max_length=20000)
+	location = models.CharField(max_length=200, blank=True)
+	about = models.TextField(max_length=20000, blank=True)
+
+	def __unicode__(self):
+		return self.user
+
 	#profile picture FileField
 	#followers
 	#following
 	#dislikes
-	#grumblrs
+	#grumbls
 
 class TextPost(models.Model):
 	user = models.ForeignKey(User, related_name='posts')
@@ -34,5 +40,31 @@ class TextPost(models.Model):
 	#type
 	#comments
 	#dislikes
+
+class Comment(models.Model):
+	user = models.ForeignKey(User, related_name='comments') #the commenter
+	post = models.ForeignKey(TextPost, related_name='comments') #the post being commented on
+	text = models.TextField(max_length=20000)
+
+	def __unicode__(self):
+		return self.text
+
+class Dislike(models.Model):
+	user = models.ForeignKey(User, related_name='dislikes') #the disliker
+	post = models.ForeignKey(TextPost, related_name='dislikes') #the post being disliked
+	
+
+#class Comment
+#	user = models.ForeignKey(User, related_name='comments')
+#	
+#	
+#class Dislike
+#
+# update_session_auth_hash(request, user)
+
+
+
+
+
 
 
