@@ -370,21 +370,55 @@ input {
 		//background-color: red;
 		
 	}
+
+	.comment {
+		position: absolute;
+		right: 50px;//15px;// + 100px;
+		bottom: 10px;//5px;
+		font-size: 18px;//24px;// 18px;//24px;
+		display: block;
+		color: @turquoise;
+
+		a {
+			color: @turquoise;
+			// &:hover {
+			// 	color: @yellow;
+			// 	cursor: pointer;
+			// }
+		}
+	}
 	
 	.dislike {
-		transition: color 0.2s ease-in-out 0;
+		
 		//display: block;
+		.heart {
+			transition: color 0.2s ease-in-out 0;
+			
+			&:hover {
+				color: @yellow;
+				cursor: pointer;
+			}
+
+			&.disliked {
+
+			}
+		}
 		transform: rotate(-180deg);
 		position: absolute;
 		right: 20px;//15px;// + 100px;
 		bottom: 10px;//5px;
-		font-size: 24px;
+		font-size: 18px;//24px;// 18px;//24px;
 		display: block;
 		color: @turquoise;
 		//background-color: red;
-		&:hover {
-			color: @yellow;
-			cursor: pointer;
+		
+
+		a {
+			color: @turquoise;
+			// &:hover {
+			// 	color: @yellow;
+			// 	cursor: pointer;
+			// }
 		}
 	}
 
