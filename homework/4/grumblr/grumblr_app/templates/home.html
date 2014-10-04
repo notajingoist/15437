@@ -21,15 +21,6 @@
 				{% for text_post in text_posts %}
 				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
 					{{ text_post.text }}
-					{% for dislike in text_post.dislikes.all %}
-						{{dislike}}
-					{% endfor %}
-
-					{% for dislike in user.dislikes.all %} 
-						{% if dislike.post.id == text_post.id %}
-							HELLO
-						{% endif %}
-					{% endfor %}
 					<span class="comment">
 						<a href="{% url 'comment' comment_redirect user.id text_post.id %}">
 							<span class="plus">+</span>
@@ -44,6 +35,13 @@
 						{{text_post.dislikes.all.count}} dislikes
 					</span>
 				</section>
+
+					{% for comment in text_post.comments.all %} 
+						<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">
+							{{comment}}
+							<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' comment.user.id %}">{{ comment.user }}</a></span></span>
+						</section>
+					{% endfor %}
 				{% endfor %}
 				
 				<!-- <section class="panel panel-default panel-grumblr panel-grumbl grumbl-photo">

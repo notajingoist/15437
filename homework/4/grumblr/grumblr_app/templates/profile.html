@@ -116,6 +116,12 @@
 							{{text_post.dislikes.all.count}} dislikes
 						</span>
 					</section>
+						{% for comment in text_post.comments.all %} 
+							<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">
+								{{comment}}
+								<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' comment.user.id %}">{{ comment.user }}</a></span></span>
+							</section>
+						{% endfor %}
 					{% endfor %}
 				{% elif errors|length <= 0 %}
 					<section class="panel panel-default panel-grumblr panel-message">

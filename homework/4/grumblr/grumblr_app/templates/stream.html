@@ -19,17 +19,6 @@
 				<section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-text">
 					{{ text_post.text }}
 
-					{% for dislike in text_post.dislikes.all %}
-						{{dislike}}
-						<strong>{{text_post.dislikes.all.count}}</strong>
-					{% endfor %}
-
-					{% for dislike in user.dislikes.all %} 
-						{% if dislike.post.id == text_post.id %}
-							HELLO
-						{% endif %}
-					{% endfor %}
-
 					<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' text_post.user.id %}">{{ text_post.user }}</a></span></span>
 					<!-- <span class="glyphicon glyphicon-plus"></span> -->
 					<span class="comment">
@@ -49,6 +38,13 @@
 					<article class="grumbl-author-photo" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
 					</article>
 				</section>
+
+					{% for comment in text_post.comments.all %} 
+						<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">
+							{{comment}}
+							<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' comment.user.id %}">{{ comment.user }}</a></span></span>
+						</section>
+					{% endfor %}
 				{% endfor %}
 
 				<!-- <section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-photo">
