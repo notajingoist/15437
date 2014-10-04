@@ -98,7 +98,19 @@
 					{% for text_post in text_posts %}
 					<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
 						{{ text_post.text }}
-						<span class="dislike">♥</span>
+						<span class="comment">
+							<a href="{% url 'comment' comment_redirect user.id text_post.id %}">
+								<span class="plus">+</span>
+							</a> 
+							{{text_post.comments.all.count}} comments
+						</span>
+
+						<span class="dislike">
+							<a href="{% url 'dislike' dislike_redirect user.id text_post.id %}">
+								<span class="heart">♥</span>
+							</a> 
+							{{text_post.dislikes.all.count}} dislikes
+						</span>
 					</section>
 					{% endfor %}
 				{% elif errors|length <= 0 %}

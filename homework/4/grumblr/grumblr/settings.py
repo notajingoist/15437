@@ -51,6 +51,13 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'grumblr.urls'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# EMAIL_HOST = 'smtp.andrew.cmu.edu'
+# EMAIL_HOST_USER = 'jingxiao'
+# EMAIL_HOST_PASSWORD = 'Rabhorroo333*'
+# EMAIL_USE_TLS = True
+
 # Used by the authentication system for the grumblr application.
 # URL to use if the authentication system requires a user to log in.
 LOGIN_URL = '/login-register'

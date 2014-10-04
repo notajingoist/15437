@@ -34,7 +34,11 @@ urlpatterns = patterns('',
     url(r'^profile-picture/(?P<user_id>\d+)$', 'grumblr_app.views.profile_picture', name='profile-picture'),
     url(r'^text-post$', 'grumblr_app.views.text_post', name='text-post'),
     url(r'^comment/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)$', 'grumblr_app.views.comment', name='comment'),
-    url(r'^dislike/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)$', 'grumblr_app.views.dislike', name='dislike')
+    url(r'^dislike/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)$', 'grumblr_app.views.dislike', name='dislike'),
+    url(r'^confirm-registration/(?P<username>[a-zA-Z0-9_@\+\-]+)/(?P<token>[a-z0-9\-]+)$', 'grumblr_app.views.confirm_registration', name='confirm'),
+
+    url(r'^testing$', 'grumblr_app.views.testing', name='testing'),
+
     # url(r'^create-text-post$', 'grumblr_app.views.create_text_post', name='create-text-post'),
     # url(r'^image-post$', 'grumblr_app.views.image_post'),
     # url(r'^video-post$', 'grumblr_app.views.video_post'),

@@ -3,6 +3,19 @@
 	{% include 'header-template.html' with redirect='home' %}
 
 	<section class="panel panel-default panel-grumblr panel-login-register">
+
+		{% if confirmed %}
+			<p class="footnote message error-message">
+				{{confirmed}}
+			</p>
+		{% endif %}
+		
+		{% if needs_confirmation %}
+			<p class="footnote message error-message">
+				{{needs_confirmation}}
+			</p>
+		{% endif %}
+
 		<div class="buttons">
 			<a href="{% url 'register' %}"><button id="btn-register" class="btn-login-register">Register</button></a>
 			<div class="or-divider">

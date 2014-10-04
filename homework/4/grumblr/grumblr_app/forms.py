@@ -111,9 +111,9 @@ class RegistrationForm(forms.ModelForm):
         new_user = User.objects.create_user(username=self.cleaned_data.get('username'), \
                                             email=self.cleaned_data.get('email'), \
                                             password=self.cleaned_data.get('password'))
+        new_user.is_active = False
         new_user.save()
-        user_profile, created = UserProfile.objects.get_or_create(user=new_user)
-        user_profile.save()
+        
         return new_user
 
 

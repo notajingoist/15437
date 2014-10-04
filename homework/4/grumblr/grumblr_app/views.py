@@ -12,6 +12,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.tokens import default_token_generator
+
+from django.core.mail import send_mail
 
 from models import *
 from forms import *
@@ -126,6 +129,8 @@ def profile(request, user_id):
     context = {}
     errors = []
     context['errors'] = errors
+    context['dislike_redirect'] = 'profile'
+    context['comment_redirect'] = 'profile'
 
     if len(User.objects.filter(id=user_id)) <= 0:
         errors.append('User does not exist.')
@@ -221,7 +226,11 @@ def dislike(request, redirect_name, user_id, text_post_id):
     #return context
 
     #return render(request, 'home.html', context)
-    return redirect(reverse(redirect_name))
+
+    if (redirect_name == 'profile'):
+        return redirect(reverse('profile', kwargs={'user_id':user_id}))
+    else:
+       return redirect(reverse(redirect_name))
     
 @login_required
 @transaction.atomic
@@ -252,7 +261,11 @@ def comment(request, redirect_name, user_id, text_post_id):
         return render(request, 'comment.html', context)
 
     form.save()
-    return redirect(reverse(redirect_name))
+
+    if (redirect_name == 'profile'):
+        return redirect(reverse('profile', kwargs={'user_id':user_id}))
+    else:
+       return redirect(reverse(redirect_name))
 
 @login_required
 @transaction.atomic
@@ -328,9 +341,55 @@ def register(request):
     # Creates the new user from the valid form data
     new_user = form.save()
 
-    # Logs in the new user and redirects to his/her home stream
-    new_user = authenticate(username=request.POST['username'], \
-                            password=request.POST['password'])
-    login(request, new_user)
+    token = default_token_generator.make_token(new_user)
 
-    return redirect(reverse('home'))
+    email_body = """
+    Welcome to Grumblr! Please click the link below to verify your email 
+    address and complete the registration of your account:
+
+    http://%s%s
+    """ % (request.get_host(),
+            reverse('confirm', args=(new_user.username, token)))
+
+    send_mail(subject="Verify your email address",
+                message=email_body,
+                from_email="jing+xiao@andrew.cmu.edu",
+                recipient_list=[new_user.email])
+    context['email'] = form.cleaned_data['email']
+
+
+    # Logs in the new user and redirects to his/her home stream
+    # new_user = authenticate(username=request.POST['username'], \
+    #                         password=request.POST['password'])
+    # login(request, new_user)
+
+    return render(request, 'needs-confirmation.html', context)
+
+    #return redirect(reverse('home'))
+
+@transaction.atomic
+def confirm_registration(request, username, token):
+    user = get_object_or_404(User, username=username)
+
+    if not default_token_generator.check_token(user, token):
+        raise Http404
+
+    user.is_active = True
+    user.save()
+
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
+    user_profile.save()
+
+    return render(request, 'confirmed.html', {})
+
+def testing(request):
+    return render(request, 'confirmed.html', {})
+
+
+
+
+
+
+
+
+

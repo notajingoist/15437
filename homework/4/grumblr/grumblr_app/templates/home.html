@@ -30,7 +30,19 @@
 							HELLO
 						{% endif %}
 					{% endfor %}
-					<span class="dislike"><a href="{% url 'dislike' dislike_redirect user.id text_post.id %}">♥</a></span>
+					<span class="comment">
+						<a href="{% url 'comment' comment_redirect user.id text_post.id %}">
+							<span class="plus">+</span>
+						</a> 
+						{{text_post.comments.all.count}} comments
+					</span>
+
+					<span class="dislike">
+						<a href="{% url 'dislike' dislike_redirect user.id text_post.id %}">
+							<span class="heart">♥</span>
+						</a> 
+						{{text_post.dislikes.all.count}} dislikes
+					</span>
 				</section>
 				{% endfor %}
 				
