@@ -51,8 +51,10 @@ def search_stream(request):
     errors = []
     context['errors'] = errors
     context['user'] = request.user
+    context['comment_redirect'] = 'home'
+    context['dislike_redirect'] = 'home'
 
-    text_posts = TextPost.objects.exclude(user=request.user)
+    text_posts = TextPost.get_stream_posts(user=request.user)
 
     if 'keyword' in request.GET and request.GET['keyword']:
         context['keyword'] = request.GET['keyword']
@@ -71,6 +73,8 @@ def search_home(request):
     errors = []
     context['errors'] = errors
     context['user'] = request.user
+    context['comment_redirect'] = 'stream'
+    context['dislike_redirect'] = 'stream'
 
     text_posts = TextPost.objects.filter(user=request.user)
 
@@ -90,6 +94,8 @@ def search_profile(request, user_id):
     context = {}
     errors = []
     context['errors'] = errors
+    context['comment_redirect'] = 'profile'
+    context['dislike_redirect'] = 'profile'
 
     if len(User.objects.filter(id=user_id)) <= 0:
         errors.append('User does not exist.')
