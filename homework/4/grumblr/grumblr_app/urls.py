@@ -39,6 +39,9 @@ urlpatterns = patterns('',
 
     url(r'^testing$', 'grumblr_app.views.testing', name='testing'),
 
+    url(r'^follow/(?P<following_id>\d+)$', 'grumblr_app.views.follow', name='follow'),
+    url(r'^block/(?P<blocking_id>\d+)$', 'grumblr_app.views.block', name='block'),
+
     # url(r'^create-text-post$', 'grumblr_app.views.create_text_post', name='create-text-post'),
     # url(r'^image-post$', 'grumblr_app.views.image_post'),
     # url(r'^video-post$', 'grumblr_app.views.video_post'),

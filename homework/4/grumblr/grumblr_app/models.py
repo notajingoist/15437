@@ -10,15 +10,16 @@ class UserProfile(models.Model):
 	location = models.CharField(max_length=200, default='', blank=True)
 	about = models.TextField(max_length=20000, default='', blank=True)
 	picture = models.ImageField(upload_to='profile-pictures', default='', blank=True)
+	follows = models.ManyToManyField('self', related_name='followed_by', symmetrical=False)
 
 	def __unicode__(self):
 		return self.user
 
-	def get_profile_picture(self):
-		if not self.picture:
-			return '/static/images/default.png'
-		else:
-			return self.picture
+	# def get_profile_picture(self):
+	# 	if not self.picture:
+	# 		return '/static/images/default.png'
+	# 	else:
+	# 		return self.picture
 
 	#profile picture FileField
 	#followers
@@ -41,6 +42,16 @@ class TextPost(models.Model):
 	@staticmethod
 	def get_posts_without_user(user):
 		return TextPost.objects.exclude(user=user).order_by('-date_created')
+
+	@staticmethod
+	def get_posts_from_following(user):
+		user_profile = UserProfile.objects.get(user=user)
+		# following = []
+		# for follower in user_profile.follows.all():
+		# 	following += follower
+		return TextPost.objects.all().filter(user__in=user_profile.follows.all()).order_by('-date_created')
+		#return TextPost.objects.exclude(user=user).order_by('-date_created')
+		# return TextPost.objects.all().filter(user__in=user_profile.follows).order_by('-date_created')
 
 	#type
 	#comments

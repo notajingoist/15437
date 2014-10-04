@@ -37,7 +37,8 @@ def home(request):
 def stream(request):
     context = {}
     context['user'] = request.user
-    context['text_posts'] = TextPost.get_posts_without_user(request.user)
+    context['text_posts'] = TextPost.get_posts_from_following(request.user)
+    #TextPost.get_posts_without_user(request.user)
     context['comment_redirect'] = 'stream'
     context['dislike_redirect'] = 'stream'
     # context['comments'] = Comment.objects.all()
@@ -123,6 +124,18 @@ def search_profile(request, user_id):
 
     return render(request, 'profile.html', context)
 
+
+@login_required
+def follow(request, following_id):
+    user_profile = UserProfile.objects.get(user=request.user)
+    followed_user = User.objects.get(id=following_id)
+    followed_profile = UserProfile.objects.get(id=following_id)
+    user_profile.follows.add(followed_profile)
+    return redirect(reverse('profile', kwargs={'user_id':following_id}))
+
+@login_required
+def block(request, blocking_id):
+    return redirect(reverse('profile', kwargs={'user_id':blocking_id}))
 
 @login_required
 def profile(request, user_id):
@@ -384,8 +397,6 @@ def confirm_registration(request, username, token):
 
 def testing(request):
     return render(request, 'confirmed.html', {})
-
-
 
 
 

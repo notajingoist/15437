@@ -58,8 +58,8 @@
 					<div class="profile-divider"></div>
 
 					<ul class="profile-stats">
-						<li><span class="profile-number">47</span> followers</li>
-						<li><span class="profile-number">10</span> following</li>
+						<li><span class="profile-number">{{ user_profile.followed_by.count }}</span> followers</li>
+						<li><span class="profile-number">{{ user_profile.follows.count }}</span> following</li>
 						<li><span class="profile-number">{{ text_posts_count }}</span> grumbls</li>
 						<li><span class="profile-number">{{ user.dislikes.count }}</span> dislikes <span class="glyphicon glyphicon-heart"></span></li>
 					</ul>
@@ -71,14 +71,18 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="profile-action profile-follow">
-								<span class="glyphicon glyphicon-plus"></span>
-								follow
+								<a href="{% url 'follow' user.id %}">
+									<span class="glyphicon glyphicon-plus"></span>
+									follow
+								</a>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="profile-action profile-block">
-								<span class="glyphicon glyphicon-ban-circle"></span>
-								block
+								<a href="{% url 'block' user.id %}">
+									<span class="glyphicon glyphicon-ban-circle"></span>
+									block
+								</a>
 							</div>
 						</div>
 					</div>
