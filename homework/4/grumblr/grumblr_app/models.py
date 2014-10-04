@@ -11,6 +11,7 @@ class UserProfile(models.Model):
 	about = models.TextField(max_length=20000, default='', blank=True)
 	picture = models.ImageField(upload_to='profile-pictures', default='', blank=True)
 	follows = models.ManyToManyField('self', related_name='followed_by', symmetrical=False)
+	blocks = models.ManyToManyField('self', related_name='blocked_by', symmetrical=False)
 
 	def __unicode__(self):
 		return self.user
@@ -44,18 +45,13 @@ class TextPost(models.Model):
 		return TextPost.objects.exclude(user=user).order_by('-date_created')
 
 	@staticmethod
-	def get_posts_from_following(user):
+	def get_stream_posts(user):
 		user_profile = UserProfile.objects.get(user=user)
-		# following = []
-		# for follower in user_profile.follows.all():
-		# 	following += follower
-		return TextPost.objects.all().filter(user__in=user_profile.follows.all()).order_by('-date_created')
+		following = user_profile.follows.all()
+		blocked_by = user_profile.blocked_by.all()
+		return TextPost.objects.all().filter(user__in=following).exclude(user__in=blocked_by).order_by('-date_created')
 		#return TextPost.objects.exclude(user=user).order_by('-date_created')
 		# return TextPost.objects.all().filter(user__in=user_profile.follows).order_by('-date_created')
-
-	#type
-	#comments
-	#dislikes
 
 class Comment(models.Model):
 	user = models.ForeignKey(User, related_name='comments') #the commenter

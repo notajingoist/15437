@@ -37,7 +37,7 @@ def home(request):
 def stream(request):
     context = {}
     context['user'] = request.user
-    context['text_posts'] = TextPost.get_posts_from_following(request.user)
+    context['text_posts'] = TextPost.get_stream_posts(request.user)
     #TextPost.get_posts_without_user(request.user)
     context['comment_redirect'] = 'stream'
     context['dislike_redirect'] = 'stream'
@@ -127,14 +127,20 @@ def search_profile(request, user_id):
 
 @login_required
 def follow(request, following_id):
-    user_profile = UserProfile.objects.get(user=request.user)
     followed_user = User.objects.get(id=following_id)
-    followed_profile = UserProfile.objects.get(id=following_id)
-    user_profile.follows.add(followed_profile)
+    if (request.user != followed_user): 
+        user_profile = UserProfile.objects.get(user=request.user)
+        followed_profile = UserProfile.objects.get(id=following_id)
+        user_profile.follows.add(followed_profile)
     return redirect(reverse('profile', kwargs={'user_id':following_id}))
 
 @login_required
 def block(request, blocking_id):
+    blocked_user = User.objects.get(id=blocking_id)
+    if (request.user != blocked_user): 
+        user_profile = UserProfile.objects.get(user=request.user)
+        blocked_profile = UserProfile.objects.get(id=blocking_id)
+        user_profile.blocks.add(blocked_profile)
     return redirect(reverse('profile', kwargs={'user_id':blocking_id}))
 
 @login_required
