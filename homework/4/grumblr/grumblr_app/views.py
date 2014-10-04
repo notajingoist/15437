@@ -182,7 +182,7 @@ def profile(request, user_id):
 
 @login_required
 def profile_picture(request, user_id):
-    user_profile = get_object_or_404(UserProfile, user=request.user, id=user_id)
+    user_profile = get_object_or_404(UserProfile, id=user_id)
     if not user_profile:
         raise Http404
 
