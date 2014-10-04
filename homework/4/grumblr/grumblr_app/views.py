@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, Http404
+from mimetypes import guess_type
 
 # Decorator to use built-in authentication system
 from django.contrib.auth.decorators import login_required
@@ -149,6 +151,15 @@ def profile(request, user_id):
     return render(request, 'profile.html', context)
 
 @login_required
+def profile_picture(request, user_id):
+    user_profile = get_object_or_404(UserProfile, user=request.user, id=user_id)
+    if not user_profile:
+        raise Http404
+
+    content_type = guess_type(user_profile.picture.name)
+    return HttpResponse(user_profile.picture, content_type=content_type)
+
+@login_required
 @transaction.atomic
 def edit_profile(request):
     context = {}
@@ -159,6 +170,8 @@ def edit_profile(request):
     # context['errors'] = errors
     context['user'] = user
     context['user_profile'] = user_profile
+
+    context['picture-src'] = ''
 
     initial_user = {
                     'first_name': user.first_name,
@@ -173,7 +186,7 @@ def edit_profile(request):
         context['form'] = UserProfileForm(initial=initial_user)
         return render(request, 'edit-profile.html', context)
 
-    form = UserProfileForm(request.POST, initial=initial_user)
+    form = UserProfileForm(request.POST, request.FILES, initial=initial_user)
     context['form'] = form
 
     if not form.is_valid():

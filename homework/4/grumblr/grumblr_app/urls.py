@@ -31,7 +31,7 @@ urlpatterns = patterns('',
     
 	 # Route to logout a user and send them back to the login page
     
-    
+    url(r'^profile-picture/(?P<user_id>\d+)$', 'grumblr_app.views.profile_picture', name='profile-picture'),
     url(r'^text-post$', 'grumblr_app.views.text_post', name='text-post'),
     url(r'^comment/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)$', 'grumblr_app.views.comment', name='comment'),
     url(r'^dislike/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)$', 'grumblr_app.views.dislike', name='dislike')

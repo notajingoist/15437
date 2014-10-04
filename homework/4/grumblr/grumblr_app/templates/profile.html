@@ -4,7 +4,7 @@
 		<div class="row">
 			<div class="col-md-3">
 				<div class="panel panel-default panel-grumblr sidebar-profile">
-					<a href="{% url 'profile' user.id %}"><div class="profile-picture" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
+					<a href="{% url 'profile' user.id %}"><div class="profile-picture" style="background: url('{% url 'profile-picture' user.id %}') center center no-repeat; background-size: cover;">
 					</div></a>
 
 					<ul class="profile-about">

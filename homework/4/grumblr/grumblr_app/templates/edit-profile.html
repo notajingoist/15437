@@ -17,18 +17,27 @@
 
 				<section class="panel panel-default panel-grumblr panel-form">
 					
-					<form action="{% url 'edit-profile' %}" method="post">
+					<form enctype="multipart/form-data" action="{% url 'edit-profile' %}" method="post">
 						<div class="row">
-							<div class="col-md-6">
-								<label for="edit-picture">Profile Picture</label>
-								<div id="edit-picture" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;"></div>
-							</div>
-							<div class="col-md-6">
-								<button id="edit-upload-picture" class="btn-edit-profile btn-submit">Upload Picture</button>
-							</div>
+							{% for field in form.visible_fields %}
+								{% if field.label == 'Profile Picture' %}
+									<div class="col-md-6">
+										<label for="edit-upload-picture">{{field.label_tag}}</label>
+										
+										<div id="edit-picture" style="background: url('{% url 'profile-picture' user.id %}') center center no-repeat; background-size: cover;"></div>
+									</div>
+									<div class="col-md-6 upload">
+										<!-- <div id="upload-filename">filename here</div> -->
+										<!-- <button id="edit-upload-picture" class="btn-edit-profile btn-submit">Upload Picture</button> -->
+
+										<!-- <input type="file" id="edit-upload-picture" class="btn-edit-profile btn-submit" accept="image/*"> -->
+										{{field}}
+									</div>
+								{% endif %}
+							{% endfor %}
 						</div>
 						
-						<input type="file" class="input-file-upload hidden" id="edit-upload-picture-hidden" accept="image/*">
+						<!-- <input type="file" class="input-file-upload hidden" id="edit-upload-picture-hidden" accept="image/*"> -->
 
 						<div class="row">
 							{% for field in form.visible_fields %}
@@ -43,7 +52,7 @@
 						</div>
 
 						{% for field in form.visible_fields %}
-							{% if field.label != 'First Name' and field.label != 'Last Name' %}
+							{% if field.label != 'First Name' and field.label != 'Last Name' and field.label != 'Profile Picture'%}
 								{{field.label_tag}}
 								{{field}}
 							{% endif %}

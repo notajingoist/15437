@@ -121,6 +121,9 @@ class UserProfileForm(forms.Form):
     # class Meta:
     #     model = UserProfile
     #     fields = ()
+    picture = forms.FileField(label='Profile Picture',
+                                widget=forms.FileInput(attrs={'id': 'edit-upload-picture', 'class': 'btn-edit-profile btn-submit'}),
+                                required=False)
 
     first_name = forms.CharField(max_length=20, 
                                 label='First Name', 
@@ -144,6 +147,8 @@ class UserProfileForm(forms.Form):
                                 label='About', 
                                 widget=forms.Textarea(attrs={'placeholder': 'Write a little about yourself...', 'id': 'edit-about-blurb'}),
                                 required=False)
+
+
     # password = forms.CharField(max_length=200, 
     #                             label='New Password', 
     #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}))
@@ -189,6 +194,7 @@ class UserProfileForm(forms.Form):
 
         user_profile_instance.location = self.cleaned_data.get('location')
         user_profile_instance.about = self.cleaned_data.get('about')
+        user_profile_instance.picture = self.cleaned_data.get('picture')
         
         user_instance.save()
         user_profile_instance.save()

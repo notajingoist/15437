@@ -9,9 +9,16 @@ class UserProfile(models.Model):
 	user = models.OneToOneField(User)
 	location = models.CharField(max_length=200, default='', blank=True)
 	about = models.TextField(max_length=20000, default='', blank=True)
+	picture = models.ImageField(upload_to='profile-pictures', default='', blank=True)
 
 	def __unicode__(self):
 		return self.user
+
+	def get_profile_picture(self):
+		if not self.picture:
+			return '/static/images/default.png'
+		else:
+			return self.picture
 
 	#profile picture FileField
 	#followers
