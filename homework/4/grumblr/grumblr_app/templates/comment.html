@@ -3,10 +3,13 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-3">
-				{% include 'navbar-template.html' with home='active' placeholder='search your stream...' search_action='search-stream' %}
+				{% include 'navbar-template.html' with stream='active' placeholder='search your stream...' search_action='search-stream' %}
 			</div>
 
 			<div class="col-md-9">
+
+				
+
 				{% for field in form %}
 					{% for error in field.errors %}
 					<section class="panel panel-default panel-grumblr panel-message">
@@ -15,8 +18,13 @@
 					{% endfor %}
 				{% endfor %}
 
+				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
+					{{ text_post.text }}
+				</section>
+
+
 				<section class="panel panel-default panel-grumblr panel-form">
-					<form action="{% url 'text-post' %}" method="post">
+					<form action="{% url 'comment' comment_redirect user_id text_post.id %}" method="post">
 						{% for field in form.visible_fields %}
 							{{field.label_tag}}
 							{{field}}
@@ -27,7 +35,7 @@
 						{% endfor %}
 
 						{% csrf_token %}
-						<input class="btn-post btn-submit" type="submit" value="Post Text Grumbl">
+						<input class="btn-post btn-submit" type="submit" value="Post Comment">
 					</form>
 				</section>
 

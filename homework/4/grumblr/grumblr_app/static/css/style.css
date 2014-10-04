@@ -259,36 +259,51 @@ input.btn-submit {
 .panel-grumbl .post-info .author a:hover {
   color: #ffde99;
 }
+.panel-grumbl .dislike,
 .panel-grumbl .comment {
-  position: absolute;
-  right: 50px;
-  bottom: 10px;
-  font-size: 24px;
-  display: block;
-  color: #95decb;
-}
-.panel-grumbl .comment a {
-  color: #95decb;
-}
-.panel-grumbl .dislike {
-  transform: rotate(-180deg);
+  transition: color 0.2s ease-in-out 0;
+  text-transform: uppercase;
   position: absolute;
   right: 20px;
   bottom: 10px;
-  font-size: 24px;
+  font-size: 14px;
   display: block;
   color: #95decb;
 }
-.panel-grumbl .dislike .heart {
+.panel-grumbl .dislike .heart,
+.panel-grumbl .comment .heart,
+.panel-grumbl .dislike .plus,
+.panel-grumbl .comment .plus {
   transition: color 0.2s ease-in-out 0;
-  font-size: 24px;
+  display: inline-block;
+  transform: rotate(-180deg);
+  font-size: 18px;
+  position: absolute;
+  left: -20px;
+  bottom: -3px;
 }
-.panel-grumbl .dislike .heart:hover {
+.panel-grumbl .dislike .heart:hover,
+.panel-grumbl .comment .heart:hover,
+.panel-grumbl .dislike .plus:hover,
+.panel-grumbl .comment .plus:hover {
   color: #ffde99;
   cursor: pointer;
 }
-.panel-grumbl .dislike a {
+.panel-grumbl .dislike a,
+.panel-grumbl .comment a {
+  transition: color 0.2s ease-in-out 0;
   color: #95decb;
+}
+.panel-grumbl .dislike a:hover,
+.panel-grumbl .comment a:hover {
+  color: #ffde99;
+  cursor: pointer;
+}
+.panel-grumbl .comment {
+  position: absolute;
+  right: 150px;
+  bottom: 10px;
+  font-size: 14px;
 }
 .panel-grumbl.grumbl-photo {
   padding: 0;

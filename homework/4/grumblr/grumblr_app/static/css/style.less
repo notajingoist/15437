@@ -371,28 +371,21 @@ input {
 		
 	}
 
-	.comment {
-		position: absolute;
-		right: 50px;//15px;// + 100px;
-		bottom: 10px;//5px;
-		font-size: 18px;//24px;// 18px;//24px;
-		display: block;
-		color: @turquoise;
-
-		a {
-			color: @turquoise;
-			// &:hover {
-			// 	color: @yellow;
-			// 	cursor: pointer;
-			// }
-		}
-	}
 	
-	.dislike {
-		
+	
+	.dislike, .comment {
+		transition: color 0.2s ease-in-out 0;
+		text-transform: uppercase;
 		//display: block;
-		.heart {
+		.heart, .plus {
 			transition: color 0.2s ease-in-out 0;
+			display: inline-block;
+			transform: rotate(-180deg);
+			font-size: 18px;
+			position: absolute;
+			left: -20px;
+			bottom: -3px;
+
 			
 			&:hover {
 				color: @yellow;
@@ -403,23 +396,32 @@ input {
 
 			}
 		}
-		transform: rotate(-180deg);
+		//transform: rotate(-180deg);
 		position: absolute;
 		right: 20px;//15px;// + 100px;
-		bottom: 10px;//5px;
-		font-size: 18px;//24px;// 18px;//24px;
+		bottom: 15px;//5px;
+		font-size: 14px;//24px;// 18px;//24px;
 		display: block;
 		color: @turquoise;
 		//background-color: red;
 		
 
 		a {
+			transition: color 0.2s ease-in-out 0;
 			color: @turquoise;
-			// &:hover {
-			// 	color: @yellow;
-			// 	cursor: pointer;
-			// }
+			&:hover {
+				color: @yellow;
+				cursor: pointer;
+			}
 		}
+	}
+
+	.comment {
+		position: absolute;
+		right: 150px;//15px;// + 100px;
+		//bottom: 10px;//5px;
+		font-size: 14px;//24px;// 18px;//24px;
+		
 	}
 
 	// &:after {

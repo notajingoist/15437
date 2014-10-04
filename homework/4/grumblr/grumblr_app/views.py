@@ -21,6 +21,10 @@ from forms import *
 def home(request):
     context = {}
     context['text_posts'] = TextPost.get_posts_from_user(request.user)
+    context['dislikes'] = request.user.dislikes.all() #Dislike.objects.all()
+    context['comment_redirect'] = 'home'
+    context['dislike_redirect'] = 'home'
+
     return render(request, 'home.html', context)
 
 # stream
@@ -29,6 +33,9 @@ def stream(request):
     context = {}
     context['user'] = request.user
     context['text_posts'] = TextPost.get_posts_without_user(request.user)
+    context['comment_redirect'] = 'stream'
+    context['dislike_redirect'] = 'stream'
+    # context['comments'] = Comment.objects.all()
 
     return render(request, 'stream.html', context)
 
@@ -145,8 +152,12 @@ def profile(request, user_id):
 @transaction.atomic
 def edit_profile(request):
     context = {}
+    # errors = []
     user = request.user
     user_profile = UserProfile.objects.get(user=user)
+
+    # context['errors'] = errors
+    context['user'] = user
     context['user_profile'] = user_profile
 
     initial_user = {
@@ -166,80 +177,88 @@ def edit_profile(request):
     context['form'] = form
 
     if not form.is_valid():
-        return render(request, 'home.html', context)
+        return render(request, 'edit-profile.html', context)
 
     form.save(user_instance=request.user, user_profile_instance=user_profile)
     update_session_auth_hash(request, user)
 
     return render(request, 'edit-profile.html', context)
 
-@login_required
-def save_profile_changes(request):
+def dislike(request, redirect_name, user_id, text_post_id):
     context = {}
-    errors = []
-    user = request.user
-    context['user'] = user
-    context['errors'] = errors
+    dislikes = Dislike.objects.all()
+    context['dislike_redirect'] = redirect_name
 
-    user_profile, created = UserProfile.objects.get_or_create(user=user)
+    # for dislike in dislikes:
+    #     dislike.delete()
+
+    text_post = TextPost.objects.get(id=text_post_id)
+
+    exists = False
+    for dislike in dislikes:
+        if (dislike.user == request.user and dislike.post == text_post):
+            exists = True
+
+    if not exists:
+        dislike = Dislike(user=request.user, post=text_post)
+        dislike.save()
+
+    context['dislikes'] = dislikes
+
+    #return context
+
+    #return render(request, 'home.html', context)
+    return redirect(reverse(redirect_name))
     
-    if 'firstname' in request.POST and request.POST['firstname']:
-        user.first_name = request.POST['firstname']
-        user.save()
-
-    if 'lastname' in request.POST and request.POST['lastname']:
-        user.last_name = request.POST['lastname']
-        user.save()
-    
-    if 'username' in request.POST and request.POST['username']:
-        if len(User.objects.filter(username = request.POST['username'])) > 0:
-            errors.append('Username is already taken.')
-        else:
-            user.username = request.POST['username']
-            user.save()
-
-    if 'email' in request.POST and request.POST['email']:
-        user.email = request.POST['email']
-        user.save()
-
-    if 'about' in request.POST and request.POST['about']:
-        user_profile.about = request.POST['about']
-        user_profile.save()
-
-    if 'location' in request.POST and request.POST['location']:
-        user_profile.location = request.POST['location']
-        user_profile.save()
-
-    context['user_profile'] = user_profile
-    # request.user.userprofile = UserProfile()
-    return render(request, 'edit-profile.html', context)
+@login_required
+@transaction.atomic
+def stream_dislike(request, user_id, text_post_id):
+    context = dislike_post(request, user_id, text_post_id)
+    context['user'] = request.user
+    context['text_posts'] = TextPost.get_posts_without_user(request.user)
+    return render(request, 'stream.html', context)
 
 @login_required
-def create_text_post(request):
+@transaction.atomic
+def comment(request, redirect_name, user_id, text_post_id):
     context = {}
-    errors = []
+    context['comment_redirect'] = redirect_name
+    context['user_id'] = user_id
+    text_post = TextPost.objects.get(id=text_post_id)
+    context['text_post'] = text_post
 
-    if not 'text-body' in request.POST or not request.POST['text-body']:
-        errors.append('You must grumble about something in your text post!')
-    else:
-        new_text_post = TextPost(text=request.POST['text-body'], user=request.user)
-        new_text_post.save()
+    if request.method == 'GET':
+        context['form'] = CommentForm()
+        return render(request, 'comment.html', context)
 
-    text_posts = TextPost.objects.filter(user=request.user).order_by('-date_created')
-    
-    context['text_posts'] = text_posts
-    context['errors'] = errors
+    new_comment = Comment(user=request.user, post=text_post)
+    form = CommentForm(request.POST, instance=new_comment)
+    context['form'] = form
 
-    if len(errors) > 0:
-        return render(request, 'text-post.html', context)
+    if not form.is_valid():
+        return render(request, 'comment.html', context)
 
-    return redirect(reverse('home'))
+    form.save()
+    return redirect(reverse(redirect_name))
 
 @login_required
+@transaction.atomic
 def text_post(request):
     context = {}
+    if request.method == 'GET':
+        context['form'] = TextPostForm()
+        return render(request, 'text-post.html', context)
 
-    return render(request, 'text-post.html', context)
+    new_text_post = TextPost(user=request.user)
+    form = TextPostForm(request.POST, instance=new_text_post)
+    context['form'] = form
+
+    if not form.is_valid():
+        return render(request, 'text-post.html', context)
+
+    form.save()
+    return redirect(reverse('home'))
+    # return render(request, 'text-post.html', context)
 
 def login_register(request):
     context = {}

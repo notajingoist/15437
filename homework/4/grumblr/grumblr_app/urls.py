@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     # url(r'^profile$', 'grumblr_app.views.profile'),
     
     
-    url(r'^save-profile-changes$', 'grumblr_app.views.save_profile_changes', name='save-profile-changes'),
+    #url(r'^save-profile-changes$', 'grumblr_app.views.save_profile_changes', name='save-profile-changes'),
     
     # Route for built-in authentication with our own custom login page
     
@@ -33,7 +33,9 @@ urlpatterns = patterns('',
     
     
     url(r'^text-post$', 'grumblr_app.views.text_post', name='text-post'),
-    url(r'^create-text-post$', 'grumblr_app.views.create_text_post', name='create-text-post'),
+    url(r'^comment/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)$', 'grumblr_app.views.comment', name='comment'),
+    url(r'^dislike/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)$', 'grumblr_app.views.dislike', name='dislike')
+    # url(r'^create-text-post$', 'grumblr_app.views.create_text_post', name='create-text-post'),
     # url(r'^image-post$', 'grumblr_app.views.image_post'),
     # url(r'^video-post$', 'grumblr_app.views.video_post'),
 )

@@ -7,19 +7,7 @@
 			</div>
 
 			<div class="col-md-9">
-				<div class="row">
-					<div class="col-md-6">
-						<div class="previous-page">
-							<span class="glyphicon glyphicon-arrow-left"></span> <span class="page-label">Previous Page</span>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="next-page">
-							<span class="page-label">Next Page</span>
-							<span class="glyphicon glyphicon-arrow-right"></span>
-						</div>
-					</div>
-				</div>
+				{% include 'pagenav-template.html' %}
 
 				{% for error in errors %}
 				<section class="panel panel-default panel-grumblr panel-message">
@@ -31,9 +19,33 @@
 				<section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-text">
 					{{ text_post.text }}
 
+					{% for dislike in text_post.dislikes.all %}
+						{{dislike}}
+						<strong>{{text_post.dislikes.all.count}}</strong>
+					{% endfor %}
+
+					{% for dislike in user.dislikes.all %} 
+						{% if dislike.post.id == text_post.id %}
+							HELLO
+						{% endif %}
+					{% endfor %}
+
 					<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' text_post.user.id %}">{{ text_post.user }}</a></span></span>
 					<!-- <span class="glyphicon glyphicon-plus"></span> -->
-					<span class="dislike">♥</span>
+					<span class="comment">
+						<a href="{% url 'comment' comment_redirect user.id text_post.id %}">
+							<span class="plus">+</span>
+						</a> 
+						{{text_post.comments.all.count}} comments
+					</span>
+
+					<span class="dislike">
+						<a href="{% url 'dislike' dislike_redirect user.id text_post.id %}">
+							<span class="heart">♥</span>
+						</a> 
+						{{text_post.dislikes.all.count}} dislikes
+					</span>
+
 					<article class="grumbl-author-photo" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
 					</article>
 				</section>

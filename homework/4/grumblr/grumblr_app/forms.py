@@ -3,6 +3,48 @@ from django import forms
 from django.contrib.auth.models import User
 from models import *
 
+class TextPostForm(forms.ModelForm):
+    class Meta:
+        model = TextPost
+        fields = ('text',)#text')
+        widgets = {
+            'text': forms.Textarea(attrs={'placeholder': 'Grumble grumble grumble...', 'class': 'textarea-text-post'})
+        }
+        error_messages = {
+            'text': {
+                'required': 'You must grumble about something in your text post!'
+            }
+        }
+    
+    def clean(self):
+        cleaned_data = super(TextPostForm, self).clean()
+        return cleaned_data
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text',)
+        widgets = {
+            'text': forms.Textarea(attrs={'placeholder': 'Offer some words of encouragement...or not...', 'class': 'textarea-text-post'})
+        }
+        labels = {
+            'text': 'Comment'
+        }
+        error_messages = {
+            'text': {
+                'required': 'You must write something in your comment!'
+            }
+        }
+
+    # about = forms.CharField(max_length=20000, 
+    #                             label='Comment', 
+    #                             widget=forms.Textarea(attrs={'placeholder': 'Give some words of encouragement...or not...', 'class': 'textarea-text-post'})),
+    
+    def clean(self):
+        cleaned_data = super(CommentForm, self).clean()
+        return cleaned_data
+
 class ResetForm(forms.Form):
     email = forms.CharField(max_length = 200, widget=forms.EmailInput(attrs={'placeholder': 'example@gmail.com'}))
 
@@ -18,14 +60,32 @@ class ResetForm(forms.Form):
 
 
 class RegistrationForm(forms.ModelForm):
+    bullets_placeholder = u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'
     class Meta:
+        bullets_placeholder = u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password',)
+        widgets = {
+            'username': forms.TextInput(attrs={'placeholder': 'Username'}),
+            'password': forms.PasswordInput(attrs={'placeholder': bullets_placeholder}),
+        }
+        error_messages = {
+            'username': {
+                'required': 'Username is required.'
+            },
+            'password': {
+                'required': 'Password is required.'
+            },
+        }
 
-    username = forms.CharField(max_length=20, label='Username', widget=forms.TextInput(attrs={'placeholder': 'Username'}))
-    email = forms.CharField(max_length=200, label='Email', widget=forms.EmailInput(attrs={'placeholder': 'example@gmail.com'}))
-    password = forms.CharField(max_length=200, label='Password', widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}))
-    password2 = forms.CharField(max_length=200, label='Confirm Password', widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}))  
+    # username = forms.CharField(max_length=20, label='Username', widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    email = forms.CharField(max_length=200, label='Email', 
+                                error_messages={'required': 'Email is required.'}, 
+                                widget=forms.EmailInput(attrs={'placeholder': 'example@gmail.com'}))
+    # password = forms.CharField(max_length=200, label='Password', widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}))
+    password2 = forms.CharField(max_length=200, label='Confirm Password', 
+                                error_messages={'required': 'Password confirmation is required.'}, 
+                                widget=forms.PasswordInput(attrs={'placeholder': bullets_placeholder}))  
 
     def clean(self):
         cleaned_data = super(RegistrationForm, self).clean()
@@ -98,6 +158,9 @@ class UserProfileForm(forms.Form):
     #     if password and password2 and password != password2:
     #         raise forms.ValidationError('Passwords did not match.')
     #     return cleaned_data
+    def clean(self):
+        cleaned_data = super(UserProfileForm, self).clean()
+        return cleaned_data
 
     def clean_username(self):
         username = self.cleaned_data.get('username')

@@ -9,50 +9,28 @@
 			<div class="col-md-9">
 				{% for error in errors %}
 				<section class="panel panel-default panel-grumblr panel-message">
-					<span class="glyphicon glyphicon-exclamation-sign"></span> {{ error }}
+					<span class="glyphicon glyphicon-exclamation-sign"></span> 
+					{{error}}
 				</section>
 				{% endfor %}
 
-				<div class="row">
-					<div class="col-md-4">
-						<a href="/text-post"><div class="panel panel-default panel-grumblr  panel-tool">
-							<span class="glyphicon glyphicon-font"></span>
-							<div class="tool-text">+ Text Grumbl</div>
-						</div></a>
-					</div>
-					<div class="col-md-4">
-						<div class="panel panel-default panel-grumblr  panel-tool">
-							<span class="glyphicon glyphicon-camera"></span>
-							<div class="tool-text">+ Image Grumbl</div>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="panel panel-default panel-grumblr panel-tool">
-							<span class="glyphicon glyphicon-facetime-video"></span>
-							<div class="tool-text">+ Video Grumbl</div>
-						</div>
-					</div>
-				</div>
+				{% include 'post-tools-template.html' %}
 
-				<div class="row">
-					<div class="col-md-6">
-						<div class="previous-page">
-							<span class="glyphicon glyphicon-arrow-left"></span>
-							<span class="page-label">Previous Page</span>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="next-page">
-							<span class="page-label">Next Page</span>
-							<span class="glyphicon glyphicon-arrow-right"></span>
-						</div>
-					</div>
-				</div>
+				{% include 'pagenav-template.html' %}
 
 				{% for text_post in text_posts %}
 				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
 					{{ text_post.text }}
-					<span class="dislike">♥</span>
+					{% for dislike in text_post.dislikes.all %}
+						{{dislike}}
+					{% endfor %}
+
+					{% for dislike in user.dislikes.all %} 
+						{% if dislike.post.id == text_post.id %}
+							HELLO
+						{% endif %}
+					{% endfor %}
+					<span class="dislike"><a href="{% url 'dislike' dislike_redirect user.id text_post.id %}">♥</a></span>
 				</section>
 				{% endfor %}
 				
