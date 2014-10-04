@@ -7,3 +7,4 @@ Homework 4 - Jing Xiao
 -I didn't find a way to show a default profile picture yet. However you can upload a picture on the edit profile page and that will show fine
 -The first few users I registered on the site don't properly display their follower/following count. So for testing, maybe only try following and blocking the new users you create (or users with later ids). I didn't flush the database because it took me a long time to accumulate all these users and posts
 -Searching for terms in the stream will only search for the keyword in your follower posts (and excluding those who have blocked you); searching in home will only search in your posts; searching in profile will only search in that person's posts
+-You can't reset the password yet. Only confirmation email upon registering
