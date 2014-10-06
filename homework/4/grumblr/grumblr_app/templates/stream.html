@@ -35,7 +35,7 @@
 						{{text_post.dislikes.all.count}} dislikes
 					</span>
 
-					<article class="grumbl-author-photo" style="background: url('/static/images/default.png') center center no-repeat; background-size: cover;">
+					<article class="grumbl-author-photo" style="background: url('{% url 'profile-picture' text_post.user.id %}') center center no-repeat; background-size: cover;">
 					</article>
 				</section>
 
