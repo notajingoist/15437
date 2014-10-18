@@ -1,0 +1,30 @@
+{% extends 'base-template.html' %}
+{% block content %}
+	{% include 'header-template.html' with redirect='home' %}
+
+	<section class="panel panel-default panel-grumblr panel-login-register">
+
+		{% if confirmed %}
+			<p class="footnote message error-message">
+				{{confirmed}}
+			</p>
+		{% endif %}
+		
+		{% if needs_confirmation %}
+			<p class="footnote message error-message">
+				{{needs_confirmation}}
+			</p>
+		{% endif %}
+
+		<div class="buttons">
+			<a href="{% url 'register' %}"><button id="btn-register" class="btn-login-register">Register</button></a>
+			<div class="or-divider">
+				<div class="line line-left"></div>
+				<div class="or">or</div>			
+				<div class="line line-right"></div>
+			</div>
+			<a href="{% url 'login' %}"><button id="btn-login" class="btn-login-register">Login</button></a>
+			<a href="{% url 'reset' %}"><div id="btn-reset" class="footnote"><span id="reset-text">Forgot your password?</span></div></a>
+		</div>
+	</section>
+{% endblock %}

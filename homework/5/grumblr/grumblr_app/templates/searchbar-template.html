@@ -1,0 +1,7 @@
+<div class="search-stream">
+	<form action="{% if search_param %}{% url search_action search_param %}{% else %}{% url search_action %}{% endif %}" method="get">
+		<span class="glyphicon glyphicon-search search-icon"></span>
+		<input type="text" name="keyword" id="search-input" placeholder="{{placeholder}}">
+		{% csrf_token %}
+	</form>
+</div>
