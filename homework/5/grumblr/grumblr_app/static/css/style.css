@@ -286,12 +286,14 @@ input.btn-submit {
   position: absolute;
   left: -20px;
   bottom: -3px;
+  font-weight: bold;
+  color: #ffde99;
 }
 .panel-grumbl .dislike .heart:hover,
 .panel-grumbl .comment .heart:hover,
 .panel-grumbl .dislike .plus:hover,
 .panel-grumbl .comment .plus:hover {
-  color: #ffde99;
+  color: #95decb;
   cursor: pointer;
 }
 .panel-grumbl .dislike a,
