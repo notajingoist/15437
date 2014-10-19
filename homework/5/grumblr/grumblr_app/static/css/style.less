@@ -75,8 +75,19 @@ a {
 }
 
 header {
-	margin: 25px auto 40px;//75px auto 40px;
-	display: inline-block;
+	&.main-header {
+		margin: 25px auto 40px;//75px auto 40px;
+		display: inline-block;
+	}
+
+	&.side-header {
+		//margin: 25px 0 40px;
+		margin: -25px auto 15px;//75px auto 40px;
+		text-align: left;
+		display: inline-block;
+		// display: inline;
+	}
+	
 	h1 {
 		color: #fff;
 		font-size: 24px;

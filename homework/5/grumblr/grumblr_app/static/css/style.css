@@ -45,8 +45,13 @@ a:hover {
   color: #fff;
   text-decoration: none;
 }
-header {
+header.main-header {
   margin: 25px auto 40px;
+  display: inline-block;
+}
+header.side-header {
+  margin: -25px auto 15px;
+  text-align: left;
   display: inline-block;
 }
 header h1 {
