@@ -209,7 +209,8 @@ def edit_profile(request):
                     'username': user.username,
                     'email': user.email,
                     'location': user_profile.location,
-                    'about': user_profile.about
+                    'about': user_profile.about,
+                    'picture': user_profile.picture
                 }
 
     if request.method == 'GET':
