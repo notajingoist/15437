@@ -19,189 +19,62 @@ from django.core.mail import send_mail
 from models import *
 from forms import *
 
+import sys
+
 # Create your views here.
+
+def get_default_context(request):
+    context = {}
+    context['dislikes'] = request.user.dislikes.all()
+    context['comment_redirect'] = request.resolver_match.url_name
+    context['dislike_redirect'] = request.resolver_match.url_name
+
+    initial_data = { 'redirect_name': request.resolver_match.url_name }
+    context['search_form'] = SearchForm(initial=initial_data)
+
+    return context
 
 # home
 @login_required
 def home(request):
     context = {}
-    context['text_posts'] = TextPost.get_posts_from_user(request.user)
-    context['dislikes'] = request.user.dislikes.all() #Dislike.objects.all()
+    context['dislikes'] = request.user.dislikes.all()
     context['comment_redirect'] = 'home'
     context['dislike_redirect'] = 'home'
 
+    initial_data = { 'redirect_name': 'home' }
+    context['search_form'] = SearchForm(initial=initial_data)
+    context['text_posts'] = TextPost.get_posts_from_user(request.user)
     return render(request, 'home.html', context)
 
 # stream
 @login_required
 def stream(request):
     context = {}
-    context['user'] = request.user
+    context['dislikes'] = request.user.dislikes.all()
+    context['comment_redirect'] = 'stream'
+    context['dislike_redirect'] = 'stream'
+
+    initial_data = { 'redirect_name': 'stream' }
+    context['search_form'] = SearchForm(initial=initial_data)
     context['text_posts'] = TextPost.get_stream_posts(request.user)
-    #TextPost.get_posts_without_user(request.user)
-    context['comment_redirect'] = 'stream'
-    context['dislike_redirect'] = 'stream'
-    # context['comments'] = Comment.objects.all()
-
     return render(request, 'stream.html', context)
-
-@login_required
-def search_stream(request):
-    context = {}
-    errors = []
-    context['errors'] = errors
-    context['user'] = request.user
-    context['comment_redirect'] = 'home'
-    context['dislike_redirect'] = 'home'
-
-    text_posts = TextPost.get_stream_posts(user=request.user)
-
-    if 'keyword' in request.GET and request.GET['keyword']:
-        context['keyword'] = request.GET['keyword']
-        text_posts = text_posts.filter(text__icontains=request.GET['keyword'])
-
-        if len(text_posts) <= 0:
-            errors.append('No search results found for ' + request.GET['keyword'])
-
-    context['text_posts'] = text_posts.order_by('-date_created')
-
-    return render(request, 'stream.html', context)
-
-@login_required
-def search_home(request):
-    context = {}
-    errors = []
-    context['errors'] = errors
-    context['user'] = request.user
-    context['comment_redirect'] = 'stream'
-    context['dislike_redirect'] = 'stream'
-
-    text_posts = TextPost.objects.filter(user=request.user)
-
-    if 'keyword' in request.GET and request.GET['keyword']:
-        context['keyword'] = request.GET['keyword']
-        text_posts = text_posts.filter(text__icontains=request.GET['keyword'])
-
-        if len(text_posts) <= 0:
-            errors.append('No search results found for ' + request.GET['keyword'])
-
-    context['text_posts'] = text_posts.order_by('-date_created')
-
-    return render(request, 'home.html', context)
-
-@login_required
-def search_profile(request, user_id):
-    context = {}
-    errors = []
-    context['errors'] = errors
-    context['comment_redirect'] = 'profile'
-    context['dislike_redirect'] = 'profile'
-
-    if len(User.objects.filter(id=user_id)) <= 0:
-        errors.append('User does not exist.')
-
-    if errors:
-        text_posts = TextPost.objects.filter(user=request.user)
-        context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
-        return render(request, 'home.html', context)
-
-    user = User.objects.filter(id=user_id)[0]
-    text_posts = TextPost.objects.filter(user=user_id)
-    context['text_posts_count'] = len(text_posts)
-    context['text_posts'] = text_posts.order_by('-date_created')
-    context['user'] = user
-
-    user_profile, created = UserProfile.objects.get_or_create(user=user)
-    context['user_profile'] = user_profile
-
-    if len(user.email) > 16:
-        new_end_index = 13
-        context['email_curtailed'] = user.email[:new_end_index]
-
-
-    if 'keyword' in request.GET and request.GET['keyword']:
-        context['keyword'] = request.GET['keyword']
-        text_posts = text_posts.filter(text__icontains=request.GET['keyword'])
-
-        if len(text_posts) <= 0:
-            errors.append('No search results found for ' + request.GET['keyword'])
-
-    context['text_posts'] = text_posts.order_by('-date_created')
-
-    return render(request, 'profile.html', context)
-
-
-@login_required
-def follow(request, following_id):
-    followed_user = User.objects.get(id=following_id)
-    if (request.user != followed_user): 
-        user_profile = UserProfile.objects.get(user=request.user)
-        followed_profile = UserProfile.objects.get(id=following_id)
-        user_profile.follows.add(followed_profile)
-    return redirect(reverse('profile', kwargs={'user_id':following_id}))
-
-@login_required
-def block(request, blocking_id):
-    blocked_user = User.objects.get(id=blocking_id)
-    if (request.user != blocked_user): 
-        user_profile = UserProfile.objects.get(user=request.user)
-        blocked_profile = UserProfile.objects.get(id=blocking_id)
-        user_profile.blocks.add(blocked_profile)
-    return redirect(reverse('profile', kwargs={'user_id':blocking_id}))
-
-@login_required
-def profile(request, user_id):
-    context = {}
-    errors = []
-    context['errors'] = errors
-    context['dislike_redirect'] = 'profile'
-    context['comment_redirect'] = 'profile'
-
-    if len(User.objects.filter(id=user_id)) <= 0:
-        errors.append('User does not exist.')
-
-    if errors:
-        text_posts = TextPost.objects.filter(user=request.user)
-        context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
-        return render(request, 'home.html', context)
-
-    user = User.objects.filter(id=user_id)[0]
-    text_posts = TextPost.objects.filter(user=user_id)
-    context['text_posts'] = text_posts.order_by('-date_created')
-    context['text_posts_count'] = len(text_posts)
-    context['user'] = user
-
-    user_profile, created = UserProfile.objects.get_or_create(user=user)
-    context['user_profile'] = user_profile
-
-    if len(user.email) > 16:
-        new_end_index = 13
-        context['email_curtailed'] = user.email[:new_end_index]
-
-    return render(request, 'profile.html', context)
-
-@login_required
-def profile_picture(request, user_id):
-    user_profile = get_object_or_404(UserProfile, id=user_id)
-    if not user_profile:
-        raise Http404
-
-    content_type = guess_type(user_profile.picture.name)
-    return HttpResponse(user_profile.picture, content_type=content_type)
 
 @login_required
 @transaction.atomic
 def edit_profile(request):
     context = {}
-    # errors = []
     user = request.user
     user_profile = UserProfile.objects.get(user=user)
 
+    # errors = []
     # context['errors'] = errors
     context['user'] = user
     context['user_profile'] = user_profile
-
     context['picture-src'] = ''
+
+    initial_data = { 'redirect_name': 'stream' }
+    context['search_form'] = SearchForm(initial=initial_data)
 
     initial_user = {
                     'first_name': user.first_name,
@@ -228,48 +101,34 @@ def edit_profile(request):
 
     return render(request, 'edit-profile.html', context)
 
-def dislike(request, redirect_name, user_id, text_post_id):
-    context = {}
-    dislikes = Dislike.objects.all()
-    context['dislike_redirect'] = redirect_name
-
-    # for dislike in dislikes:
-    #     dislike.delete()
-
-    text_post = TextPost.objects.get(id=text_post_id)
-
-    exists = False
-    for dislike in dislikes:
-        if (dislike.user == request.user and dislike.post == text_post):
-            exists = True
-
-    if not exists:
-        dislike = Dislike(user=request.user, post=text_post)
-        dislike.save()
-
-    context['dislikes'] = dislikes
-
-    #return context
-
-    #return render(request, 'home.html', context)
-
-    if (redirect_name == 'profile'):
-        return redirect(reverse('profile', kwargs={'user_id':user_id}))
-    else:
-       return redirect(reverse(redirect_name))
-    
 @login_required
 @transaction.atomic
-def stream_dislike(request, user_id, text_post_id):
-    context = dislike_post(request, user_id, text_post_id)
-    context['user'] = request.user
-    context['text_posts'] = TextPost.get_posts_without_user(request.user)
-    return render(request, 'stream.html', context)
+def text_post(request):
+    context = {}
+    initial_data = { 'redirect_name': 'stream' }
+    context['search_form'] = SearchForm(initial=initial_data)
+
+    if request.method == 'GET':
+        context['form'] = TextPostForm()
+        return render(request, 'text-post.html', context)
+
+    new_text_post = TextPost(user=request.user)
+    form = TextPostForm(request.POST, instance=new_text_post)
+    context['form'] = form
+
+    if not form.is_valid():
+        return render(request, 'text-post.html', context)
+
+    form.save()
+    return redirect(reverse('home'))
 
 @login_required
 @transaction.atomic
 def comment(request, redirect_name, user_id, text_post_id):
     context = {}
+    initial_data = { 'redirect_name': 'stream' }
+    context['search_form'] = SearchForm(initial=initial_data)
+
     context['comment_redirect'] = redirect_name
     context['user_id'] = user_id
     text_post = TextPost.objects.get(id=text_post_id)
@@ -294,22 +153,167 @@ def comment(request, redirect_name, user_id, text_post_id):
        return redirect(reverse(redirect_name))
 
 @login_required
-@transaction.atomic
-def text_post(request):
+def search(request):
     context = {}
+    errors = []
+    context['errors'] = errors
+    context['user'] = request.user
+
     if request.method == 'GET':
-        context['form'] = TextPostForm()
-        return render(request, 'text-post.html', context)
+        raise Http404
 
-    new_text_post = TextPost(user=request.user)
-    form = TextPostForm(request.POST, instance=new_text_post)
-    context['form'] = form
+    search_form = SearchForm(request.POST)
+    context['search_form'] = search_form
+    #redirect_name = search_form.data['redirect_name']
 
-    if not form.is_valid():
-        return render(request, 'text-post.html', context)
+    if not search_form.is_valid():
+        raise Http404
 
-    form.save()
-    return redirect(reverse('home'))
+    redirect_name = search_form.cleaned_data['redirect_name']
+    context['comment_redirect'] = redirect_name
+    context['dislike_redirect'] = redirect_name
+    
+
+    if redirect_name == 'home':
+        text_posts = TextPost.objects.filter(user=request.user)
+
+    elif redirect_name == 'profile':
+        #print >>sys.stderr, search_form.data['user_id']
+        user_id = search_form.data['user_id']
+        if len(User.objects.filter(id=user_id)) <= 0:
+            errors.append('User does not exist.')
+        if errors:
+            #return redirect(reverse(redirect_name))
+            text_posts = TextPost.objects.filter(user=request.user)
+            context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
+            return render(request, 'home.html', context)
+
+        user = User.objects.filter(id=user_id)[0]
+        text_posts = TextPost.objects.filter(user=user_id)
+        context['text_posts_count'] = len(text_posts)
+        context['text_posts'] = text_posts.order_by('-date_created')
+        context['user'] = user
+        user_profile = UserProfile.objects.get(user=user)
+        context['user_profile'] = user_profile
+
+        if len(user.email) > 16:
+            new_end_index = 13
+            context['email_curtailed'] = user.email[:new_end_index]
+    else:
+        text_posts = TextPost.get_stream_posts(user=request.user)
+
+
+    context['keyword'] = search_form.cleaned_data['keyword']
+    text_posts = text_posts.filter(text__icontains=context['keyword'])
+    if len(text_posts) <= 0:
+        errors.append('No search results found for ' + context['keyword'])
+    context['text_posts'] = text_posts.order_by('-date_created')
+
+    #print >>sys.stderr, search_form.data['redirect_name']
+    return render(request, redirect_name + '.html', context)
+
+@login_required
+def follow(request, following_id):
+    followed_user = User.objects.get(id=following_id)
+    if (request.user != followed_user): 
+        user_profile = UserProfile.objects.get(user=request.user)
+        followed_profile = UserProfile.objects.get(id=following_id)
+        user_profile.follows.add(followed_profile)
+    return redirect(reverse('profile', kwargs={'user_id':following_id}))
+
+@login_required
+def block(request, blocking_id):
+    blocked_user = User.objects.get(id=blocking_id)
+    if (request.user != blocked_user): 
+        user_profile = UserProfile.objects.get(user=request.user)
+        blocked_profile = UserProfile.objects.get(id=blocking_id)
+        user_profile.blocks.add(blocked_profile)
+    return redirect(reverse('profile', kwargs={'user_id':blocking_id}))
+
+@login_required
+def profile(request, user_id):
+    context = {}
+    errors = []
+    context['errors'] = errors
+    context['dislike_redirect'] = 'profile'
+    context['comment_redirect'] = 'profile'
+    initial_data = {
+                    'redirect_name': 'profile',
+                    'user_id': user_id
+                }
+    context['search_form'] = SearchForm(initial=initial_data)
+
+    if len(User.objects.filter(id=user_id)) <= 0:
+        errors.append('User does not exist.')
+
+    if errors:
+        text_posts = TextPost.objects.filter(user=request.user)
+        context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
+        return render(request, 'home.html', context)
+
+    user = User.objects.filter(id=user_id)[0]
+    text_posts = TextPost.objects.filter(user=user_id)
+    context['text_posts'] = text_posts.order_by('-date_created')
+    context['text_posts_count'] = len(text_posts)
+    context['user'] = user
+
+    user_profile = UserProfile.objects.get(user=user)
+    context['user_profile'] = user_profile
+
+    if len(user.email) > 16:
+        new_end_index = 13
+        context['email_curtailed'] = user.email[:new_end_index]
+
+    return render(request, 'profile.html', context)
+
+@login_required
+def profile_picture(request, user_id):
+    user_profile = get_object_or_404(UserProfile, id=user_id)
+    if not user_profile:
+        raise Http404
+
+    content_type = guess_type(user_profile.picture.name)
+    return HttpResponse(user_profile.picture, content_type=content_type)
+
+
+
+def dislike(request, redirect_name, user_id, text_post_id):
+    context = {}
+    dislikes = Dislike.objects.all()
+    context['dislike_redirect'] = redirect_name
+
+    # for dislike in dislikes:
+    #     dislike.delete()
+
+    text_post = TextPost.objects.get(id=text_post_id)
+
+    exists = False
+    for dislike in dislikes:
+        if (dislike.user == request.user and dislike.post == text_post):
+            exists = True
+
+    if not exists:
+        dislike = Dislike(user=request.user, post=text_post)
+        dislike.save()
+
+    context['dislikes'] = dislikes
+
+    #return context
+    #return render(request, 'home.html', context)
+
+    if (redirect_name == 'profile'):
+        return redirect(reverse('profile', kwargs={'user_id':user_id}))
+    else:
+       return redirect(reverse(redirect_name))
+    
+@login_required
+@transaction.atomic
+def stream_dislike(request, user_id, text_post_id):
+    context = dislike_post(request, user_id, text_post_id)
+    context['user'] = request.user
+    context['text_posts'] = TextPost.get_posts_without_user(request.user)
+    return render(request, 'stream.html', context)
+
     # return render(request, 'text-post.html', context)
 
 def login_register(request):
@@ -406,9 +410,6 @@ def confirm_registration(request, username, token):
     user_profile, created = UserProfile.objects.get_or_create(user=user)
     user_profile.save()
 
-    return render(request, 'confirmed.html', {})
-
-def testing(request):
     return render(request, 'confirmed.html', {})
 
 

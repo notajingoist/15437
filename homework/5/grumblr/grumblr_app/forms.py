@@ -46,7 +46,7 @@ class CommentForm(forms.ModelForm):
         return cleaned_data
 
 class ResetForm(forms.Form):
-    email = forms.CharField(max_length = 200, widget=forms.EmailInput(attrs={'placeholder': 'example@gmail.com'}))
+    email = forms.CharField(max_length=200, widget=forms.EmailInput(attrs={'placeholder': 'example@gmail.com'}))
 
     def clean(self):
         cleaned_data = super(ResetForm, self).clean()
@@ -58,6 +58,15 @@ class ResetForm(forms.Form):
             raise forms.ValidationError('This email does not exist.')
         return email
 
+
+class SearchForm(forms.Form):
+    keyword = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': 'search...', 'id': 'search-input'}), required=False)
+    redirect_name = forms.CharField(max_length=200, widget=forms.HiddenInput(), initial='home')
+    user_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+
+    def clean(self):
+        cleaned_data = super(SearchForm, self).clean()
+        return cleaned_data
 
 class RegistrationForm(forms.ModelForm):
     bullets_placeholder = u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'
