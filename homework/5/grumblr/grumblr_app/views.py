@@ -42,7 +42,7 @@ def home(request):
     context['comment_redirect'] = 'home'
     context['dislike_redirect'] = 'home'
 
-    initial_data = { 'redirect_name': 'home' }
+    initial_data = { 'redirect_name': 'home', 'result_type': 'home' }
     context['search_form'] = SearchForm(initial=initial_data)
     context['text_posts'] = TextPost.get_posts_from_user(request.user)
     return render(request, 'home.html', context)
@@ -55,7 +55,7 @@ def stream(request):
     context['comment_redirect'] = 'stream'
     context['dislike_redirect'] = 'stream'
 
-    initial_data = { 'redirect_name': 'stream' }
+    initial_data = { 'redirect_name': 'stream', 'result_type': 'stream' }
     context['search_form'] = SearchForm(initial=initial_data)
     context['text_posts'] = TextPost.get_stream_posts(request.user)
     return render(request, 'stream.html', context)
@@ -73,7 +73,7 @@ def edit_profile(request):
     context['user_profile'] = user_profile
     context['picture-src'] = ''
 
-    initial_data = { 'redirect_name': 'stream' }
+    initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
     context['search_form'] = SearchForm(initial=initial_data)
 
     initial_user = {
@@ -105,7 +105,7 @@ def edit_profile(request):
 @transaction.atomic
 def text_post(request):
     context = {}
-    initial_data = { 'redirect_name': 'stream' }
+    initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
     context['search_form'] = SearchForm(initial=initial_data)
 
     if request.method == 'GET':
@@ -126,7 +126,7 @@ def text_post(request):
 @transaction.atomic
 def comment(request, redirect_name, user_id, text_post_id):
     context = {}
-    initial_data = { 'redirect_name': 'stream' }
+    initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
     context['search_form'] = SearchForm(initial=initial_data)
 
     context['comment_redirect'] = redirect_name
@@ -153,6 +153,56 @@ def comment(request, redirect_name, user_id, text_post_id):
        return redirect(reverse(redirect_name))
 
 @login_required
+def search_profile(request, user_id):
+    context = {}
+    errors = []
+    context['errors'] = errors
+
+    if request.method == 'GET':
+        return redirect(reverse('profile', kwargs={'user_id':user_id}))
+
+    search_form = SearchForm(request.POST)
+    context['search_form'] = search_form
+
+    if not search_form.is_valid():
+        raise Http404
+
+    redirect_name = search_form.cleaned_data['redirect_name']
+    context['comment_redirect'] = redirect_name
+    context['dislike_redirect'] = redirect_name
+    
+    user_id = user_id
+    if len(User.objects.filter(id=user_id)) <= 0:
+        errors.append('User does not exist.')
+    if errors:
+        raise Http404
+
+    user = User.objects.filter(id=user_id)[0]
+    text_posts = TextPost.objects.filter(user=user_id)
+    context['text_posts_count'] = len(text_posts)
+    context['text_posts'] = text_posts.order_by('-date_created')
+    context['user'] = user
+    user_profile = UserProfile.objects.get(user=user)
+    context['user_profile'] = user_profile
+
+    if len(user.email) > 16:
+        new_end_index = 13
+        context['email_curtailed'] = user.email[:new_end_index]
+    else:
+        text_posts = TextPost.get_stream_posts(user=request.user)
+
+    context['keyword'] = search_form.cleaned_data['keyword']
+    text_posts = text_posts.filter(text__icontains=context['keyword'])
+    if len(text_posts) <= 0:
+        errors.append('No search results found for ' + context['keyword'])
+    context['text_posts'] = text_posts.order_by('-date_created')
+
+    # print >>sys.stderr, search_form.data['redirect_name']
+    return render(request, redirect_name + '.html', context)
+    # return redirect(reverse('profile', kwargs={'user_id':following_id}))
+
+
+@login_required
 def search(request):
     context = {}
     errors = []
@@ -170,37 +220,19 @@ def search(request):
         raise Http404
 
     redirect_name = search_form.cleaned_data['redirect_name']
+    result_type = search_form.cleaned_data['result_type']
     context['comment_redirect'] = redirect_name
     context['dislike_redirect'] = redirect_name
     
 
-    if redirect_name == 'home':
+    if result_type == 'home':
         text_posts = TextPost.objects.filter(user=request.user)
-
-    elif redirect_name == 'profile':
-        #print >>sys.stderr, search_form.data['user_id']
-        user_id = search_form.data['user_id']
-        if len(User.objects.filter(id=user_id)) <= 0:
-            errors.append('User does not exist.')
-        if errors:
-            #return redirect(reverse(redirect_name))
-            text_posts = TextPost.objects.filter(user=request.user)
-            context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
-            return render(request, 'home.html', context)
-
-        user = User.objects.filter(id=user_id)[0]
-        text_posts = TextPost.objects.filter(user=user_id)
-        context['text_posts_count'] = len(text_posts)
-        context['text_posts'] = text_posts.order_by('-date_created')
-        context['user'] = user
-        user_profile = UserProfile.objects.get(user=user)
-        context['user_profile'] = user_profile
-
-        if len(user.email) > 16:
-            new_end_index = 13
-            context['email_curtailed'] = user.email[:new_end_index]
-    else:
+    elif result_type =='stream':
         text_posts = TextPost.get_stream_posts(user=request.user)
+    else:
+        home_posts = TextPost.objects.filter(user=request.user)
+        stream_posts = TextPost.get_stream_posts(user=request.user)
+        text_posts = home_posts | stream_posts
 
 
     context['keyword'] = search_form.cleaned_data['keyword']
@@ -209,6 +241,7 @@ def search(request):
         errors.append('No search results found for ' + context['keyword'])
     context['text_posts'] = text_posts.order_by('-date_created')
 
+    print >>sys.stderr, text_posts
     #print >>sys.stderr, search_form.data['redirect_name']
     return render(request, redirect_name + '.html', context)
 
@@ -256,6 +289,9 @@ def profile(request, user_id):
     context['text_posts'] = text_posts.order_by('-date_created')
     context['text_posts_count'] = len(text_posts)
     context['user'] = user
+    context['user_fn_len'] = len(user.first_name)
+    context['user_ln_len'] = len(user.last_name)
+    print >>sys.stderr, context['user_fn_len']
 
     user_profile = UserProfile.objects.get(user=user)
     context['user_profile'] = user_profile

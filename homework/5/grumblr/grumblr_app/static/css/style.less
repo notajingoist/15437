@@ -58,7 +58,7 @@ body {
 	padding: 50px 0;
 	width: 100%;
 	max-width: 1080px;
-	font-family: 'Source Sans Pro';
+	font-family: 'Source Sans Pro', serif;
 	background-color: @yellow;
 	text-align: center;
 	color: @bodyColor;
@@ -517,28 +517,57 @@ input {
 
 	}
 
-	.profile-username {
-		text-align: left;
-		color: #fff;
-		margin-top: 15px;
-		//font-weight: bold;
-		//padding-top: 0;
-
-		&:before {
-			content: 'g';
-			color: @turquoise;
-			margin-right: 16px;
-			margin-left: 2px;
-			font-size: 18px;
-			font-weight: bold;
+	.profile-info {
+		.glyphicon {
+			transition: color 0.2s ease-in-out 0;
+		}
+		&:hover {
+			cursor: pointer;
+			.glyphicon {
+				color: darken(@turquoise, 15%);
+			}	
 		}
 	}
 
-	.profile-username,
+	.profile-username {
+		text-align: left;
+		color: #fff;
+		text-transform: none;
+		margin-top: 15px;
+		//font-weight: bold;
+		//padding-top: 0;
+		//
+		.glyphicon-g {
+			// content: 'g';
+			color: @turquoise;
+			margin-right: 9px;
+			margin-left: 3px;
+			font-family: 'Source Sans Pro', serif;
+			font-size: 22px;
+			font-weight: bold;
+			display: inline-block;
+			//display: block;
+		}
+
+		// &:before {
+		// 	content: 'g';
+		// 	color: @turquoise;
+		// 	margin-right: 16px;
+		// 	margin-left: 2px;
+		// 	font-size: 18px;
+		// 	font-weight: bold;
+		// }
+	}
+
 	.profile-location,
 	.profile-email {
 		text-align: left;
 		text-transform: none;
+
+		.glyphicon {
+			margin-right: 8px;
+			margin-left: 2px;
+		}
 	}
 
 	.profile-blurb {
@@ -662,11 +691,6 @@ ul {
 	}
 }
 
-
-
-
-
-
 .profile-stats {
 	//text-align: center;
 	li {
@@ -680,8 +704,10 @@ ul {
 	.profile-number {
 		transition: color 0.2s ease-in-out 0;
 		color: @turquoise;
-		text-align: right;
-		width: 40px;
+		margin-right: 9px;
+		margin-left: 3px;
+		// text-align: right;
+		//width: 20px;
 		display: inline-block;
 		//font-size: 24px;
 	}

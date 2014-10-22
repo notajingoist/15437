@@ -32,7 +32,7 @@ body {
   padding: 50px 0;
   width: 100%;
   max-width: 1080px;
-  font-family: 'Source Sans Pro';
+  font-family: 'Source Sans Pro', serif;
   background-color: #ffde99;
   text-align: center;
   color: #555555;
@@ -351,24 +351,39 @@ input.btn-submit {
   font-weight: bold;
   letter-spacing: 2px;
 }
+.profile-about .profile-info .glyphicon {
+  transition: color 0.2s ease-in-out 0;
+}
+.profile-about .profile-info:hover {
+  cursor: pointer;
+}
+.profile-about .profile-info:hover .glyphicon {
+  color: #5bccae;
+}
 .profile-about .profile-username {
   text-align: left;
   color: #fff;
+  text-transform: none;
   margin-top: 15px;
 }
-.profile-about .profile-username:before {
-  content: 'g';
+.profile-about .profile-username .glyphicon-g {
   color: #95decb;
-  margin-right: 16px;
-  margin-left: 2px;
-  font-size: 18px;
+  margin-right: 9px;
+  margin-left: 3px;
+  font-family: 'Source Sans Pro', serif;
+  font-size: 22px;
   font-weight: bold;
+  display: inline-block;
 }
-.profile-about .profile-username,
 .profile-about .profile-location,
 .profile-about .profile-email {
   text-align: left;
   text-transform: none;
+}
+.profile-about .profile-location .glyphicon,
+.profile-about .profile-email .glyphicon {
+  margin-right: 8px;
+  margin-left: 2px;
 }
 .profile-about .profile-blurb {
   text-align: left;
@@ -477,8 +492,8 @@ ul .glyphicon {
 .profile-stats .profile-number {
   transition: color 0.2s ease-in-out 0;
   color: #95decb;
-  text-align: right;
-  width: 40px;
+  margin-right: 9px;
+  margin-left: 3px;
   display: inline-block;
 }
 .profile-stats .glyphicon-heart {

@@ -6,7 +6,7 @@ from models import *
 class TextPostForm(forms.ModelForm):
     class Meta:
         model = TextPost
-        fields = ('text',)#text')
+        fields = ('text',)
         widgets = {
             'text': forms.Textarea(attrs={'placeholder': 'Grumble grumble grumble...', 'class': 'textarea-text-post'})
         }
@@ -36,10 +36,7 @@ class CommentForm(forms.ModelForm):
                 'required': 'You must write something in your comment!'
             }
         }
-
-    # about = forms.CharField(max_length=20000, 
-    #                             label='Comment', 
-    #                             widget=forms.Textarea(attrs={'placeholder': 'Give some words of encouragement...or not...', 'class': 'textarea-text-post'})),
+    # redirect_name = forms.CharField(max_length=200, widget=forms.HiddenInput(), initial='home')
     
     def clean(self):
         cleaned_data = super(CommentForm, self).clean()
@@ -61,8 +58,9 @@ class ResetForm(forms.Form):
 
 class SearchForm(forms.Form):
     keyword = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': 'search...', 'id': 'search-input'}), required=False)
-    redirect_name = forms.CharField(max_length=200, widget=forms.HiddenInput(), initial='home')
-    user_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    redirect_name = forms.CharField(max_length=200, widget=forms.HiddenInput(), initial='stream')
+    result_type = forms.CharField(max_length=200, widget=forms.HiddenInput(), initial='all')
+    # user_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
 
     def clean(self):
         cleaned_data = super(SearchForm, self).clean()

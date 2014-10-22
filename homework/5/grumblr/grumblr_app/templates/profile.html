@@ -10,39 +10,50 @@
 
 					<ul class="profile-about">
 						<li>
-							<a href="{% url 'profile' user.id %}"
+							<a href="{% url 'profile' user.id %}">
 							{% if user.first_name and user.last_name %}
-								<h2 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h2>
+								<h2 class="profile-name">
+									{{ user.first_name|add:' '|add:user.last_name|truncatechars:13 }}
+								</h2>
 							{% elif user.first_name %}
-								<h2 class="profile-name">{{ user.first_name }}</h2>
+								<h2 class="profile-name">
+									{{ user.first_name|truncatechars:13 }}
+								</h2>
 							{% elif user.last_name %}
-								<h2 class="profile-name">{{ user.last_name }}</h2>
+								<h2 class="profile-name">
+									{{ user.last_name|truncatechars:13 }}
+								</h2>
 							{% else %}
-								<h2 class="profile-name">{{ user }}</h2>
+								<h2 class="profile-name">
+									{{ user|truncatechars:13 }}
+								</h2>
 							{% endif %}
 							</a>
 						</li>
 						<li>
-							<h3 class="profile-username">{{ user }}</h3>
+							<h3 class="profile-info profile-username">
+								<a href="{% url 'profile' user.id %}">
+									<span class="glyphicon glyphicon-g">g</span>
+									{{ user|truncatechars:16 }}
+								</a>
+							</h3>
 						</li>
 						{% if user_profile.location %}
 						<li>
-							<h3 class="profile-location">
+							<h3 class="profile-info profile-location">
 								<span class="glyphicon glyphicon-map-marker"></span>
-								{{ user_profile.location }}
+								{{ user_profile.location|truncatechars:16 }}
 							</h3>
 						</li>
 						{% endif %}
 
 						{% if user.email %}
 						<li>
-							<h3 class="profile-email">
-								<span class="glyphicon glyphicon-envelope"></span>
-								{% if email_curtailed %}
-									{{ email_curtailed }}...
-								{% else %}
-									{{ user.email }}
-								{% endif %}
+							<h3 class="profile-info profile-email">
+								<a href="mailto:{{user.email}}">
+									<span class="glyphicon glyphicon-envelope"></span>
+									{{ user.email|truncatechars:16 }}
+								</a>
 							</h3>
 						</li>
 						{% endif %}
@@ -67,7 +78,7 @@
 
 					<div class="profile-divider"></div>
 
-					{% include 'searchbar-template.html' with placeholder='search stream...' %}
+					{% include 'searchbar-template.html' with placeholder='search stream...' search_action='search-profile' search_param=user.id %}
 
 					<div class="row">
 						<div class="col-md-6">

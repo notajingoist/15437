@@ -19,13 +19,19 @@ urlpatterns = patterns('',
 
     #url(r'^search/(?P<redirect_name>\w+)/(?P<user_id>\d+)$', 'grumblr_app.views.search', name='search'),
     url(r'^search$', 'grumblr_app.views.search', name='search'),
+    url(r'^all/search$', 'grumblr_app.views.search', name='search-all'),
+    url(r'^stream/search$', 'grumblr_app.views.search', name='search-stream'),
+    url(r'^home/search$', 'grumblr_app.views.search', name='search-home'),
+    url(r'^profile/(?P<user_id>\d+)/search$', 'grumblr_app.views.search_profile', name='search-profile'),
     # url(r'^search-stream$', 'grumblr_app.views.search_stream', name='search-stream'),
     # url(r'^search-home$', 'grumblr_app.views.search_home', name='search-home'),
     # url(r'^search-profile/(?P<user_id>\d+)$', 'grumblr_app.views.search_profile', name='search-profile'),
 
     url(r'^text-post$', 'grumblr_app.views.text_post', name='text-post'),
 
-    
+    # url(r'^comment$', 'grumblr_app.views.comment', name='comment'),
+    # url(r'^dislike$', 'grumblr_app.views.comment', name='dislike'),
+
     url(r'^comment/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)$', 'grumblr_app.views.comment', name='comment'),
     url(r'^dislike/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)$', 'grumblr_app.views.dislike', name='dislike'),
 
