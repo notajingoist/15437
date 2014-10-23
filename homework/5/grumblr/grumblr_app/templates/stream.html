@@ -21,7 +21,7 @@
 				<section class="posts panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-text">
 					{{ text_post.text }}
 
-					<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' text_post.user.id %}">{{ text_post.user }}</a></span></span>
+					<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' text_post.user.username %}">{{ text_post.user.username }}</a></span></span>
 					<!-- <span class="glyphicon glyphicon-plus"></span> -->
 					<span class="comment">
 						<!-- <a href="{% url 'comment' comment_redirect user.id text_post.id %}"> -->
@@ -37,7 +37,7 @@
 						{{text_post.dislikes.all.count}} dislikes
 					</span>
 
-					<a href="{% url 'profile' text_post.user.id %}"><article class="grumbl-author-photo" style="background: url('{% url 'profile-picture' text_post.user.id %}') center center no-repeat; background-size: cover;">
+					<a href="{% url 'profile' text_post.user.username %}"><article class="grumbl-author-photo" style="background: url('{% url 'profile-picture' text_post.user.id %}') center center no-repeat; background-size: cover;">
 					</article></a>
 				</section>
 				<section id="comment-box-{{text_post.id}}" class="collapsed add-comment-box">

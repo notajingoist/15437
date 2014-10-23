@@ -35,6 +35,19 @@ def get_default_context(request):
 
     return context
 
+@login_required
+def redirect_home(request, errors):
+    context = {}
+    context['errors'] = errors
+    context['dislikes'] = request.user.dislikes.all()
+    context['comment_redirect'] = 'home'
+    context['dislike_redirect'] = 'home'
+
+    initial_data = { 'redirect_name': 'home', 'result_type': 'home' }
+    context['search_form'] = SearchForm(initial=initial_data)
+    context['text_posts'] = TextPost.get_posts_from_user(request.user)
+    return render(request, 'home.html', context)
+
 # home
 @login_required
 def home(request):
@@ -173,13 +186,47 @@ def text_post(request):
     return redirect(reverse('home'))
 
 @login_required
+def get_user(request):
+    if request.method == 'GET':
+        if request.is_ajax():
+            if 'user_id' in request.GET and request.GET['user_id']:
+                
+                user = User.objects.get(id=request.GET['user_id'])
+                
+                # for text_post in text_posts:
+                #     text_post.user = User.objects.get(id=text_post.user)
+                # username = user.username
+                # comments = text_post.comments.all()
+                # for comment in comments:
+                #     #print >>sys.stderr, comment.user.username
+                #     comment.author = comment.user.username
+
+
+                print >>sys.stderr, user
+                data = serializers.serialize('json', [user])
+                return HttpResponse(data, content_type='application/json')
+
+    data = serializers.serialize('json', User.objects.none())
+    return HttpResponse(data, content_type='application/json')
+
+@login_required
 def fetch_comments(request):
     if request.method == 'GET':
         if request.is_ajax():
             if 'post_id' in request.GET and request.GET['post_id']:
-                pass
+                
                 text_post = TextPost.objects.get(id=request.GET['post_id'])
+                
+                # for text_post in text_posts:
+                #     text_post.user = User.objects.get(id=text_post.user)
+                # username = user.username
                 comments = text_post.comments.all()
+                # for comment in comments:
+                #     #print >>sys.stderr, comment.user.username
+                #     comment.author = comment.user.username
+
+
+                # print >>sys.stderr, comments[0].author
                 data = serializers.serialize('json', comments)
                 return HttpResponse(data, content_type='application/json')
 
@@ -195,6 +242,7 @@ def comment(request, redirect_name, user_id, text_post_id):
     context = {}
     initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
     context['search_form'] = SearchForm(initial=initial_data)
+    user = User.objects.filter(id=user_id)
 
     context['comment_redirect'] = redirect_name
     context['user_id'] = user_id
@@ -215,10 +263,11 @@ def comment(request, redirect_name, user_id, text_post_id):
     form.save()
 
     if (redirect_name == 'profile'):
-        return redirect(reverse('profile', kwargs={'user_id':user_id}))
+        return redirect(reverse('profile', kwargs={'username':user.username}))
     else:
         # return redirect(reverse(redirect_name))
-        data = serializers.serialize('json', text_post.comments.all())
+        #response = new_comment | user
+        data = serializers.serialize('json', [{'new_comment': new_comment, 'author': user}])
         return HttpResponse(data, content_type='application/json')
 
 @login_required
@@ -321,7 +370,8 @@ def follow(request, following_id):
         user_profile = UserProfile.objects.get(user=request.user)
         followed_profile = UserProfile.objects.get(id=following_id)
         user_profile.follows.add(followed_profile)
-    return redirect(reverse('profile', kwargs={'user_id':following_id}))
+        username = followed_user.username
+    return redirect(reverse('profile', kwargs={'username':username}))
 
 @login_required
 def block(request, blocking_id):
@@ -330,30 +380,43 @@ def block(request, blocking_id):
         user_profile = UserProfile.objects.get(user=request.user)
         blocked_profile = UserProfile.objects.get(id=blocking_id)
         user_profile.blocks.add(blocked_profile)
-    return redirect(reverse('profile', kwargs={'user_id':blocking_id}))
+        username = blocked_user.username
+    return redirect(reverse('profile', kwargs={'username':username}))
 
 @login_required
-def profile(request, user_id):
+def profile(request, username):
     context = {}
     errors = []
     context['errors'] = errors
     context['dislike_redirect'] = 'profile'
     context['comment_redirect'] = 'profile'
+    user = User.objects.filter(username__exact=username)
+    if len(user) <= 0:
+        errors.append('User does not exist.')
+
+    if errors:
+        text_posts = TextPost.objects.filter(user=request.user)
+        context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
+        #return render(request, 'home.html', context)
+        #return redirect_home(errors)
+        return redirect_home(request, errors)
+
+
+    user = user[0]
+    user_id = user.id
+
     initial_data = {
                     'redirect_name': 'profile',
                     'user_id': user_id
                 }
     context['search_form'] = SearchForm(initial=initial_data)
 
-    if len(User.objects.filter(id=user_id)) <= 0:
-        errors.append('User does not exist.')
 
-    if errors:
-        text_posts = TextPost.objects.filter(user=request.user)
-        context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
-        return render(request, 'home.html', context)
+    # if len(user) <= 0:
+    #     errors.append('User does not exist.')
 
-    user = User.objects.filter(id=user_id)[0]
+    
+
     text_posts = TextPost.objects.filter(user=user_id)
     context['text_posts'] = text_posts.order_by('-date_created')
     context['text_posts_count'] = len(text_posts)
