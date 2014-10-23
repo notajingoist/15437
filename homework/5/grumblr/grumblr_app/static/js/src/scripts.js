@@ -5,6 +5,8 @@ var GRUMBLR = {
 		this.bindEvents();
 
 		this.fetchComments();
+
+		this.pollForPosts();
 	},
 
 	setVars: function() {
@@ -29,6 +31,13 @@ var GRUMBLR = {
 		this.$commentForms.on('click', '.post-comment-btn', this.postComment.bind(this));
 		// this.$hiddenPhotoInput.on('change', this.uploadInput.bind(this));
 		// $('#edit-upload-picture').on('click', this.triggerHiddenPhotoInput.bind(this));
+	},
+
+	pollForPosts: function() {
+		var context = this;
+
+		//do stuff later
+
 	},
 
 	fetchComments: function() {
@@ -101,10 +110,12 @@ var GRUMBLR = {
 		var $this = $(e.currentTarget);
 		var postId = $this.data('postId');
 		var $comments = $('#comments-' + postId);
-		$comments.stop(true, false).slideToggle(function() {
-			$comments.toggleClass('collapsed');
-		});
-
+		if ($comments.children().length > 0) {
+			$comments.stop(true, false).slideToggle(function() {
+				$comments.toggleClass('collapsed');
+			});
+		}
+	
 		e.preventDefault();
 	},
 

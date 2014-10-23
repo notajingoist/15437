@@ -60,12 +60,15 @@ def home(request):
     initial_data = { 'redirect_name': 'home', 'result_type': 'home' }
     context['search_form'] = SearchForm(initial=initial_data)
     context['text_posts'] = TextPost.get_posts_from_user(request.user)
-    return render(request, 'home.html', context)
 
-@login_required
-def post_comment(request):
-    data = serializers.serialize('json', TextPost.objects.all())
-    return HttpResponse(data, content_type='application/json')
+    comment_forms = {}
+    context['comment_forms'] = comment_forms
+
+    for post in context['text_posts']:
+        comment_form = CommentForm()
+        comment_forms[post.id] = comment_form
+
+    return render(request, 'home.html', context)
 
 # stream
 @login_required
@@ -266,11 +269,11 @@ def comment(request, redirect_name, user_id, text_post_id):
 
     form.save()
 
-    if (redirect_name == 'profile'):
-        return redirect(reverse('profile', kwargs={'username':user.username}))
-    else:
-        data = serializers.serialize('json', [new_comment])
-        return HttpResponse(data, content_type='application/json')
+    # if (redirect_name == 'profile'):
+    #     return redirect(reverse('profile', kwargs={'username':user.username}))
+    #else:
+    data = serializers.serialize('json', [new_comment])
+    return HttpResponse(data, content_type='application/json')
 
 @login_required
 def search_profile(request, user_id):
@@ -304,6 +307,13 @@ def search_profile(request, user_id):
     context['user'] = user
     user_profile = UserProfile.objects.get(user=user)
     context['user_profile'] = user_profile
+
+    comment_forms = {}
+    context['comment_forms'] = comment_forms
+
+    for post in context['text_posts']:
+        comment_form = CommentForm()
+        comment_forms[post.id] = comment_form
 
     if len(user.email) > 16:
         new_end_index = 13
@@ -432,7 +442,14 @@ def profile(request, username):
     context['user'] = user
     context['user_fn_len'] = len(user.first_name)
     context['user_ln_len'] = len(user.last_name)
-    print >>sys.stderr, context['user_fn_len']
+
+    comment_forms = {}
+    context['comment_forms'] = comment_forms
+
+    for post in context['text_posts']:
+        comment_form = CommentForm()
+        comment_forms[post.id] = comment_form
+
 
     user_profile = UserProfile.objects.get(user=user)
     context['user_profile'] = user_profile

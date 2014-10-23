@@ -19,58 +19,9 @@
 				{% endfor %}
 
 				{% for text_post in text_posts %}
-				<section class="posts panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-text">
-					{{ text_post.text }}
-
-					<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' text_post.user.username %}">{{ text_post.user.username }}</a></span></span>
-					<span class="comment">
-						<span class="plus add-comment-btn" data-post-id="{{text_post.id}}">+</span>
-						<span class="show-comments-btn" data-post-id="{{text_post.id}}">
-							<span id="comment-count-{{text_post.id}}">{{text_post.comments.all.count}}</span> comments
-						</span>
-					</span>
-
-					<span class="dislike">
-						<a href="{% url 'dislike' dislike_redirect user.id text_post.id %}">
-							<span class="heart">♥</span>
-						</a> 
-						{{text_post.dislikes.all.count}} dislikes
-					</span>
-
-					<a href="{% url 'profile' text_post.user.username %}"><article class="grumbl-author-photo" style="background: url('{% url 'profile-picture' text_post.user.id %}') center center no-repeat; background-size: cover;">
-					</article></a>
-				</section>
-				<section id="comment-box-{{text_post.id}}" class="collapsed add-comment-box">
-					<div class="panel panel-default panel-grumblr panel-form" data-post-id="{{text_post.id}}">
-						<form class="comment-form" action="{% url 'comment' comment_redirect user.id text_post.id %}" method="post" data-url-name="comment" data-redirect-name="{{comment_redirect}}" data-user-id="{{user.id}}" data-post-id="{{text_post.id}}">
-								{% with comment_form=comment_forms|get_item:text_post.id %}
-								{% for field in comment_form.visible_fields %}
-									{{field.label_tag}}
-									{{field}}
-								{% endfor %}
-
-								{% for field in comment_form.hidden_fields %}
-									{{field}}
-								{% endfor %}
-								{% endwith %}
-
-								{% csrf_token %}
-								<!-- <label for="id_text">Comment:</label>
-								<textarea class="textarea-text-post" cols="40" id="id_text" maxlength="20000" name="text" placeholder="Offer some words of encouragement...or not..." rows="10"></textarea> -->
-								<input class="post-comment-btn btn-post btn-submit" type="submit" value="Post Comment">
-						</form>
-					</div>
-				</section>
-				<section id="comments-{{text_post.id}}" class="collapsed comments" data-post-id="{{text_post.id}}">
+					{% include 'post-template.html' with text_post=text_post user=user picture='picture' author='author' %}
 					
-
-				<!-- {% for comment in text_post.comments.all %}
-					<div class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">
-						{{comment}}
-						<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' comment.user.id %}">{{ comment.user }}</a></span></span>
-					</div>
-				{% endfor %} -->
-				</section>
+					{% include 'comment-box-template.html' with comment_forms=comment_forms text_post=text_post user=user %}
 				{% endfor %}
 
 				<!-- <section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-photo">

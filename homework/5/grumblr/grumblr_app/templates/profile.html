@@ -1,16 +1,17 @@
 {% extends 'base-template.html' %}
 {% block content %}
+	{% load myfilters %}
 	<div class="container-fluid">
 		{% include 'header-template.html' with redirect='home' header_type='side' %}
 		<div class="row">
 			<div class="col-md-3">
 				<div class="panel panel-default panel-grumblr sidebar-profile">
-					<a href="{% url 'profile' user.id %}"><div class="profile-picture" style="background: url('{% url 'profile-picture' user.id %}') center center no-repeat; background-size: cover;">
+					<a href="{% url 'profile' user.username %}"><div class="profile-picture" style="background: url('{% url 'profile-picture' user.id %}') center center no-repeat; background-size: cover;">
 					</div></a>
 
 					<ul class="profile-about">
 						<li>
-							<a href="{% url 'profile' user.id %}">
+							<a href="{% url 'profile' user.username %}">
 							{% if user.first_name and user.last_name %}
 								<h2 class="profile-name">
 									{{ user.first_name|add:' '|add:user.last_name|truncatechars:13 }}
@@ -32,7 +33,7 @@
 						</li>
 						<li>
 							<h3 class="profile-info profile-username">
-								<a href="{% url 'profile' user.id %}">
+								<a href="{% url 'profile' user.username %}">
 									<span class="glyphicon glyphicon-g">g</span>
 									{{ user|truncatechars:16 }}
 								</a>
@@ -106,35 +107,21 @@
 
 				{% for error in errors %}
 				<section class="panel panel-default panel-grumblr panel-message">
-					<span class="glyphicon glyphicon-exclamation-sign"></span> {{ error }}
+					<span class="glyphicon glyphicon-exclamation-sign"></span> 
+					{{error}}
 				</section>
 				{% endfor %}
 
 				{% if text_posts|length > 0 %}
 					{% for text_post in text_posts %}
-					<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
-						{{ text_post.text }}
-						<span class="comment">
-							<a href="{% url 'comment' comment_redirect user.id text_post.id %}">
-								<span class="plus">+</span>
-							</a> 
-							{{text_post.comments.all.count}} comments
-						</span>
 
-						<span class="dislike">
-							<a href="{% url 'dislike' dislike_redirect user.id text_post.id %}">
-								<span class="heart">♥</span>
-							</a> 
-							{{text_post.dislikes.all.count}} dislikes
-						</span>
-					</section>
-						{% for comment in text_post.comments.all %} 
-							<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">
-								{{comment}}
-								<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' comment.user.id %}">{{ comment.user }}</a></span></span>
-							</section>
-						{% endfor %}
+						{% include 'post-template.html' with text_post=text_post user=user %}
+						
+						{% include 'comment-box-template.html' with comment_forms=comment_forms text_post=text_post user=user %}
 					{% endfor %}
+
+
+					
 				{% elif errors|length <= 0 %}
 					<section class="panel panel-default panel-grumblr panel-message">
 						Looks like {{ user }} has nothing to grumble about.

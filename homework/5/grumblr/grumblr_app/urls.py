@@ -32,7 +32,6 @@ urlpatterns = patterns('',
     # url(r'^comment$', 'grumblr_app.views.comment', name='comment'),
     # url(r'^dislike$', 'grumblr_app.views.comment', name='dislike'),
     
-    url(r'^post-comment$', 'grumblr_app.views.post_comment', name='post-comment'),
     url(r'^fetch-comments$', 'grumblr_app.views.fetch_comments', name='fetch-comments'),
     url(r'^get-user$', 'grumblr_app.views.get_user', name='get-user'),
 
