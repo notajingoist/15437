@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
+from django.core import serializers
 from mimetypes import guess_type
 
 # Decorator to use built-in authentication system
@@ -47,6 +48,11 @@ def home(request):
     context['text_posts'] = TextPost.get_posts_from_user(request.user)
     return render(request, 'home.html', context)
 
+@login_required
+def post_comment(request):
+    data = serializers.serialize('json', TextPost.objects.all())
+    return HttpResponse(data, content_type='application/json')
+
 # stream
 @login_required
 def stream(request):
@@ -58,6 +64,50 @@ def stream(request):
     initial_data = { 'redirect_name': 'stream', 'result_type': 'stream' }
     context['search_form'] = SearchForm(initial=initial_data)
     context['text_posts'] = TextPost.get_stream_posts(request.user)
+
+    comment_forms = {}
+    context['comment_forms'] = comment_forms
+
+    for post in context['text_posts']:
+        comment_form = CommentForm()
+        comment_forms[post.id] = comment_form
+        #comment_forms['hi'] = CommentForm()
+
+
+    # comment_forms = {}
+    # comment_forms[]
+
+    # {{comment_forms}}
+
+    # {{comment_form}}
+
+    # context['comment_redirect'] = redirect_name
+    # context['user_id'] = user_id
+    # text_post = TextPost.objects.get(id=text_post_id)
+    # context['text_post'] = text_post
+
+    # if request.method == 'GET':
+    #     context['form'] = CommentForm()
+    #     return render(request, 'comment.html', context)
+
+    # new_comment = Comment(user=request.user, post=text_post)
+    # form = CommentForm(request.POST, instance=new_comment)
+    # context['form'] = form
+
+    # if not form.is_valid():
+    #     return render(request, 'comment.html', context)
+
+    # form.save()
+
+    # if (redirect_name == 'profile'):
+    #     return redirect(reverse('profile', kwargs={'user_id':user_id}))
+    # else:
+    #    return redirect(reverse(redirect_name))
+
+
+
+
+
     return render(request, 'stream.html', context)
 
 @login_required
@@ -123,8 +173,25 @@ def text_post(request):
     return redirect(reverse('home'))
 
 @login_required
+def fetch_comments(request):
+    if request.method == 'GET':
+        if request.is_ajax():
+            if 'post_id' in request.GET and request.GET['post_id']:
+                pass
+                text_post = TextPost.objects.get(id=request.GET['post_id'])
+                comments = text_post.comments.all()
+                data = serializers.serialize('json', comments)
+                return HttpResponse(data, content_type='application/json')
+
+    data = serializers.serialize('json', Comment.objects.none())
+    return HttpResponse(data, content_type='application/json')
+
+@login_required
 @transaction.atomic
 def comment(request, redirect_name, user_id, text_post_id):
+    text_post = TextPost.objects.get(id=text_post_id)
+    data = serializers.serialize('json', text_post.comments.all())
+    return HttpResponse(data, content_type='application/json')
     context = {}
     initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
     context['search_form'] = SearchForm(initial=initial_data)
@@ -150,7 +217,9 @@ def comment(request, redirect_name, user_id, text_post_id):
     if (redirect_name == 'profile'):
         return redirect(reverse('profile', kwargs={'user_id':user_id}))
     else:
-       return redirect(reverse(redirect_name))
+        # return redirect(reverse(redirect_name))
+        data = serializers.serialize('json', text_post.comments.all())
+        return HttpResponse(data, content_type='application/json')
 
 @login_required
 def search_profile(request, user_id):

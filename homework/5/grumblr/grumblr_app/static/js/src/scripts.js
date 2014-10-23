@@ -3,6 +3,8 @@ var GRUMBLR = {
 		// this.$hiddenPhotoInput = $('#edit-upload-picture-hidden');
 		this.setVars();
 		this.bindEvents();
+
+		this.fetchComments();
 		// console.log("loaded javascript")
 	},
 
@@ -11,6 +13,9 @@ var GRUMBLR = {
 		this.$addCommentBtns = $('.add-comment-btn');
 		this.$addCommentBoxes = $('.add-comment-boxes');
 		this.$showCommentsBtns = $('.show-comments-btn');
+		// this.$postCommentBtns = $('.post-comment-btn');
+		this.$commentForms = $('.comment-form');
+		this.$comments = $('.comments');
 	},
 
 	bindEvents: function() {
@@ -20,18 +25,60 @@ var GRUMBLR = {
 		this.$resetText.on('mouseover', this.activateHover.bind(this));
 		this.$resetText.on('mouseout', this.deactivateHover.bind(this));
 
-		this.$addCommentBtns.on('click',this.toggleAddCommentBox.bind(this));
+		this.$addCommentBtns.on('click', this.toggleAddCommentBox.bind(this));
 		this.$showCommentsBtns.on('click', this.toggleComments.bind(this));
+		this.$commentForms.on('click', '.post-comment-btn', this.postComment.bind(this));
 		// this.$hiddenPhotoInput.on('change', this.uploadInput.bind(this));
 		// $('#edit-upload-picture').on('click', this.triggerHiddenPhotoInput.bind(this));
+	},
+
+	fetchComments: function() {
+
+		this.$comments.each(function(idx, elem) {
+			var $elem = $(elem);
+			var postId = $elem.data('postId');
+
+			var fetchCommentRequest = $.get(
+				'/fetch-comments',
+				{
+					post_id: postId
+				},
+				'json'
+			);
+
+			
+
+			fetchCommentRequest.done(function(response) {
+				$elem.html('');
+
+				for (var i = 0; i < response.length; i++) {
+					var comment = response[i].fields;
+					var commentContent = comment.text;
+					var commentAuthor = comment.user;
+					var commentPostId = comment.post;
+					var commentHtml = '<div class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">' 
+										+ commentContent 
+										+ '<span class="post-info">Posted by <span class="author"><a href="/profile/"' 
+										+ commentAuthor + '">' 
+										+ commentAuthor + '</a></span></span></div>';
+					$elem.append(commentHtml);
+				}
+			});
+		});
+
+
+
 	},
 
 	toggleAddCommentBox: function(e) {
 		var $this = $(e.currentTarget);
 		var postId = $this.data('postId');
 		var $commentBox = $('#comment-box-' + postId);
-		$commentBox.toggleClass('collapsed');
+		$commentBox.stop(true, false).slideToggle(function() {
+			$commentBox.toggleClass('collapsed');
+		});
 
+		e.preventDefault();
 	},
 
 	toggleComments: function(e) {
@@ -41,6 +88,66 @@ var GRUMBLR = {
 		$comments.stop(true, false).slideToggle(function() {
 			$comments.toggleClass('collapsed');
 		});
+
+		e.preventDefault();
+	},
+
+	postComment: function(e) {
+		var $this = $(e.currentTarget);
+		var $form = $this.parent();
+		var postId = $form.data('postId');
+		var csrf = $form.find('input[name="csrfmiddlewaretoken"]').val();
+
+		var $comments = $('#comments-' + postId);
+		console.log($comments);
+		
+		// var urlName = $form.data('urlName');
+		// var redirectName = $form.data('redirectName');
+		// var userId = $form.data('userId');
+		// var postId = $form.data('postId');
+		
+		var commentText = $form.find('.textarea-comment').val();
+
+		var commentData = $form.data();
+		var url = commentData.urlName + '/' 
+					+ commentData.redirectName + '/' 
+					+ commentData.userId + '/' 
+					+ commentData.postId;
+					
+		//var url = '/post-comment';
+
+		var postCommentRequest = $.post(
+			url,
+			{
+				csrfmiddlewaretoken: csrf,
+				text: commentText
+			},
+			'json'
+		);
+
+		postCommentRequest.done(function(response) {
+			//console.log(jQuery.parseJSON('[{"blah": "blah"}]'));
+			
+			$comments.html('');
+
+			for (var i = 0; i < response.length; i++) {
+				var comment = response[i].fields;
+				var commentContent = comment.text;
+				var commentAuthor = comment.user;
+				var commentPostId = comment.post;
+				//console.log(commentContent);
+
+
+				var commentHtml = '<div class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">' + commentContent + '<span class="post-info">Posted by <span class="author"><a href="/profile/"' + commentAuthor + '">' + commentAuthor + '</a></span></span></div>';
+				$comments.append(commentHtml);
+
+				//$comments.append($(commentHtml));
+			}
+
+		});
+
+		e.preventDefault();
+		//return false;
 	},
 
 	// uploadInput: function(e) {

@@ -31,6 +31,9 @@ urlpatterns = patterns('',
 
     # url(r'^comment$', 'grumblr_app.views.comment', name='comment'),
     # url(r'^dislike$', 'grumblr_app.views.comment', name='dislike'),
+    
+    url(r'^post-comment$', 'grumblr_app.views.post_comment', name='post-comment'),
+    url(r'^fetch-comments$', 'grumblr_app.views.fetch_comments', name='fetch-comments'),
 
     url(r'^comment/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)$', 'grumblr_app.views.comment', name='comment'),
     url(r'^dislike/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)$', 'grumblr_app.views.dislike', name='dislike'),

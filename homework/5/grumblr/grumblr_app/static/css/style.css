@@ -104,6 +104,9 @@ textarea {
 textarea.textarea-text-post {
   height: 200px;
 }
+textarea.textarea-comment {
+  height: 100px;
+}
 textarea#edit-about-blurb {
   height: 100px;
 }
