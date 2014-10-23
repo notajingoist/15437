@@ -38,6 +38,8 @@ var GRUMBLR = {
 			var $elem = $(elem);
 			var postId = $elem.data('postId');
 
+
+
 			var fetchCommentRequest = $.get(
 				'/fetch-comments',
 				{
@@ -45,8 +47,6 @@ var GRUMBLR = {
 				},
 				'json'
 			);
-
-			
 
 			fetchCommentRequest.done(function(response) {
 				$elem.html('');
@@ -63,6 +63,8 @@ var GRUMBLR = {
 										+ commentAuthor + '</a></span></span></div>';
 					$elem.append(commentHtml);
 				}
+
+				$('#comment-count-' + postId).html(response.length);
 			});
 		});
 
@@ -141,8 +143,12 @@ var GRUMBLR = {
 				var commentHtml = '<div class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">' + commentContent + '<span class="post-info">Posted by <span class="author"><a href="/profile/"' + commentAuthor + '">' + commentAuthor + '</a></span></span></div>';
 				$comments.append(commentHtml);
 
+				$('#comment-count-' + postId).html(response.length);
+
 				//$comments.append($(commentHtml));
 			}
+
+			$form[0].reset();
 
 		});
 

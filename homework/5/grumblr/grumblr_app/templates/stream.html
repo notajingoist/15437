@@ -27,7 +27,7 @@
 						<!-- <a href="{% url 'comment' comment_redirect user.id text_post.id %}"> -->
 							<span class="plus add-comment-btn" data-post-id="{{text_post.id}}">+</span>
 						<!-- </a>  -->
-						<span class="show-comments-btn" data-post-id="{{text_post.id}}">{{text_post.comments.all.count}} comments</span>
+						<span class="show-comments-btn" data-post-id="{{text_post.id}}"><span id="comment-count-{{text_post.id}}">{{text_post.comments.all.count}}</span> comments</span>
 					</span>
 
 					<span class="dislike">

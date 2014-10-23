@@ -189,9 +189,9 @@ def fetch_comments(request):
 @login_required
 @transaction.atomic
 def comment(request, redirect_name, user_id, text_post_id):
-    text_post = TextPost.objects.get(id=text_post_id)
-    data = serializers.serialize('json', text_post.comments.all())
-    return HttpResponse(data, content_type='application/json')
+    # text_post = TextPost.objects.get(id=text_post_id)
+    # data = serializers.serialize('json', text_post.comments.all())
+    # return HttpResponse(data, content_type='application/json')
     context = {}
     initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
     context['search_form'] = SearchForm(initial=initial_data)
