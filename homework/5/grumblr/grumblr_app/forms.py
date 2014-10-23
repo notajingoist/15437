@@ -55,6 +55,45 @@ class ResetForm(forms.Form):
             raise forms.ValidationError('This email does not exist.')
         return email
 
+class SetPasswordForm(forms.ModelForm):
+    bullets_placeholder = u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'
+    class Meta:
+        bullets_placeholder = u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'
+        model = User
+        fields = ('password',)
+        widgets = {
+            # 'username': forms.HiddenInput(attrs={'placeholder': 'Username'}),
+            'password': forms.PasswordInput(attrs={'placeholder': bullets_placeholder}),
+        }
+        error_messages = {
+            'password': {
+                'required': 'Password is required.'
+            },
+        }
+    password2 = forms.CharField(max_length=200, label='Confirm Password', 
+                                error_messages={'required': 'Password confirmation is required.'}, 
+                                widget=forms.PasswordInput(attrs={'placeholder': bullets_placeholder}))  
+
+    def clean(self):
+        cleaned_data = super(SetPasswordForm, self).clean()
+        password = cleaned_data.get('password')
+        password2 = cleaned_data.get('password2')
+        if password and password2 and password != password2:
+            raise forms.ValidationError('Passwords did not match.')
+        return cleaned_data
+
+    def save(self, username):
+        user = User.objects.get(username=username)
+        user.set_password(self.cleaned_data.get('password'))
+        user.save()
+        return user
+
+    # def clean_username(self):
+    #     username = self.cleaned_data.get('username')
+    #     if len(User.objects.filter(username__exact=username)) <= 0:
+    #         raise forms.ValidationError('User does not exist.')
+    #     return username
+
 
 class SearchForm(forms.Form):
     keyword = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': 'search...', 'id': 'search-input'}), required=False)
@@ -155,24 +194,40 @@ class UserProfileForm(forms.Form):
                                 widget=forms.Textarea(attrs={'placeholder': 'Write a little about yourself...', 'id': 'edit-about-blurb'}),
                                 required=False)
 
-
+    # current_password = forms.CharField(max_length=200, 
+    #                             label='Current Password', 
+    #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}),
+    #                             required=False)
+    
     # password = forms.CharField(max_length=200, 
     #                             label='New Password', 
-    #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}))
+    #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}),
+    #                             required=False)
     # password2 = forms.CharField(max_length=200, 
     #                             label='Confirm Password', 
-    #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'})) 
+    #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}),
+    #                             required=False)
+
+    def clean(self):
+        cleaned_data = super(UserProfileForm, self).clean()
+        # user = User.objects.get(username=self.cleaned_data.get('username'))
+        # valid_password = user.check_password(self.cleaned_data.get('current_password'))
+        
+        # if password = self.cleaned_data.get('password')
+        # password2 = self.cleaned_data.get('password2')
+
+
+        # if not valid_password:
+        #     raise forms.ValidationError('Incorrect password.')
+        # password = self.cleaned_data.get('password')
+        # password2 = self.cleaned_data.get('password2')
+        # if password and password2 and password != password2:
+        #     raise forms.ValidationError('Passwords did not match.')
+        return cleaned_data
 
     # def clean(self):
     #     cleaned_data = super(UserProfileForm, self).clean()
-    #     password = cleaned_data.get('password')
-    #     password2 = cleaned_data.get('password2')
-    #     if password and password2 and password != password2:
-    #         raise forms.ValidationError('Passwords did not match.')
     #     return cleaned_data
-    def clean(self):
-        cleaned_data = super(UserProfileForm, self).clean()
-        return cleaned_data
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -196,6 +251,8 @@ class UserProfileForm(forms.Form):
         user_instance.first_name = self.cleaned_data.get('first_name')
         user_instance.username = self.cleaned_data.get('username')
         user_instance.email = self.cleaned_data.get('email')
+        user_instance.set_password(self.cleaned_data.get('password'))
+
         # user_instance.password = self.cleaned_data.get('password')
         # user_instance.password2 = self.cleaned_data.get('password2')
 

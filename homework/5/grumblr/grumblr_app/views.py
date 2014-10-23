@@ -129,6 +129,47 @@ def stream(request):
 
 @login_required
 @transaction.atomic
+def settings(request):
+    context = {}
+    user = request.user
+    user_profile = UserProfile.objects.get(user=user)
+
+    # errors = []
+    # context['errors'] = errors
+    context['user'] = user
+    context['user_profile'] = user_profile
+    context['picture-src'] = ''
+
+    initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
+    context['search_form'] = SearchForm(initial=initial_data)
+
+    initial_user = {
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'username': user.username,
+                    'email': user.email,
+                    'location': user_profile.location,
+                    'about': user_profile.about,
+                    'picture': user_profile.picture
+                }
+
+    if request.method == 'GET':
+        context['form'] = UserProfileForm(initial=initial_user)
+        return render(request, 'edit-profile.html', context)
+
+    form = UserProfileForm(request.POST, request.FILES, initial=initial_user)
+    context['form'] = form
+
+    if not form.is_valid():
+        return render(request, 'edit-profile.html', context)
+
+    form.save(user_instance=request.user, user_profile_instance=user_profile)
+    update_session_auth_hash(request, user)
+
+    return render(request, 'settings.html', context)
+
+@login_required
+@transaction.atomic
 def edit_profile(request):
     context = {}
     user = request.user
@@ -521,6 +562,63 @@ def reset_form(request):
 
     return render(request, 'reset.html', context)
 
+# @transaction.atomic
+# def save_password(request):
+#     context = {}
+#     # user = get_object_or_404(User, username=username)
+
+#     if request.method == 'GET':
+#         raise Http404
+
+#     form = SetPasswordForm(request.POST)
+#     context['form'] = form
+
+#     if not form.is_valid():
+#         raise Http404
+
+#     username = form.cleaned_data['username'];
+#     user = get_object_or_404(User, username=username)
+
+#     user.password = form.cleaned_data['password'];
+#     user.save()
+
+#     return render(request, 'login-register.html', context)
+
+@transaction.atomic
+def confirm_reset(request, username, token):
+    context = {}
+    context['username'] = username
+    context['token'] = token
+    context['reset_message'] = 'Reset your password.'
+    user = get_object_or_404(User, username=username)
+
+    if not default_token_generator.check_token(user, token):
+        raise Http404
+
+    # if request.method == 'POST':
+    #     raise Http404
+
+    if request.method == 'GET':
+        form = SetPasswordForm()
+        context['form'] = form
+        return render(request, 'confirm-reset.html', context)
+
+    form = SetPasswordForm(request.POST)
+    context['form'] = form
+
+    if not form.is_valid():
+        print >>sys.stderr, form.errors.items()
+        print >>sys.stderr, 'ERRORRRR'
+        print >>sys.stderr, form.data['password']
+        raise Http404
+
+    #user.set_password(form.cleaned_data['password']);
+    form.save(username)
+
+    context['confirmed'] = 'Your password has been reset.'
+
+    return render(request, 'login-register.html', context)
+
 def reset(request):
     context = {}
     errors = []
@@ -537,9 +635,27 @@ def reset(request):
     if not form.is_valid():
         return render(request, 'reset.html', context)
 
-    context['reset_message'] = 'You have been sent an email with instructions on how to reset your password.'
+    user = User.objects.get(email=form.cleaned_data['email'])
+    token = default_token_generator.make_token(user)
+
+    email_body = """
+    Please click the link below to reset your password:
+
+    http://%s%s
+    """ % (request.get_host(),
+            reverse('confirm-reset', args=(user.username, token)))
+
+    send_mail(subject="Reset Your Password",
+                message=email_body,
+                from_email="jing+xiao@andrew.cmu.edu",
+                recipient_list=[user.email])
+    
+    context['email'] = form.cleaned_data['email']
+
+    context['reset_message'] = 'You have been sent an email with a link to reset your password.'
 
     return render(request, 'reset.html', context)
+
 
 def register_form(request):
     context = {}
