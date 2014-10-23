@@ -17,16 +17,16 @@
 				{% endfor %}
 
 				{% for text_post in text_posts %}
-				<section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-text">
+				<section class="posts panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-text">
 					{{ text_post.text }}
 
 					<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' text_post.user.id %}">{{ text_post.user }}</a></span></span>
 					<!-- <span class="glyphicon glyphicon-plus"></span> -->
 					<span class="comment">
-						<a href="{% url 'comment' comment_redirect user.id text_post.id %}">
-							<span class="plus">+</span>
-						</a> 
-						{{text_post.comments.all.count}} comments
+						<!-- <a href="{% url 'comment' comment_redirect user.id text_post.id %}"> -->
+							<span class="plus add-comment-btn" data-post-id="{{text_post.id}}">+</span>
+						<!-- </a>  -->
+						<span class="show-comments-btn" data-post-id="{{text_post.id}}">{{text_post.comments.all.count}} comments</span>
 					</span>
 
 					<span class="dislike">
@@ -36,16 +36,34 @@
 						{{text_post.dislikes.all.count}} dislikes
 					</span>
 
-					<article class="grumbl-author-photo" style="background: url('{% url 'profile-picture' text_post.user.id %}') center center no-repeat; background-size: cover;">
-					</article>
+					<a href="{% url 'profile' text_post.user.id %}"><article class="grumbl-author-photo" style="background: url('{% url 'profile-picture' text_post.user.id %}') center center no-repeat; background-size: cover;">
+					</article></a>
 				</section>
+				<section id="comment-box-{{text_post.id}}" class="collapsed add-comment-box panel panel-default panel-grumblr panel-form" data-post-id="{{text_post.id}}">
+					<form action="/" method="post">
+						{% for field in comment_form.visible_fields %}
+							{{field.label_tag}}
+							{{field}}
+						{% endfor %}
 
-					{% for comment in text_post.comments.all %} 
-						<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">
-							{{comment}}
-							<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' comment.user.id %}">{{ comment.user }}</a></span></span>
-						</section>
-					{% endfor %}
+						{% for field in form.hidden_fields %}
+							{{field}}
+						{% endfor %}
+
+						{% csrf_token %}
+						<!-- <label for="id_text">Comment:</label>
+						<textarea class="textarea-text-post" cols="40" id="id_text" maxlength="20000" name="text" placeholder="Offer some words of encouragement...or not..." rows="10"></textarea>
+						<input class="btn-post btn-submit" type="submit" value="Post Comment"> -->
+					</form>
+				</section>
+				<section id="comments-{{text_post.id}}" class="collapsed comments">
+				{% for comment in text_post.comments.all %}
+					<div class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">
+						{{comment}}
+						<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' comment.user.id %}">{{ comment.user }}</a></span></span>
+					</div>
+				{% endfor %}
+				</section>
 				{% endfor %}
 
 				<!-- <section class="panel panel-default panel-grumblr panel-grumbl panel-grumbl-stream grumbl-photo">

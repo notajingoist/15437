@@ -173,37 +173,23 @@ input.btn-submit {
   cursor: pointer;
 }
 .grumbl-author-photo {
+  transition: opacity 0.2s ease-in-out 0;
   position: absolute;
-  right: -110px;
   top: 0;
-  width: 110px;
+  padding-left: 0;
+  margin-left: 0;
+  right: -17%;
+  width: 17%;
   height: 110px;
   display: block;
   border-left: 4px solid #95decb;
   box-shadow: 4px 4px 0 #ffd47a;
 }
-.grumbl-author-photo.bob {
-  background: url('images/bob.png') center center no-repeat;
-  background-size: cover;
-}
-.grumbl-author-photo.tina {
-  background: url('images/tina.jpg') center center no-repeat;
-  background-size: cover;
-}
-.grumbl-author-photo.linda {
-  background: url('images/linda.gif') center center no-repeat;
-  background-size: cover;
-}
-.grumbl-author-photo.gene {
-  background: url('images/gene.png') center center no-repeat;
-  background-size: cover;
-}
-.grumbl-author-photo.louise {
-  background: url('images/louise.gif') center center no-repeat;
-  background-size: cover;
+.grumbl-author-photo:hover {
+  opacity: 0.6;
 }
 .panel-grumbl-stream {
-  width: calc(88%);
+  width: 85.5%;
 }
 .panel-form {
   background-color: #ffde99;
@@ -263,6 +249,15 @@ input.btn-submit {
 }
 .panel-grumbl .post-info .author a:hover {
   color: #ffde99;
+}
+.panel-grumbl .show-comments-btn,
+.panel-grumbl .show-dislikes-btn {
+  transition: color 0.2s ease-in-out 0;
+}
+.panel-grumbl .show-comments-btn:hover,
+.panel-grumbl .show-dislikes-btn:hover {
+  color: #ffde99;
+  cursor: pointer;
 }
 .panel-grumbl .dislike,
 .panel-grumbl .comment {
@@ -633,10 +628,8 @@ ul .glyphicon {
 }
 .comment-post {
   color: #fff;
-  width: 88%;
   border: 4px solid #ffffff;
   background-color: #95decb;
-  margin-left: 12%;
 }
 .comment-post .post-info {
   color: #fff;
@@ -646,4 +639,15 @@ ul .glyphicon {
 }
 .comment-post .post-info .author a:hover {
   color: #fff;
+}
+.subpost-element {
+  width: 88%;
+  margin-left: 12%;
+}
+.comments {
+  width: 88%;
+  margin-left: 12%;
+}
+.collapsed {
+  display: none;
 }

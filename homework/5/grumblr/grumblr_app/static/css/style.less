@@ -261,40 +261,26 @@ input {
 }
 
 .grumbl-author-photo {
-	&.bob {
-		background: url('images/bob.png') center center no-repeat;
-		background-size: cover;
+	transition: opacity 0.2s ease-in-out 0;
+	
+	&:hover {
+		opacity: 0.6;
 	}
-	&.tina {
-		background: url('images/tina.jpg') center center no-repeat;
-		background-size: cover;
-	}
-	&.linda {
-		background: url('images/linda.gif') center center no-repeat;
-		background-size: cover;
-	}
-	&.gene {
-		background: url('images/gene.png') center center no-repeat;
-		background-size: cover;
-	}
-	&.louise {
-		background: url('images/louise.gif') center center no-repeat;
-		background-size: cover;
-	}
-
-	// &:hover {
-	// 	background: @turquoise;
-	// 	color: #fff;
-	// }
 
 	position: absolute;
 	//right: -104px;
-	right: -110px;
+	//right: -15%;//110px;
 	top: 0;
+	padding-left: 0;
+	margin-left: 0;
+	//right: -18%;
+	right: -17%;
 
 	//margin-left: -30px;
 
-	width: 110px;
+	// width: 110px;
+	// height: 110px;
+	width: 17%;
 	height: 110px;
 	
 	display: block;
@@ -305,7 +291,8 @@ input {
 }
 
 .panel-grumbl-stream {
-	width: calc(100% - 12px);
+	width: 85.5%;
+	//width: calc(100% - 12px);
 }
 
 .panel-form {
@@ -382,7 +369,15 @@ input {
 		
 	}
 
-	
+	.show-comments-btn,
+	.show-dislikes-btn {
+		transition: color 0.2s ease-in-out 0;
+
+		&:hover {
+			color: @yellow;
+			cursor: pointer;
+		}
+	}
 	
 	.dislike, .comment {
 		transition: color 0.2s ease-in-out 0;
@@ -900,10 +895,10 @@ ul {
 
 .comment-post {
 	color: #fff;
-	width: 88%;
+	// width: 88%;
 	border: @borderWidth solid #fff;
 	background-color: @turquoise;
-	margin-left: 12%;
+	// margin-left: 12%;
 
 	.post-info {
 		color: #fff;
@@ -916,6 +911,36 @@ ul {
 			}
 		}
 	}
+
+	&:last-child {
+		// margin-bottom: 50px;
+		// color: red;
+	}
+}
+
+.subpost-element {
+	// padding-left: 12%;
+	width: 88%;
+	margin-left: 12%;
+}
+
+.comments {
+	width: 88%;
+	margin-left: 12%;
+	//padding-left: 12%;
+	// &:after {
+	// 	content: '';
+	// 	display: block;
+	// 	width: 100%;
+	// 	color: #fff;
+	// 	border-bottom: 1px solid #fff;
+	// 	margin: 25px 0;
+	// }
+}
+
+.collapsed {
+	// height: 0;
+	display: none;
 }
 
 
