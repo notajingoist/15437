@@ -5,7 +5,6 @@ var GRUMBLR = {
 		this.bindEvents();
 
 		this.fetchComments();
-		// console.log("loaded javascript")
 	},
 
 	setVars: function() {
@@ -38,8 +37,6 @@ var GRUMBLR = {
 			var $elem = $(elem);
 			var postId = $elem.data('postId');
 
-
-
 			var fetchCommentRequest = $.get(
 				'/fetch-comments',
 				{
@@ -52,23 +49,16 @@ var GRUMBLR = {
 				$elem.html('');
 
 				for (var i = 0; i < response.length; i++) {
-
-
-
-					console.log(response[i]);
 					var comment = response[i].fields;
 					var commentContent = comment.text;
 					var commentPostId = comment.post;
-					// var commentUserId = comment.user;
 					var commentAuthor = ''
 
 					var getUserRequest = context.getUser(comment.user);
 
 					getUserRequest.done(function(response) {
 						for (var i = 0; i < response.length; i++) {
-							console.log(response[i]);
 							commentAuthor = response[i].fields.username;
-							console.log(commentAuthor);
 						}
 
 						var commentHtml = '<div class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">' 
@@ -79,25 +69,6 @@ var GRUMBLR = {
 						$elem.append(commentHtml);
 
 					});
-
-					// commentAuthor.done(function(response) {
-					// 	console.log(response.length);
-					// 	for (var i = 0; i < response.length; i++) {
-					// 		console.log(response[i]);
-					// 		username = response[i].fields.username;
-					// 	}
-					// 	console.log(response);
-					// });
-
-
-					// var commentAuthor = 'notajingoist';//context.getUser(comment.user);//comment.user;
-					
-					// var commentHtml = '<div class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">' 
-					// 					+ commentContent 
-					// 					+ '<span class="post-info">Posted by <span class="author"><a href="/profile/"' 
-					// 					+ commentAuthor + '">' 
-					// 					+ commentAuthor + '</a></span></span></div>';
-					// $elem.append(commentHtml);
 				}
 
 				$('#comment-count-' + postId).html(response.length);
@@ -109,29 +80,7 @@ var GRUMBLR = {
 	},
 
 	getUser: function(userId) {
-		var getUserRequest = $.get(
-			'/get-user',
-			{
-				user_id: userId
-			},
-			'json'
-		);
-
-		var context = this;
-		//var username = '';
-
-		//$deferred = new $.Deferred();
-
-		// getUserRequest.done(function(response) {
-		// 	for (var i = 0; i < response.length; i++) {
-		// 		console.log(response[i]);
-		// 		var username = response[i].fields.username;
-		// 	}
-		// 	//return username
-		// 	//console.log(username);
-		// });
-
-		//return $deferred.promise();
+		var getUserRequest = $.get('/get-user', { user_id: userId },'json');
 		return getUserRequest;
 	},
 
@@ -164,22 +113,12 @@ var GRUMBLR = {
 		var csrf = $form.find('input[name="csrfmiddlewaretoken"]').val();
 
 		var $comments = $('#comments-' + postId);
-		console.log($comments);
-		
-		// var urlName = $form.data('urlName');
-		// var redirectName = $form.data('redirectName');
-		// var userId = $form.data('userId');
-		// var postId = $form.data('postId');
-		
 		var commentText = $form.find('.textarea-comment').val();
-
 		var commentData = $form.data();
 		var url = commentData.urlName + '/' 
 					+ commentData.redirectName + '/' 
 					+ commentData.userId + '/' 
 					+ commentData.postId;
-					
-		//var url = '/post-comment';
 
 		var postCommentRequest = $.post(
 			url,
@@ -190,34 +129,39 @@ var GRUMBLR = {
 			'json'
 		);
 
-		postCommentRequest.done(function(response) {
-			//console.log(jQuery.parseJSON('[{"blah": "blah"}]'));
-			
-			// $comments.html('');
+		var context = this;
 
+		postCommentRequest.done(function(response) {
 			for (var i = 0; i < response.length; i++) {
 				var comment = response[i].fields;
 				var commentContent = comment.text;
-				var commentAuthor = comment.user;
+				var commentAuthor = ''
 				var commentPostId = comment.post;
-				//console.log(commentContent);
 
+				var commentAuthor = ''
 
-				var commentHtml = '<div class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">' + commentContent + '<span class="post-info">Posted by <span class="author"><a href="/profile/"' + commentAuthor + '">' + commentAuthor + '</a></span></span></div>';
-				$comments.append(commentHtml);
+				var getUserRequest = context.getUser(comment.user);
 
-				var oldCount = $('#comment-count-' + postId).html();
-				$('#comment-count-' + postId).html(parseInt(oldCount) + 1);
+				getUserRequest.done(function(response) {
+					for (var i = 0; i < response.length; i++) {
+						console.log(response[i]);
+						commentAuthor = response[i].fields.username;
+						console.log(commentAuthor);
+					}
 
-				//$comments.append($(commentHtml));
+					var commentHtml = '<div class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">' + commentContent + '<span class="post-info">Posted by <span class="author"><a href="/profile/' + commentAuthor + '">' + commentAuthor + '</a></span></span></div>';
+					$comments.append(commentHtml);
+
+					var oldCount = $('#comment-count-' + postId).html();
+					$('#comment-count-' + postId).html(parseInt(oldCount) + 1);
+
+				});
 			}
 
 			$form[0].reset();
-
 		});
 
 		e.preventDefault();
-		//return false;
 	},
 
 	// uploadInput: function(e) {

@@ -267,7 +267,7 @@ def comment(request, redirect_name, user_id, text_post_id):
     else:
         # return redirect(reverse(redirect_name))
         #response = new_comment | user
-        data = serializers.serialize('json', [{'new_comment': new_comment, 'author': user}])
+        data = serializers.serialize('json', [new_comment])
         return HttpResponse(data, content_type='application/json')
 
 @login_required
