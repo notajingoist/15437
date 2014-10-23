@@ -21,7 +21,8 @@ from models import *
 from forms import *
 
 import sys
-
+from django.http import JsonResponse
+import json
 # Create your views here.
 
 def get_default_context(request):
@@ -236,10 +237,9 @@ def fetch_comments(request):
 @login_required
 @transaction.atomic
 def comment(request, redirect_name, user_id, text_post_id):
-    # text_post = TextPost.objects.get(id=text_post_id)
-    # data = serializers.serialize('json', text_post.comments.all())
-    # return HttpResponse(data, content_type='application/json')
     context = {}
+    # errors = {}
+
     initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
     context['search_form'] = SearchForm(initial=initial_data)
     user = User.objects.filter(id=user_id)
@@ -250,23 +250,25 @@ def comment(request, redirect_name, user_id, text_post_id):
     context['text_post'] = text_post
 
     if request.method == 'GET':
-        context['form'] = CommentForm()
-        return render(request, 'comment.html', context)
+        data = serializers.serialize('json', text_post.comments.all())
+        return HttpResponse(data, content_type='application/json')
+        # context['form'] = CommentForm()
+        # return render(request, 'comment.html', context)
 
     new_comment = Comment(user=request.user, post=text_post)
     form = CommentForm(request.POST, instance=new_comment)
     context['form'] = form
 
     if not form.is_valid():
-        return render(request, 'comment.html', context)
+        errors = json.dumps([{'errors': True}, form.errors])
+        #errors = JsonResponse([{'errors': True}, form.errors])
+        return HttpResponse(errors, content_type='application/json')
 
     form.save()
 
     if (redirect_name == 'profile'):
         return redirect(reverse('profile', kwargs={'username':user.username}))
     else:
-        # return redirect(reverse(redirect_name))
-        #response = new_comment | user
         data = serializers.serialize('json', [new_comment])
         return HttpResponse(data, content_type='application/json')
 
@@ -333,6 +335,7 @@ def search(request):
     search_form = SearchForm(request.POST)
     context['search_form'] = search_form
     #redirect_name = search_form.data['redirect_name']
+    
 
     if not search_form.is_valid():
         raise Http404
@@ -358,6 +361,12 @@ def search(request):
     if len(text_posts) <= 0:
         errors.append('No search results found for ' + context['keyword'])
     context['text_posts'] = text_posts.order_by('-date_created')
+
+    comment_forms = {}
+    context['comment_forms'] = comment_forms
+    for post in context['text_posts']:
+        comment_form = CommentForm()
+        comment_forms[post.id] = comment_form
 
     print >>sys.stderr, text_posts
     #print >>sys.stderr, search_form.data['redirect_name']

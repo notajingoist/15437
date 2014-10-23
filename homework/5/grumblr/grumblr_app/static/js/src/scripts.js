@@ -88,8 +88,10 @@ var GRUMBLR = {
 		var $this = $(e.currentTarget);
 		var postId = $this.data('postId');
 		var $commentBox = $('#comment-box-' + postId);
+		var $errorPanel = $('#error-panel-' + postId);
 		$commentBox.stop(true, false).slideToggle(function() {
 			$commentBox.toggleClass('collapsed');
+			$errorPanel.remove();
 		});
 
 		e.preventDefault();
@@ -112,10 +114,13 @@ var GRUMBLR = {
 		var postId = $form.data('postId');
 		var csrf = $form.find('input[name="csrfmiddlewaretoken"]').val();
 
+		var $errorPanel = $('#error-panel-' + postId);
+		$errorPanel.remove();
 		var $comments = $('#comments-' + postId);
+		var $commentBox = $('#comment-box-' + postId);
 		var commentText = $form.find('.textarea-comment').val();
 		var commentData = $form.data();
-		var url = commentData.urlName + '/' 
+		var url = '/' + commentData.urlName + '/' 
 					+ commentData.redirectName + '/' 
 					+ commentData.userId + '/' 
 					+ commentData.postId;
@@ -131,34 +136,64 @@ var GRUMBLR = {
 
 		var context = this;
 
+		//console.log('postinggg');
+		console.log(url);
+
 		postCommentRequest.done(function(response) {
-			for (var i = 0; i < response.length; i++) {
-				var comment = response[i].fields;
-				var commentContent = comment.text;
-				var commentAuthor = ''
-				var commentPostId = comment.post;
+			console.log(response);
 
-				var commentAuthor = ''
-
-				var getUserRequest = context.getUser(comment.user);
-
-				getUserRequest.done(function(response) {
-					for (var i = 0; i < response.length; i++) {
-						console.log(response[i]);
-						commentAuthor = response[i].fields.username;
-						console.log(commentAuthor);
+			if (response.length > 0 && response[0].errors) {
+				console.log(response[1]);
+				if (response.length > 1) {
+					var errorPanel = '<div id="error-panel-' + postId + '"></div>'
+					var $errorPanel = $(errorPanel).prependTo($commentBox);
+					for (var i = 1; i < response.length; i++) {
+						var errorMessage = response[i].text;
+						var error = '<div class="panel panel-default panel-grumblr panel-message">'
+											+ '<span class="glyphicon glyphicon-exclamation-sign"></span>'
+											+ '<span class="panel-error-message">' 
+											+ errorMessage + '</span></div>';
+						$errorPanel.append(error);
 					}
+					console.log($errorPanel);
+				}
+						
+			} else {
+				for (var i = 0; i < response.length; i++) {
 
-					var commentHtml = '<div class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">' + commentContent + '<span class="post-info">Posted by <span class="author"><a href="/profile/' + commentAuthor + '">' + commentAuthor + '</a></span></span></div>';
-					$comments.append(commentHtml);
+					var comment = response[i].fields;
+					var commentContent = comment.text;
+					var commentAuthor = ''
+					var commentPostId = comment.post;
 
-					var oldCount = $('#comment-count-' + postId).html();
-					$('#comment-count-' + postId).html(parseInt(oldCount) + 1);
+					var commentAuthor = ''
 
-				});
+					var getUserRequest = context.getUser(comment.user);
+
+					getUserRequest.done(function(response) {
+						for (var i = 0; i < response.length; i++) {
+							console.log(response[i]);
+							commentAuthor = response[i].fields.username;
+							console.log(commentAuthor);
+						}
+
+						var commentHtml = '<div class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">' + commentContent + '<span class="post-info">Posted by <span class="author"><a href="/profile/' + commentAuthor + '">' + commentAuthor + '</a></span></span></div>';
+						$comments.append(commentHtml);
+
+						var oldCount = $('#comment-count-' + postId).html();
+						$('#comment-count-' + postId).html(parseInt(oldCount) + 1);
+
+					});
+				}
 			}
 
+			
+
 			$form[0].reset();
+		});
+
+		postCommentRequest.fail(function(response) {
+			console.log('failed!');
 		});
 
 		e.preventDefault();
