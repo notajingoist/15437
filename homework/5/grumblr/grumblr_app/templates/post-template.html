@@ -1,6 +1,12 @@
 {% load myfilters %}
-<section class="posts panel panel-default panel-grumblr panel-grumbl {% if picture %}panel-grumbl-stream{% endif %} grumbl-text">
+<section class="posts panel panel-default panel-grumblr panel-grumbl {% if picture %}panel-grumbl-stream{% endif %} {% if text_post.image %}grumbl-photo{% else %}grumbl-text{% endif %}">
+	{% if text_post.image %}
+	<img src="{% url 'image' text_post.id %}">
+	{% endif %}
+	
+	{% if text_post.image %}<p>{% endif %}
 	{{ text_post.text }}
+	{% if text_post.image %}</p>{% endif %}
 
 	{% if author %}
 	<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' text_post.user.username %}">{{ text_post.user.username }}</a></span></span>
