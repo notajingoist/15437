@@ -136,37 +136,52 @@ def settings(request):
 
     # errors = []
     # context['errors'] = errors
-    context['user'] = user
+    context['user'] = request.user
     context['user_profile'] = user_profile
     context['picture-src'] = ''
 
     initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
     context['search_form'] = SearchForm(initial=initial_data)
 
-    initial_user = {
-                    'first_name': user.first_name,
-                    'last_name': user.last_name,
-                    'username': user.username,
-                    'email': user.email,
-                    'location': user_profile.location,
-                    'about': user_profile.about,
-                    'picture': user_profile.picture
-                }
+    # initial_user = {
+    #                 'first_name': user.first_name,
+    #                 'last_name': user.last_name,
+    #                 'username': user.username,
+    #                 'email': user.email,
+    #                 'location': user_profile.location,
+    #                 'about': user_profile.about,
+    #                 'picture': user_profile.picture
+    #             }
 
     if request.method == 'GET':
-        context['form'] = UserProfileForm(initial=initial_user)
-        return render(request, 'edit-profile.html', context)
+        context['form'] = SetPasswordForm()
+        return render(request, 'settings.html', context)
 
-    form = UserProfileForm(request.POST, request.FILES, initial=initial_user)
+    form = SetPasswordForm(request.POST)
     context['form'] = form
 
+    
+
+
+
     if not form.is_valid():
-        return render(request, 'edit-profile.html', context)
+        context['non_field_errors'] = form.non_field_errors()
+        #print >>sys.stderr, form.errors
+        return render(request, 'settings.html', context)
 
-    form.save(user_instance=request.user, user_profile_instance=user_profile)
-    update_session_auth_hash(request, user)
+    if not request.user.check_password(form.cleaned_data['password']):
+        context['incorrect_password'] = "Incorrect password."
+        return render(request, 'settings.html', context)
 
-    return render(request, 'settings.html', context)
+    # if not valid_password:
+    #     context['non_field_errors'] = form.non_field_errors()
+    #     #print >>sys.stderr, form.errors
+    #     return render(request, 'settings.html', context)
+
+    form.save(username=request.user.username)
+    update_session_auth_hash(request, request.user)
+
+    return render(request, 'home.html', context)
 
 @login_required
 @transaction.atomic
@@ -229,6 +244,28 @@ def text_post(request):
 
     form.save()
     return redirect(reverse('home'))
+
+@login_required
+@transaction.atomic
+def image_post(request):
+    context = {}
+    initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
+    context['search_form'] = SearchForm(initial=initial_data)
+
+    if request.method == 'GET':
+        context['form'] = ImagePostForm()
+        return render(request, 'image-post.html', context)
+
+    new_image_post = TextPost(user=request.user)
+    form = ImagePostForm(request.POST, request.FILES, instance=new_image_post)
+    context['form'] = form
+
+    if not form.is_valid():
+        return render(request, 'image-post.html', context)
+
+    form.save();#user=request.user)
+    return redirect(reverse('home'))
+
 
 @login_required
 def get_user(request):
@@ -511,6 +548,19 @@ def profile_picture(request, user_id):
     return HttpResponse(user_profile.picture, content_type=content_type)
 
 
+@login_required
+def image(request, post_id):
+    # user_profile = get_object_or_404(UserProfile, id=user_id)
+    # if not user_profile:
+    #     raise Http404
+
+    text_post = get_object_or_404(TextPost, id=post_id)
+    if not text_post:
+        raise Http404
+
+    content_type = guess_type(text_post.image.name)
+    return HttpResponse(text_post.image, content_type=content_type)
+
 
 def dislike(request, redirect_name, user_id, text_post_id):
     context = {}
@@ -599,11 +649,11 @@ def confirm_reset(request, username, token):
     #     raise Http404
 
     if request.method == 'GET':
-        form = SetPasswordForm()
+        form = ResetPasswordForm()
         context['form'] = form
         return render(request, 'confirm-reset.html', context)
 
-    form = SetPasswordForm(request.POST)
+    form = ResetPasswordForm(request.POST)
     context['form'] = form
 
     if not form.is_valid():

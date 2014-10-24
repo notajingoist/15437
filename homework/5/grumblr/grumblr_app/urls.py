@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     # url(r'^search-profile/(?P<user_id>\d+)$', 'grumblr_app.views.search_profile', name='search-profile'),
 
     url(r'^text-post/$', 'grumblr_app.views.text_post', name='text-post'),
+    url(r'^image-post/$', 'grumblr_app.views.image_post', name='image-post'),
 
     # url(r'^comment$', 'grumblr_app.views.comment', name='comment'),
     # url(r'^dislike$', 'grumblr_app.views.comment', name='dislike'),
@@ -41,6 +42,7 @@ urlpatterns = patterns('',
     url(r'^dislike/(?P<redirect_name>\w+)/(?P<user_id>\d+)/(?P<text_post_id>\d+)/$', 'grumblr_app.views.dislike', name='dislike'),
 
     url(r'^profile-picture/(?P<user_id>\d+)/$', 'grumblr_app.views.profile_picture', name='profile-picture'),
+    url(r'^image/(?P<post_id>\d+)/$', 'grumblr_app.views.image', name='image'),
 
     url(r'^follow/(?P<following_id>\d+)/$', 'grumblr_app.views.follow', name='follow'),
     url(r'^block/(?P<blocking_id>\d+)/$', 'grumblr_app.views.block', name='block'),

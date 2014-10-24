@@ -517,6 +517,7 @@ ul .glyphicon {
 }
 .btn-login-register,
 .btn-edit-profile,
+.btn-settings,
 .btn-post {
   transition: background-color 0.2s ease-in-out 0;
   border: 4px solid #ffffff;
@@ -534,6 +535,7 @@ ul .glyphicon {
 }
 .btn-login-register:hover,
 .btn-edit-profile:hover,
+.btn-settings:hover,
 .btn-post:hover {
   border: 4px solid #ffffff;
   color: #fff;
@@ -615,6 +617,11 @@ ul .glyphicon {
   position: absolute;
   bottom: 65px;
   width: 100%;
+}
+#post-upload-image {
+  margin-top: 0;
+  margin-bottom: 15px;
+  line-height: 1;
 }
 #edit-upload-picture {
   margin-top: 90px;

@@ -32,6 +32,7 @@ class TextPost(models.Model):
 	user = models.ForeignKey(User, related_name='posts')
 	text = models.TextField(max_length=20000)
 	date_created = models.DateTimeField(auto_now_add=True, default=timezone.now)
+	image = models.ImageField(upload_to='images', default='', blank=True)
 
 	def __unicode__(self):
 		return self.text

@@ -47,7 +47,7 @@ var GRUMBLR = {
 			var postId = $elem.data('postId');
 
 			var fetchCommentRequest = $.get(
-				'/fetch-comments',
+				'/fetch-comments/',
 				{
 					post_id: postId
 				},
@@ -134,7 +134,7 @@ var GRUMBLR = {
 		var url = '/' + commentData.urlName + '/' 
 					+ commentData.redirectName + '/' 
 					+ commentData.userId + '/' 
-					+ commentData.postId;
+					+ commentData.postId + '/';
 
 		var postCommentRequest = $.post(
 			url,
@@ -148,7 +148,8 @@ var GRUMBLR = {
 		var context = this;
 
 		//console.log('postinggg');
-		console.log(url);
+		//console.log(url);
+		//consle.log(commentText);
 
 		postCommentRequest.done(function(response) {
 			console.log(response);
@@ -204,7 +205,7 @@ var GRUMBLR = {
 		});
 
 		postCommentRequest.fail(function(response) {
-			console.log('failed!');
+			console.log(response);
 		});
 
 		e.preventDefault();

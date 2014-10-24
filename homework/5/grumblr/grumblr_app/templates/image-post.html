@@ -1,0 +1,39 @@
+{% extends 'base-template.html' %}
+{% block content %}
+	<div class="container-fluid">
+		{% include 'header-template.html' with redirect='home' header_type='side' %}
+		<div class="row">
+			<div class="col-md-3">
+				{% include 'navbar-template.html' with home='active' placeholder='search your grumbls...' search_action='search-all'%}
+			</div>
+
+			<div class="col-md-9">
+				{% for field in form %}
+					{% for error in field.errors %}
+					<section class="panel panel-default panel-grumblr panel-message">
+						<span class="glyphicon glyphicon-exclamation-sign"></span> {{error}}
+					</section>
+					{% endfor %}
+				{% endfor %}
+
+				<section class="panel panel-default panel-grumblr panel-form">
+					<form enctype="multipart/form-data" action="{% url 'image-post' %}" method="post">
+						
+						{% for field in form.visible_fields %}
+							{{field.label_tag}}
+							{{field}}
+						{% endfor %}
+
+						{% for field in form.hidden_fields %}
+							{{field}}
+						{% endfor %}
+
+						{% csrf_token %}
+						<input class="btn-post btn-submit" type="submit" value="Post Image Grumbl">
+					</form>
+				</section>
+
+			</div>		
+		</div>
+	</div>
+{% endblock %}

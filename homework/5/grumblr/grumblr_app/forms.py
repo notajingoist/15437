@@ -20,6 +20,38 @@ class TextPostForm(forms.ModelForm):
         cleaned_data = super(TextPostForm, self).clean()
         return cleaned_data
 
+class ImagePostForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ImagePostForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = True
+
+    class Meta:
+        model = TextPost
+        fields = ('text', 'image',)
+        widgets = {
+            'text': forms.Textarea(attrs={'placeholder': 'Grumble grumble grumble...', 'class': 'textarea-text-post'}),
+            'image': forms.FileInput(attrs={'id': 'post-upload-image', 'class': 'btn-edit-profile btn-submit'})
+        }
+        error_messages = {
+            'text': {
+                'required': 'You must grumble about something in your post!'
+            },
+            'image': {
+                'required': 'You must upload an image!'
+            }
+        }
+
+    def clean(self):
+        cleaned_data = super(ImagePostForm, self).clean()
+        return cleaned_data
+
+    # def save(self, user):
+    #     new_image_post = TextPost(user=request.user)
+    #     new_image_post.text = self.cleaned_data.get('text')
+    #     new_image_post.image = self.cleaned_data.get('image')
+    #     new_image_post.save()
+    #     return new_image_post
+
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -67,6 +99,69 @@ class SetPasswordForm(forms.ModelForm):
         }
         error_messages = {
             'password': {
+                'required': 'Current password is required.'
+            },
+        }
+
+    password1 = forms.CharField(max_length=200, label='New Password', 
+                                error_messages={'required': 'New password is required.'}, 
+                                widget=forms.PasswordInput(attrs={'placeholder': bullets_placeholder}))  
+    password2 = forms.CharField(max_length=200, label='Confirm Password', 
+                                error_messages={'required': 'Password confirmation is required.'}, 
+                                widget=forms.PasswordInput(attrs={'placeholder': bullets_placeholder}))  
+
+    def clean(self):
+        cleaned_data = super(SetPasswordForm, self).clean()
+        
+        # user = User.objects.get(username=self.cleaned_data.get('username'))
+        # valid_password = user.check_password(self.cleaned_data.get('password'))
+        # if not valid_password:
+        #     raise forms.ValidationError('Incorrect password.')
+
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 and password2 and (password1 != password2):
+            raise forms.ValidationError('Passwords did not match.')
+
+        return cleaned_data
+
+    # def clean_password(self, username):
+    #     password = self.cleaned_data.get('password')
+    #     user = User.objects.filter(username__exact=username)
+
+    #     if len(user) <= 0:
+    #         raise forms.ValidationError('User does not exist.')
+
+    #     valid_password = user.check_password(self.cleaned_data.get('password'))
+    #     if not valid_password:
+    #         raise forms.ValidationError('Incorrect password.')
+
+    #     return password
+
+    def save(self, username):
+        user = User.objects.get(username=username)
+
+        # valid_password = user.check_password(self.cleaned_data.get('password'))
+        # if not valid_password:
+        #     raise forms.ValidationError('Incorrect password.')
+
+        # else:
+        user.set_password(self.cleaned_data.get('password1'))
+        user.save()
+        return user
+
+class ResetPasswordForm(forms.ModelForm):
+    bullets_placeholder = u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'
+    class Meta:
+        bullets_placeholder = u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'
+        model = User
+        fields = ('password',)
+        widgets = {
+            # 'username': forms.HiddenInput(attrs={'placeholder': 'Username'}),
+            'password': forms.PasswordInput(attrs={'placeholder': bullets_placeholder}),
+        }
+        error_messages = {
+            'password': {
                 'required': 'Password is required.'
             },
         }
@@ -75,7 +170,7 @@ class SetPasswordForm(forms.ModelForm):
                                 widget=forms.PasswordInput(attrs={'placeholder': bullets_placeholder}))  
 
     def clean(self):
-        cleaned_data = super(SetPasswordForm, self).clean()
+        cleaned_data = super(ResetPasswordForm, self).clean()
         password = cleaned_data.get('password')
         password2 = cleaned_data.get('password2')
         if password and password2 and password != password2:
@@ -135,8 +230,8 @@ class RegistrationForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(RegistrationForm, self).clean()
-        password = cleaned_data.get('password')
-        password2 = cleaned_data.get('password2')
+        password = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('password2')
         if password and password2 and password != password2:
             raise forms.ValidationError('Passwords did not match.')
         return cleaned_data
@@ -168,7 +263,7 @@ class UserProfileForm(forms.Form):
     #     model = UserProfile
     #     fields = ()
     picture = forms.FileField(label='Profile Picture',
-                                widget=forms.FileInput(attrs={'id': 'edit-upload-picture', 'class': 'btn-edit-profile btn-submit'}),
+                                widget=forms.FileInput(attrs={'id': 'edit-upload-picture', 'class': 'btn-post btn-submit'}),
                                 required=False)
 
     first_name = forms.CharField(max_length=20, 
@@ -195,9 +290,10 @@ class UserProfileForm(forms.Form):
                                 required=False)
 
     # current_password = forms.CharField(max_length=200, 
-    #                             label='Current Password', 
+    #                             label='Current Password',
+    #                             error_messages={'required': 'Current password is required.'},
     #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}),
-    #                             required=False)
+    #                             required=True)
     
     # password = forms.CharField(max_length=200, 
     #                             label='New Password', 
@@ -212,17 +308,16 @@ class UserProfileForm(forms.Form):
         cleaned_data = super(UserProfileForm, self).clean()
         # user = User.objects.get(username=self.cleaned_data.get('username'))
         # valid_password = user.check_password(self.cleaned_data.get('current_password'))
-        
-        # if password = self.cleaned_data.get('password')
-        # password2 = self.cleaned_data.get('password2')
-
 
         # if not valid_password:
         #     raise forms.ValidationError('Incorrect password.')
+
         # password = self.cleaned_data.get('password')
         # password2 = self.cleaned_data.get('password2')
+
         # if password and password2 and password != password2:
         #     raise forms.ValidationError('Passwords did not match.')
+
         return cleaned_data
 
     # def clean(self):
@@ -251,7 +346,7 @@ class UserProfileForm(forms.Form):
         user_instance.first_name = self.cleaned_data.get('first_name')
         user_instance.username = self.cleaned_data.get('username')
         user_instance.email = self.cleaned_data.get('email')
-        user_instance.set_password(self.cleaned_data.get('password'))
+        # user_instance.set_password(self.cleaned_data.get('password'))
 
         # user_instance.password = self.cleaned_data.get('password')
         # user_instance.password2 = self.cleaned_data.get('password2')
