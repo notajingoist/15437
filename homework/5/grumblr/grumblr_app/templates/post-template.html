@@ -1,5 +1,5 @@
 {% load myfilters %}
-<section class="posts panel panel-default panel-grumblr panel-grumbl {% if picture %}panel-grumbl-stream{% endif %} {% if text_post.image %}grumbl-photo{% else %}grumbl-text{% endif %}">
+<div class="post panel panel-default panel-grumblr panel-grumbl {% if picture %}panel-grumbl-stream{% endif %} {% if text_post.image %}grumbl-photo{% else %}grumbl-text{% endif %}" data-timestamp="{{text_post.date_created|date:'c'}}">
 	{% if text_post.image %}
 	<img src="{% url 'image' text_post.id %}">
 	{% endif %}
@@ -31,4 +31,4 @@
 	<a href="{% url 'profile' text_post.user.username %}"><article class="grumbl-author-photo" style="background: url('{% url 'profile-picture' text_post.user.id %}') center center no-repeat; background-size: cover;">
 	</article></a>
 	{% endif %}
-</section>
+</div>

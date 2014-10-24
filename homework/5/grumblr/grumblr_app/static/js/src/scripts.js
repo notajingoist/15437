@@ -7,6 +7,8 @@ var GRUMBLR = {
 		this.fetchComments();
 
 		this.pollForPosts();
+
+
 	},
 
 	setVars: function() {
@@ -17,6 +19,9 @@ var GRUMBLR = {
 		// this.$postCommentBtns = $('.post-comment-btn');
 		this.$commentForms = $('.comment-form');
 		this.$comments = $('.comments');
+		this.$posts = $('.posts');
+
+		this.pollingInterval = 10000;
 	},
 
 	bindEvents: function() {
@@ -35,9 +40,30 @@ var GRUMBLR = {
 
 	pollForPosts: function() {
 		var context = this;
+		console.log('would be polling...');
+		// console.log(window.location.pathname);
+		var currentPath = window.location.pathname;
+		var $allPosts = this.$posts.find('.post');
+		var $latestPost = $allPosts.eq(0);
+		var lastUpdate = $allPosts.length > 0 ? $latestPost.data('timestamp') : '';
+		console.log("most recent post timestamp: " + lastUpdate);
 
-		//do stuff later
+		var postsRequest = $.get(
+			'/fetch-posts/',
+			{
+				current_path: currentPath,
+				last_update: lastUpdate
+			},
+			'json'
+		);
 
+		postsRequest.done(function(response) {
+			//console.log("response..." + response);
+		});
+
+		setTimeout(function() {
+			context.pollForPosts();
+		}, this.pollingInterval);
 	},
 
 	fetchComments: function() {

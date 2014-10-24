@@ -5,6 +5,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 from django.core import serializers
 from mimetypes import guess_type
+from django.utils import timezone
+from datetime import datetime
 
 # Decorator to use built-in authentication system
 from django.contrib.auth.decorators import login_required
@@ -313,6 +315,25 @@ def fetch_comments(request):
                 return HttpResponse(data, content_type='application/json')
 
     data = serializers.serialize('json', Comment.objects.none())
+    return HttpResponse(data, content_type='application/json')
+
+@login_required
+def fetch_posts(request):
+    if request.method == 'GET':
+        if request.is_ajax():
+            if 'current_path' in request.GET and request.GET['current_path']:
+
+                if 'last_update' in request.GET and request.GET['last_update']:
+                    # text_posts = TextPost.objects.exclude(date_created__lt=datetime.date(last_udpate))
+                    # print >>sys.stderr, datetime.datetime.now()
+                    pass
+                else:
+                    pass
+                    #everything is new
+    #             text_post = TextPost.objects.get(id=request.GET['po
+
+    #print >>sys.stderr, datetime.now()
+    data = serializers.serialize('json', TextPost.objects.none())
     return HttpResponse(data, content_type='application/json')
 
 @login_required

@@ -18,11 +18,13 @@
 				</section>
 				{% endfor %}
 
+				<section class="posts">
 				{% for text_post in text_posts %}
 					{% include 'post-template.html' with text_post=text_post user=user picture='picture' author='author' %}
 					
 					{% include 'comment-box-template.html' with comment_forms=comment_forms picture='picture' text_post=text_post user=user %}
 				{% endfor %}
+				</section>
 
 			</div>
 		</div>
