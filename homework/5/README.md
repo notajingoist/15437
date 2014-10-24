@@ -5,3 +5,6 @@ Jing Xiao
 -When you go to settings and change your password, it logs you out so you have to log back in.
 -Pagination and video grumblrs are not real
 -Misnamed a generic post as a TextPost in my models early on... no time to refactor...
+-can't click through on followers/following/dislikes yet..
+-no default picture either :(
+
