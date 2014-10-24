@@ -22,12 +22,6 @@ class UserProfile(models.Model):
 	# 	else:
 	# 		return self.picture
 
-	#profile picture FileField
-	#followers
-	#following
-	#dislikes
-	#grumbls
-
 class TextPost(models.Model):
 	user = models.ForeignKey(User, related_name='posts')
 	text = models.TextField(max_length=20000)
@@ -51,8 +45,6 @@ class TextPost(models.Model):
 		following = user_profile.follows.all()
 		blocked_by = user_profile.blocked_by.all()
 		return TextPost.objects.all().filter(user__in=following).exclude(user__in=blocked_by).order_by('-date_created')
-		#return TextPost.objects.exclude(user=user).order_by('-date_created')
-		# return TextPost.objects.all().filter(user__in=user_profile.follows).order_by('-date_created')
 
 class Comment(models.Model):
 	user = models.ForeignKey(User, related_name='comments') #the commenter
@@ -68,18 +60,3 @@ class Dislike(models.Model):
 	
 	def __unicode__(self):
 		return str(self.user.id) + ', ' + str(self.post.id)
-
-#class Comment
-#	user = models.ForeignKey(User, related_name='comments')
-#	
-#	
-#class Dislike
-#
-# update_session_auth_hash(request, user)
-
-
-
-
-
-
-

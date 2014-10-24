@@ -90,42 +90,6 @@ def stream(request):
     for post in context['text_posts']:
         comment_form = CommentForm()
         comment_forms[post.id] = comment_form
-        #comment_forms['hi'] = CommentForm()
-
-
-    # comment_forms = {}
-    # comment_forms[]
-
-    # {{comment_forms}}
-
-    # {{comment_form}}
-
-    # context['comment_redirect'] = redirect_name
-    # context['user_id'] = user_id
-    # text_post = TextPost.objects.get(id=text_post_id)
-    # context['text_post'] = text_post
-
-    # if request.method == 'GET':
-    #     context['form'] = CommentForm()
-    #     return render(request, 'comment.html', context)
-
-    # new_comment = Comment(user=request.user, post=text_post)
-    # form = CommentForm(request.POST, instance=new_comment)
-    # context['form'] = form
-
-    # if not form.is_valid():
-    #     return render(request, 'comment.html', context)
-
-    # form.save()
-
-    # if (redirect_name == 'profile'):
-    #     return redirect(reverse('profile', kwargs={'user_id':user_id}))
-    # else:
-    #    return redirect(reverse(redirect_name))
-
-
-
-
 
     return render(request, 'stream.html', context)
 
@@ -142,19 +106,8 @@ def settings(request):
     context['user_profile'] = user_profile
     context['picture-src'] = ''
 
-    initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
+    initial_data = { 'redirect_name': 'stream', 'result_type': 'stream' }
     context['search_form'] = SearchForm(initial=initial_data)
-
-    # initial_user = {
-    #                 'first_name': user.first_name,
-    #                 'last_name': user.last_name,
-    #                 'username': user.username,
-    #                 'email': user.email,
-    #                 'location': user_profile.location,
-    #                 'about': user_profile.about,
-    #                 'picture': user_profile.picture
-    #             }
-
     if request.method == 'GET':
         context['form'] = SetPasswordForm()
         return render(request, 'settings.html', context)
@@ -162,24 +115,13 @@ def settings(request):
     form = SetPasswordForm(request.POST)
     context['form'] = form
 
-    
-
-
-
     if not form.is_valid():
         context['non_field_errors'] = form.non_field_errors()
-        #print >>sys.stderr, form.errors
         return render(request, 'settings.html', context)
 
     if not request.user.check_password(form.cleaned_data['password']):
         context['incorrect_password'] = "Incorrect password."
         return render(request, 'settings.html', context)
-
-    # if not valid_password:
-    #     context['non_field_errors'] = form.non_field_errors()
-    #     #print >>sys.stderr, form.errors
-    #     return render(request, 'settings.html', context)
-
     form.save(username=request.user.username)
     update_session_auth_hash(request, request.user)
 
@@ -192,13 +134,11 @@ def edit_profile(request):
     user = request.user
     user_profile = UserProfile.objects.get(user=user)
 
-    # errors = []
-    # context['errors'] = errors
     context['user'] = user
     context['user_profile'] = user_profile
     context['picture-src'] = ''
 
-    initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
+    initial_data = { 'redirect_name': 'stream', 'result_type': 'stream' }
     context['search_form'] = SearchForm(initial=initial_data)
 
     initial_user = {
@@ -230,7 +170,7 @@ def edit_profile(request):
 @transaction.atomic
 def text_post(request):
     context = {}
-    initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
+    initial_data = { 'redirect_name': 'stream', 'result_type': 'stream' }
     context['search_form'] = SearchForm(initial=initial_data)
 
     if request.method == 'GET':
@@ -251,7 +191,7 @@ def text_post(request):
 @transaction.atomic
 def image_post(request):
     context = {}
-    initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
+    initial_data = { 'redirect_name': 'stream', 'result_type': 'stream' }
     context['search_form'] = SearchForm(initial=initial_data)
 
     if request.method == 'GET':
@@ -265,7 +205,7 @@ def image_post(request):
     if not form.is_valid():
         return render(request, 'image-post.html', context)
 
-    form.save();#user=request.user)
+    form.save();
     return redirect(reverse('home'))
 
 
@@ -276,17 +216,6 @@ def get_user(request):
             if 'user_id' in request.GET and request.GET['user_id']:
                 
                 user = User.objects.get(id=request.GET['user_id'])
-                
-                # for text_post in text_posts:
-                #     text_post.user = User.objects.get(id=text_post.user)
-                # username = user.username
-                # comments = text_post.comments.all()
-                # for comment in comments:
-                #     #print >>sys.stderr, comment.user.username
-                #     comment.author = comment.user.username
-
-
-                print >>sys.stderr, user
                 data = serializers.serialize('json', [user])
                 return HttpResponse(data, content_type='application/json')
 
@@ -300,17 +229,7 @@ def fetch_comments(request):
             if 'post_id' in request.GET and request.GET['post_id']:
                 
                 text_post = TextPost.objects.get(id=request.GET['post_id'])
-                
-                # for text_post in text_posts:
-                #     text_post.user = User.objects.get(id=text_post.user)
-                # username = user.username
                 comments = text_post.comments.all()
-                # for comment in comments:
-                #     #print >>sys.stderr, comment.user.username
-                #     comment.author = comment.user.username
-
-
-                # print >>sys.stderr, comments[0].author
                 data = serializers.serialize('json', comments)
                 return HttpResponse(data, content_type='application/json')
 
@@ -329,10 +248,7 @@ def fetch_posts(request):
                     pass
                 else:
                     pass
-                    #everything is new
-    #             text_post = TextPost.objects.get(id=request.GET['po
 
-    #print >>sys.stderr, datetime.now()
     data = serializers.serialize('json', TextPost.objects.none())
     return HttpResponse(data, content_type='application/json')
 
@@ -340,9 +256,8 @@ def fetch_posts(request):
 @transaction.atomic
 def comment(request, redirect_name, user_id, text_post_id):
     context = {}
-    # errors = {}
 
-    initial_data = { 'redirect_name': 'stream', 'result_type': 'all' }
+    initial_data = { 'redirect_name': 'stream', 'result_type': 'stream' }
     context['search_form'] = SearchForm(initial=initial_data)
     user = User.objects.filter(id=user_id)
 
@@ -354,8 +269,6 @@ def comment(request, redirect_name, user_id, text_post_id):
     if request.method == 'GET':
         data = serializers.serialize('json', text_post.comments.all())
         return HttpResponse(data, content_type='application/json')
-        # context['form'] = CommentForm()
-        # return render(request, 'comment.html', context)
 
     new_comment = Comment(user=request.user, post=text_post)
     form = CommentForm(request.POST, instance=new_comment)
@@ -363,14 +276,10 @@ def comment(request, redirect_name, user_id, text_post_id):
 
     if not form.is_valid():
         errors = json.dumps([{'errors': True}, form.errors])
-        #errors = JsonResponse([{'errors': True}, form.errors])
         return HttpResponse(errors, content_type='application/json')
 
     form.save()
 
-    # if (redirect_name == 'profile'):
-    #     return redirect(reverse('profile', kwargs={'username':user.username}))
-    #else:
     data = serializers.serialize('json', [new_comment])
     return HttpResponse(data, content_type='application/json')
 
@@ -426,10 +335,7 @@ def search_profile(request, user_id):
         errors.append('No search results found for ' + context['keyword'])
     context['text_posts'] = text_posts.order_by('-date_created')
 
-    # print >>sys.stderr, search_form.data['redirect_name']
     return render(request, redirect_name + '.html', context)
-    # return redirect(reverse('profile', kwargs={'user_id':following_id}))
-
 
 @login_required
 def search(request):
@@ -443,7 +349,6 @@ def search(request):
 
     search_form = SearchForm(request.POST)
     context['search_form'] = search_form
-    #redirect_name = search_form.data['redirect_name']
     
 
     if not search_form.is_valid():
@@ -477,8 +382,6 @@ def search(request):
         comment_form = CommentForm()
         comment_forms[post.id] = comment_form
 
-    print >>sys.stderr, text_posts
-    #print >>sys.stderr, search_form.data['redirect_name']
     return render(request, redirect_name + '.html', context)
 
 @login_required
@@ -515,10 +418,7 @@ def profile(request, username):
     if errors:
         text_posts = TextPost.objects.filter(user=request.user)
         context['text_posts'] = TextPost.objects.filter(user=request.user).order_by('-date_created')
-        #return render(request, 'home.html', context)
-        #return redirect_home(errors)
         return redirect_home(request, errors)
-
 
     user = user[0]
     user_id = user.id
@@ -528,12 +428,6 @@ def profile(request, username):
                     'user_id': user_id
                 }
     context['search_form'] = SearchForm(initial=initial_data)
-
-
-    # if len(user) <= 0:
-    #     errors.append('User does not exist.')
-
-    
 
     text_posts = TextPost.objects.filter(user=user_id)
     context['text_posts'] = text_posts.order_by('-date_created')
@@ -571,10 +465,6 @@ def profile_picture(request, user_id):
 
 @login_required
 def image(request, post_id):
-    # user_profile = get_object_or_404(UserProfile, id=user_id)
-    # if not user_profile:
-    #     raise Http404
-
     text_post = get_object_or_404(TextPost, id=post_id)
     if not text_post:
         raise Http404
@@ -588,9 +478,6 @@ def dislike(request, redirect_name, user_id, text_post_id):
     dislikes = Dislike.objects.all()
     context['dislike_redirect'] = redirect_name
 
-    # for dislike in dislikes:
-    #     dislike.delete()
-
     text_post = TextPost.objects.get(id=text_post_id)
 
     exists = False
@@ -603,9 +490,6 @@ def dislike(request, redirect_name, user_id, text_post_id):
         dislike.save()
 
     context['dislikes'] = dislikes
-
-    #return context
-    #return render(request, 'home.html', context)
 
     username = User.objects.get(id=user_id).username    
 
@@ -622,40 +506,12 @@ def stream_dislike(request, user_id, text_post_id):
     context['text_posts'] = TextPost.get_posts_without_user(request.user)
     return render(request, 'stream.html', context)
 
-    # return render(request, 'text-post.html', context)
 
 def login_register(request):
     context = {}
 
     #if request.method == 'GET':
     return render(request, 'login-register.html', context)
-
-def reset_form(request):
-    context = {}
-
-    return render(request, 'reset.html', context)
-
-# @transaction.atomic
-# def save_password(request):
-#     context = {}
-#     # user = get_object_or_404(User, username=username)
-
-#     if request.method == 'GET':
-#         raise Http404
-
-#     form = SetPasswordForm(request.POST)
-#     context['form'] = form
-
-#     if not form.is_valid():
-#         raise Http404
-
-#     username = form.cleaned_data['username'];
-#     user = get_object_or_404(User, username=username)
-
-#     user.password = form.cleaned_data['password'];
-#     user.save()
-
-#     return render(request, 'login-register.html', context)
 
 @transaction.atomic
 def confirm_reset(request, username, token):
@@ -668,9 +524,6 @@ def confirm_reset(request, username, token):
     if not default_token_generator.check_token(user, token):
         raise Http404
 
-    # if request.method == 'POST':
-    #     raise Http404
-
     if request.method == 'GET':
         form = ResetPasswordForm()
         context['form'] = form
@@ -680,12 +533,8 @@ def confirm_reset(request, username, token):
     context['form'] = form
 
     if not form.is_valid():
-        print >>sys.stderr, form.errors.items()
-        print >>sys.stderr, 'ERRORRRR'
-        print >>sys.stderr, form.data['password']
         raise Http404
 
-    #user.set_password(form.cleaned_data['password']);
     form.save(username)
 
     context['confirmed'] = 'Your password has been reset.'
@@ -771,14 +620,7 @@ def register(request):
     context['email'] = form.cleaned_data['email']
 
 
-    # Logs in the new user and redirects to his/her home stream
-    # new_user = authenticate(username=request.POST['username'], \
-    #                         password=request.POST['password'])
-    # login(request, new_user)
-
     return render(request, 'needs-confirmation.html', context)
-
-    #return redirect(reverse('home'))
 
 @transaction.atomic
 def confirm_registration(request, username, token):
@@ -794,10 +636,4 @@ def confirm_registration(request, username, token):
     user_profile.save()
 
     return render(request, 'confirmed.html', {})
-
-
-
-
-
-
 

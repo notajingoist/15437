@@ -45,14 +45,6 @@ class ImagePostForm(forms.ModelForm):
         cleaned_data = super(ImagePostForm, self).clean()
         return cleaned_data
 
-    # def save(self, user):
-    #     new_image_post = TextPost(user=request.user)
-    #     new_image_post.text = self.cleaned_data.get('text')
-    #     new_image_post.image = self.cleaned_data.get('image')
-    #     new_image_post.save()
-    #     return new_image_post
-
-
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
@@ -68,7 +60,6 @@ class CommentForm(forms.ModelForm):
                 'required': 'You must write something in your comment!'
             }
         }
-    # redirect_name = forms.CharField(max_length=200, widget=forms.HiddenInput(), initial='home')
     
     def clean(self):
         cleaned_data = super(CommentForm, self).clean()
@@ -112,11 +103,6 @@ class SetPasswordForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(SetPasswordForm, self).clean()
-        
-        # user = User.objects.get(username=self.cleaned_data.get('username'))
-        # valid_password = user.check_password(self.cleaned_data.get('password'))
-        # if not valid_password:
-        #     raise forms.ValidationError('Incorrect password.')
 
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
@@ -125,27 +111,9 @@ class SetPasswordForm(forms.ModelForm):
 
         return cleaned_data
 
-    # def clean_password(self, username):
-    #     password = self.cleaned_data.get('password')
-    #     user = User.objects.filter(username__exact=username)
-
-    #     if len(user) <= 0:
-    #         raise forms.ValidationError('User does not exist.')
-
-    #     valid_password = user.check_password(self.cleaned_data.get('password'))
-    #     if not valid_password:
-    #         raise forms.ValidationError('Incorrect password.')
-
-    #     return password
-
+    
     def save(self, username):
         user = User.objects.get(username=username)
-
-        # valid_password = user.check_password(self.cleaned_data.get('password'))
-        # if not valid_password:
-        #     raise forms.ValidationError('Incorrect password.')
-
-        # else:
         user.set_password(self.cleaned_data.get('password1'))
         user.save()
         return user
@@ -183,18 +151,11 @@ class ResetPasswordForm(forms.ModelForm):
         user.save()
         return user
 
-    # def clean_username(self):
-    #     username = self.cleaned_data.get('username')
-    #     if len(User.objects.filter(username__exact=username)) <= 0:
-    #         raise forms.ValidationError('User does not exist.')
-    #     return username
-
 
 class SearchForm(forms.Form):
     keyword = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'placeholder': 'search...', 'id': 'search-input'}), required=False)
     redirect_name = forms.CharField(max_length=200, widget=forms.HiddenInput(), initial='stream')
     result_type = forms.CharField(max_length=200, widget=forms.HiddenInput(), initial='all')
-    # user_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
 
     def clean(self):
         cleaned_data = super(SearchForm, self).clean()
@@ -219,11 +180,9 @@ class RegistrationForm(forms.ModelForm):
             },
         }
 
-    # username = forms.CharField(max_length=20, label='Username', widget=forms.TextInput(attrs={'placeholder': 'Username'}))
     email = forms.CharField(max_length=200, label='Email', 
                                 error_messages={'required': 'Email is required.'}, 
                                 widget=forms.EmailInput(attrs={'placeholder': 'example@gmail.com'}))
-    # password = forms.CharField(max_length=200, label='Password', widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}))
     password2 = forms.CharField(max_length=200, label='Confirm Password', 
                                 error_messages={'required': 'Password confirmation is required.'}, 
                                 widget=forms.PasswordInput(attrs={'placeholder': bullets_placeholder}))  
@@ -259,9 +218,6 @@ class RegistrationForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.Form):
-    # class Meta:
-    #     model = UserProfile
-    #     fields = ()
     picture = forms.FileField(label='Profile Picture',
                                 widget=forms.FileInput(attrs={'id': 'edit-upload-picture', 'class': 'btn-post btn-submit'}),
                                 required=False)
@@ -289,40 +245,11 @@ class UserProfileForm(forms.Form):
                                 widget=forms.Textarea(attrs={'placeholder': 'Write a little about yourself...', 'id': 'edit-about-blurb'}),
                                 required=False)
 
-    # current_password = forms.CharField(max_length=200, 
-    #                             label='Current Password',
-    #                             error_messages={'required': 'Current password is required.'},
-    #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}),
-    #                             required=True)
     
-    # password = forms.CharField(max_length=200, 
-    #                             label='New Password', 
-    #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}),
-    #                             required=False)
-    # password2 = forms.CharField(max_length=200, 
-    #                             label='Confirm Password', 
-    #                             widget=forms.PasswordInput(attrs={'placeholder': u'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}),
-    #                             required=False)
-
     def clean(self):
         cleaned_data = super(UserProfileForm, self).clean()
-        # user = User.objects.get(username=self.cleaned_data.get('username'))
-        # valid_password = user.check_password(self.cleaned_data.get('current_password'))
-
-        # if not valid_password:
-        #     raise forms.ValidationError('Incorrect password.')
-
-        # password = self.cleaned_data.get('password')
-        # password2 = self.cleaned_data.get('password2')
-
-        # if password and password2 and password != password2:
-        #     raise forms.ValidationError('Passwords did not match.')
-
+        
         return cleaned_data
-
-    # def clean(self):
-    #     cleaned_data = super(UserProfileForm, self).clean()
-    #     return cleaned_data
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -340,16 +267,10 @@ class UserProfileForm(forms.Form):
 
 
     def save(self, user_instance, user_profile_instance):
-        # user = User.objects.get(username=user_instance.username)
-        # user_profile = UserProfile.objects.get(user=)
         user_instance.last_name = self.cleaned_data.get('last_name')
         user_instance.first_name = self.cleaned_data.get('first_name')
         user_instance.username = self.cleaned_data.get('username')
         user_instance.email = self.cleaned_data.get('email')
-        # user_instance.set_password(self.cleaned_data.get('password'))
-
-        # user_instance.password = self.cleaned_data.get('password')
-        # user_instance.password2 = self.cleaned_data.get('password2')
 
         user_profile_instance.location = self.cleaned_data.get('location')
         user_profile_instance.about = self.cleaned_data.get('about')
@@ -360,32 +281,4 @@ class UserProfileForm(forms.Form):
         
         return user_instance
     
-        #self.cleaned_data.get('username')
-        # for field in self:
-        #     if field.has_changed:
-        #         user_instance[]
-
-        # if self.has_changed():
-
-        # user_profile, created = UserProfile.objects.get_or_create(user=new_user)
-        # user_profile.save()
-
-        # proper way to associate user profile with user?
-        # when to create user profile? I keep using this get or create method
-        # can i pass multiple model instances to the model form constructor?
-        # how to combine user and user profile into the model form?
-        # proper way to specify other fields for model form? etc.
-        # 
-
-        # return new_user
-
-# class TextPostForm(forms.ModelForm):
-
-
-
-
-
-
-
-
-
+      
