@@ -586,8 +586,10 @@ def dislike(request, redirect_name, user_id, text_post_id):
     #return context
     #return render(request, 'home.html', context)
 
+    username = User.objects.get(id=user_id).username    
+
     if (redirect_name == 'profile'):
-        return redirect(reverse('profile', kwargs={'user_id':user_id}))
+        return redirect(reverse('profile', kwargs={'username':username}))
     else:
        return redirect(reverse(redirect_name))
     
