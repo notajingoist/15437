@@ -472,7 +472,7 @@ def image(request, post_id):
     content_type = guess_type(text_post.image.name)
     return HttpResponse(text_post.image, content_type=content_type)
 
-
+@login_required
 def dislike(request, redirect_name, user_id, text_post_id):
     context = {}
     dislikes = Dislike.objects.all()
