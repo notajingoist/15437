@@ -1,0 +1,13 @@
+<div class="search-stream">
+	<form action="{% if search_param %}{% url search_action search_param %}{% else %}{% url search_action %}{% endif %}" method="post">
+		<span class="glyphicon glyphicon-search search-icon"></span>
+		{% for field in search_form.visible_fields %}
+			{{field}}
+		{% endfor %}
+
+		{% for field in search_form.hidden_fields %}
+			{{field}}
+		{% endfor %}
+		{% csrf_token %}
+	</form>
+</div>

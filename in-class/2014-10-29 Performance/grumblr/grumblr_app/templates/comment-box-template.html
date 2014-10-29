@@ -1,0 +1,21 @@
+{% load myfilters %}
+<section id="comment-box-{{text_post.id}}" class="collapsed add-comment-box {% if picture %}subpost-element{% endif %}">
+	<div class="panel panel-default panel-grumblr panel-form" data-post-id="{{text_post.id}}">
+		<form class="comment-form" action="{% url 'comment' comment_redirect user.id text_post.id %}" method="post" data-url-name="comment" data-redirect-name="{{comment_redirect}}" data-user-id="{{user.id}}" data-post-id="{{text_post.id}}">
+				{% with comment_form=comment_forms|get_item:text_post.id %}
+				{% for field in comment_form.visible_fields %}
+					{{field.label_tag}}
+					{{field}}
+				{% endfor %}
+
+				{% for field in comment_form.hidden_fields %}
+					{{field}}
+				{% endfor %}
+				{% endwith %}
+
+				{% csrf_token %}
+				<input class="post-comment-btn btn-post btn-submit" type="submit" value="Post Comment">
+		</form>
+	</div>
+</section>
+<section id="comments-{{text_post.id}}" class="collapsed comments" data-post-id="{{text_post.id}}"></section>

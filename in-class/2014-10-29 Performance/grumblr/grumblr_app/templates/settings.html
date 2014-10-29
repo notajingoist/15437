@@ -1,0 +1,54 @@
+{% extends 'base-template.html' %}
+{% block content %}
+	<div class="container-fluid">
+		{% include 'header-template.html' with redirect='home' header_type='side' %}
+		<div class="row">
+			<div class="col-md-3">
+				{% include 'navbar-template.html' with settings='active' placeholder='search your stream...' search_action='search-all' %}
+			</div>
+
+			<div class="col-md-9">
+				{% for field in form %}
+					{% for error in field.errors %}
+					<section class="panel panel-default panel-grumblr panel-message">
+						<span class="glyphicon glyphicon-exclamation-sign"></span>{{error}}
+					</section>
+					{% endfor %}
+				{% endfor %}
+
+				{% for error in non_field_errors %}
+					<section class="panel panel-default panel-grumblr panel-message">
+						<span class="glyphicon glyphicon-exclamation-sign"></span>{{error}}
+					</section>
+				{% endfor %}
+
+				{% if incorrect_password %}
+					<section class="panel panel-default panel-grumblr panel-message">
+						<span class="glyphicon glyphicon-exclamation-sign"></span>{{incorrect_password}}
+					</section>
+				{% endif %}
+
+				<section class="panel panel-default panel-grumblr panel-form">
+					
+					<form action="{% url 'settings' %}" method="post">
+						{% for field in form.visible_fields %}
+							{% if field.label != 'First Name' and field.label != 'Last Name' and field.label != 'Profile Picture'%}
+								{{field.label_tag}}
+								{{field}}
+
+							{% endif %}
+						{% endfor %}
+
+
+						{% for field in form.hidden_fields %}
+							{{field}}
+						{% endfor %}
+
+						{% csrf_token %}
+						<input class="btn-settings btn-submit" type="submit" value="Save Changes">
+					</form>
+				</section>
+			</div>
+		</div>
+	</div>
+{% endblock %}
