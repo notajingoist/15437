@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head></head>
+<body>
+
+    <form id='msg-form'>
+        <input id='msg-input' type='text' name='msg'>
+        <button id='msg-form-btn' type='submit'>Send</button>
+    </form>
+
+    <script src='http://128.237.250.196:8081/socket.io/socket.io.js'></script>
+    <script>
+        var socket = io.connect('http://128.237.250.196:8081');
+        var btn = document.getElementById('msg-form-btn');
+        btn.addEventListener('click', function(event) {
+            event.preventDefault();
+            var msg = document.getElementById('msg-input').value;
+            console.log(msg);
+            socket.emit('newMsg', {msg: msg});
+        });
+
+        /*
+        var ul = document.getElementById('msgs');
+
+        socket.on('newMsg', function(data) {
+            var li = document.createElement('li');
+            li.innerHTML = data.msg;
+            ul.appendChild(li);
+        });
+        */
+    </script>
+</body>
+</html>
