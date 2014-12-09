@@ -6,7 +6,7 @@
 
 telnet garrod.isri.cmu.edu 80
 
-3. 
+3.
 GET /webapps/methods/check-get?andrewid=jingxiao&color=blue HTTP/1.1
 Host:garrod.isri.cmu.edu
 
@@ -20,4 +20,4 @@ Content-Length:28
 
 andrewid=jingxiao&color=blue
 
-The header lines that are required are content-type and content-length. The content-type header is needed to specify that the form data is is being sent in the request body as an encoding of key-value pairs. The content-length header is needed to specify the length of the request body. A MIME (multipurpose internet mail extensions) type indicates the content or encoding type of the content (bytes) being sent over the connection. It is relevant to an HTTP POST request because POST form data is encoded in the request parameters that are taken as a query string in the request body. This contrasts with GET requests whose query string comes from the part after the & in the request URI.
+The header lines that are required are content-type and content-length. The content-type header is needed to specify that the form data is is being sent in the request body as an encoding of key-value pairs. The content-length header is needed to specify the length of the request body. A MIME (multipurpose internet mail extensions) type indicates the content or encoding type of the content (bytes) being sent over the connection. It is relevant to an HTTP POST request because POST form data is encoded in the request parameters that are taken as a query string in the request body. This contrasts with GET requests whose query string comes from the part after the ? in the request URI.
