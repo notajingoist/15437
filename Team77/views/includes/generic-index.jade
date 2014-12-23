@@ -1,0 +1,91 @@
+section.panel.masthead(id='masthead-panel')
+.scroll-divider
+    a.scroll-link(href='#editor-panel')
+        span.scroll-icon.oi(data-glyph='chevron-bottom', title='chevron-bottom', aria-hidden='true')
+section.panel.editor(id='editor-panel')
+.scroll-divider
+    a.scroll-link(href='#gallery-panel')
+        span.scroll-icon.oi(data-glyph='chevron-bottom', title='chevron-bottom', aria-hidden='true')
+section.panel.gallery(id='gallery-panel')
+    .panel-padded
+        .gallery-col.col.span_1_of_3
+            .gallery-row.section.group.row
+                h2.header-col
+                    span.header-icon.oi(data-glyph='pulse', title='pulse', aria-hidden='true')
+                    span.header-title.
+                        Hot
+            .gallery-row.section.group.row
+                article.tile
+                    .preview
+                        span.preview-icon.oi(data-glyph='fullscreen-enter', title='fullscreen-enter', aria-hidden='true')
+                    .info
+                        h3.
+                            Track Title
+                        p.
+                            Description of track something something blah blah hello world. More description and blah balh blahdsf stuff. Okay just typing random crap now blah goodbye world.
+            .gallery-row.section.group.row
+                article.tile
+                    .preview
+                        span.preview-icon.oi(data-glyph='fullscreen-enter', title='fullscreen-enter', aria-hidden='true')
+                    .info
+                        h3.
+                            Track Title
+                        p.
+                            Description of track something something blah blah hello world. More description
+        .gallery-col.col.span_1_of_3
+            .gallery-row.section.group.row
+                h2.header-col
+                    span.header-icon.oi(data-glyph='star', title='star', aria-hidden='true')
+                    span.header-title.
+                        Top
+            .gallery-row.section.group.row
+                article.tile
+                    .preview
+                        span.preview-icon.oi(data-glyph='fullscreen-enter', title='fullscreen-enter', aria-hidden='true')
+                    .info
+                        h3.
+                            Track Title
+                        p.
+                            Description of track something something blah blah hello world. More description and blah balh blahdsf stuff. Okay just typing random crap now blah goodbye world.
+            .gallery-row.section.group.row
+                article.tile
+                    .preview
+                        span.preview-icon.oi(data-glyph='fullscreen-enter', title='fullscreen-enter', aria-hidden='true')
+                    .info
+                        h3.
+                            Track Title
+                        p.
+                            Description of track something something blah blah hello world. More description
+        .gallery-col.col.span_1_of_3
+            .gallery-row.section.group.row
+                h2.header-col
+                    span.header-icon.oi(data-glyph='clock', title='clock', aria-hidden='true')
+                    span.header-title.
+                        New
+            .gallery-row.section.group.row
+                article.tile
+                    .preview
+                        span.preview-icon.oi(data-glyph='fullscreen-enter', title='fullscreen-enter', aria-hidden='true')
+                    .info
+                        h3.
+                            Track Title
+                        p.
+                            Description of track something something blah blah hello world. More description and blah balh blahdsf stuff. Okay just typing random crap now blah goodbye world.
+            .gallery-row.section.group.row
+                article.tile
+                    .preview
+                        span.preview-icon.oi(data-glyph='fullscreen-enter', title='fullscreen-enter', aria-hidden='true')
+                    .info
+                        h3.
+                            Track Title
+                        p.
+                            Description of track something something blah blah hello world. More description
+
+        if (state != 'signedOut')
+            a(href='/gallery')
+                button.btn.btn-see-more.
+                    SEE MORE
+        else
+            a(href='/public-gallery')
+                button.btn.btn-see-more.
+                    SEE MORE
