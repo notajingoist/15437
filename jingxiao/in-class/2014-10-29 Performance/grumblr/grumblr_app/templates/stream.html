@@ -1,0 +1,32 @@
+{% extends 'base-template.html' %}
+{% block content %}
+	{% load myfilters %}
+	<div class="container-fluid">
+		{% include 'header-template.html' with redirect='home' header_type='side' %}
+		<div class="row">
+			<div class="col-md-3">
+				{% include 'navbar-template.html' with stream='active' placeholder='search your stream...' search_action='search-stream' %}
+			</div>
+
+			<div class="col-md-9">
+				{% include 'pagenav-template.html' %}
+
+				{% for error in errors %}
+				<section class="panel panel-default panel-grumblr panel-message">
+					<span class="glyphicon glyphicon-exclamation-sign"></span> 
+					{{ error }}
+				</section>
+				{% endfor %}
+
+				<section class="posts">
+				{% for text_post in text_posts %}
+					{% include 'post-template.html' with text_post=text_post user=user picture='picture' author='author' %}
+					
+					{% include 'comment-box-template.html' with comment_forms=comment_forms picture='picture' text_post=text_post user=user %}
+				{% endfor %}
+				</section>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

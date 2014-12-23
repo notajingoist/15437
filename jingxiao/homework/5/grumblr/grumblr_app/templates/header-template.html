@@ -1,0 +1,11 @@
+{% if header_type = 'side' %}
+<div class="row">
+	<div class="col-md-3">
+{% endif %}
+	<header class="{{header_type}}-header">
+		<h1><a href="{% url redirect %}">grumblr</a></h1>
+	</header>
+{% if header_type = 'side' %}
+	</div>
+</div>
+{% endif %}

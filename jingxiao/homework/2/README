@@ -1,0 +1,16 @@
+Homework 2 - Jing Xiao
+9/11/14
+
+-Relevant files:
+	MAINLY:
+		-hw2/calculator/templates/index.html
+		-views.py
+	ALSO:
+		-hw2/hw2/urls.py
+		-hw2/calculator/urls.py
+-Notes:
+	-Used GET method for calculator form because server is stateless and stores nothing so it makes more sense that we're just requesting data from the server rather than creating some resource, in which case we would use POST
+	-Malformed input error gets displayed/calculator gets reset when you send invalid things in the hidden inputs
+	-Invalid input error gets displayed/calculator gets reset when you send invalid things in the input parameter
+	-Divide by zero error gets displayed/calculator gets reset when you try to divide by zero
+	-Calculation error gets displayed/calculator gets reset when the server throws an exception when attempting to evaluate the math expression 

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>grumblr</title>
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<link rel="stylesheet/less" type="text/css" href="/static/css/style.less">
+</head>
+<body>
+
+	<header>
+		<h1><a href="/">grumblr</a></h1>
+	</header>
+
+	<section class="panel panel-default panel-grumblr panel-login-register">
+		<div class="forms">
+			{% for error in errors %}
+			<p class="footnote message error-message">
+				{{error}}
+			</p>
+			{% endfor %}
+
+			{% if reset_message %}
+			<p class="footnote message reset-message">
+				{{reset_message}}
+			</p>
+			{% endif %}
+			<form action="/reset" method="post" id="form-reset" class="form-register-login">
+				<label for="email">Username</label>
+				<input type="email" name="email" placeholder="example@gmail.com">
+
+				<input id="submit-reset" class="btn-login-register btn-submit" type="submit" value="Reset Password">
+
+				{% csrf_token %}
+			</form>
+		</div>
+	</section>
+
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="static/bootstrap/js/bootstrap.min.js"></script>
+	<script src="static/js/vendor/util.js"></script>
+	<script src="static/js/src/scripts.js"></script>
+	<script src="static/js/vendor/less.js"></script>
+	<script type="text/javascript">
+	  less.watch();
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,146 @@
+{% extends 'base-template.html' %}
+{% block content %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="panel panel-default panel-grumblr sidebar-profile">
+					<a href="{% url 'profile' user.id %}"><div class="profile-picture" style="background: url('{% url 'profile-picture' user.id %}') center center no-repeat; background-size: cover;">
+					</div></a>
+
+					<ul class="profile-about">
+						<li>
+							<a href="{% url 'profile' user.id %}"
+							{% if user.first_name and user.last_name %}
+								<h2 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h2>
+							{% elif user.first_name %}
+								<h2 class="profile-name">{{ user.first_name }}</h2>
+							{% elif user.last_name %}
+								<h2 class="profile-name">{{ user.last_name }}</h2>
+							{% else %}
+								<h2 class="profile-name">{{ user }}</h2>
+							{% endif %}
+							</a>
+						</li>
+						<li>
+							<h3 class="profile-username">{{ user }}</h3>
+						</li>
+						{% if user_profile.location %}
+						<li>
+							<h3 class="profile-location">
+								<span class="glyphicon glyphicon-map-marker"></span>
+								{{ user_profile.location }}
+							</h3>
+						</li>
+						{% endif %}
+
+						{% if user.email %}
+						<li>
+							<h3 class="profile-email">
+								<span class="glyphicon glyphicon-envelope"></span>
+								{% if email_curtailed %}
+									{{ email_curtailed }}...
+								{% else %}
+									{{ user.email }}
+								{% endif %}
+							</h3>
+						</li>
+						{% endif %}
+						
+						{% if user_profile.about %}
+						<li>
+							<p class="profile-blurb">
+								{{ user_profile.about }}
+							</p>
+						</li>
+						{% endif %}
+					</ul>
+
+					<div class="profile-divider"></div>
+
+					<ul class="profile-stats">
+						<li><span class="profile-number">{{ user_profile.followed_by.count }}</span> followers</li>
+						<li><span class="profile-number">{{ user_profile.follows.count }}</span> following</li>
+						<li><span class="profile-number">{{ text_posts_count }}</span> grumbls</li>
+						<li><span class="profile-number">{{ user.dislikes.count }}</span> dislikes <span class="glyphicon glyphicon-heart"></span></li>
+					</ul>
+
+					<div class="profile-divider"></div>
+
+					{% include 'searchbar-template.html' with placeholder='search stream...' search_action='search-profile' search_param=user.id %}
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="profile-action profile-follow">
+								<a href="{% url 'follow' user.id %}">
+									<span class="glyphicon glyphicon-plus"></span>
+									follow
+								</a>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="profile-action profile-block">
+								<a href="{% url 'block' user.id %}">
+									<span class="glyphicon glyphicon-ban-circle"></span>
+									block
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-9">
+				{% include 'pagenav-template.html' %}
+
+				{% for error in errors %}
+				<section class="panel panel-default panel-grumblr panel-message">
+					<span class="glyphicon glyphicon-exclamation-sign"></span> {{ error }}
+				</section>
+				{% endfor %}
+
+				{% if text_posts|length > 0 %}
+					{% for text_post in text_posts %}
+					<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
+						{{ text_post.text }}
+						<span class="comment">
+							<a href="{% url 'comment' comment_redirect user.id text_post.id %}">
+								<span class="plus">+</span>
+							</a> 
+							{{text_post.comments.all.count}} comments
+						</span>
+
+						<span class="dislike">
+							<a href="{% url 'dislike' dislike_redirect user.id text_post.id %}">
+								<span class="heart">♥</span>
+							</a> 
+							{{text_post.dislikes.all.count}} dislikes
+						</span>
+					</section>
+						{% for comment in text_post.comments.all %} 
+							<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">
+								{{comment}}
+								<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' comment.user.id %}">{{ comment.user }}</a></span></span>
+							</section>
+						{% endfor %}
+					{% endfor %}
+				{% elif errors|length <= 0 %}
+					<section class="panel panel-default panel-grumblr panel-message">
+						Looks like {{ user }} has nothing to grumble about.
+					</section>
+				{% endif %}
+
+				<!-- <section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
+					Gotta finish this web apps homework... ah grumble bumble rawr.
+					<span class="dislike">♥</span>
+				</section> -->
+
+				<!-- <section class="panel panel-default panel-grumblr panel-grumbl grumbl-photo">
+					<img src="/static/images/burger.jpg">
+					<p>I make burgers. Though not this one specifically. It's just a photo from Google.</p>
+					<span class="dislike">♥</span>
+				</section> -->
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

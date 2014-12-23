@@ -1,0 +1,28 @@
+Homework 1 - Jing Xiao
+9/4/14
+
+-Wireframe pictures:
+    -before-feedback.jpg
+    -after-feedback.jpg
+
+-Feedback from my roommate:
+    -feedback.pdf
+
+-Relevant files:
+    HTML:
+        -login-register.html
+        -home.html
+        -stream.html
+        -profile.html
+        -edit-profile.html
+    CSS:
+        -style.less (mine)
+        -style.css (compiled) 
+    JS: 
+        -js/src/scripts.js (mine)
+    OTHER: 
+        -bootstrap
+        -js/vendor/util.js (not mine)
+        -js/vendor/less.js (not mine)
+        -images
+

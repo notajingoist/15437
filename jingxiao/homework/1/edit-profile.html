@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>grumblr</title>
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet/less" type="text/css" href="style.less">
+</head>
+<body>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-3">
+				<nav class="panel panel-default panel-grumblr sidebar-nav">
+					<div class="search-stream">
+						<span class="glyphicon glyphicon-search search-icon"></span>
+						<input type="text" id="search-input" placeholder="search your stream...">
+					</div>
+
+					<ul class="nav-list">
+						<li>
+							<a href="home.html">
+								<span class="glyphicon glyphicon-home"></span>
+								<span class="nav-link">Home</span>
+							</a>
+						</li>
+						<li>
+							<a href="stream.html">
+								<span class="glyphicon glyphicon-list-alt">
+								</span>
+								<span class="nav-link">Stream</span>
+							</a>
+						</li>
+						<li>
+							<a href="profile.html">
+								<span class="glyphicon glyphicon-user"></span>
+								<span class="nav-link">Profile</span>
+							</a>
+						</li>
+						<li class="active">
+							<a href="edit-profile.html">
+								<span class="glyphicon glyphicon-pencil"></span>
+								<span class="nav-link">Edit Profile</span>
+							</a>
+						</li>
+						<li>
+							<a href="login-register.html">
+								<span class="glyphicon glyphicon-log-out"></span>
+								<span class="nav-link">Logout</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+
+			<div class="col-md-9">
+				<section class="panel panel-default panel-grumblr panel-form">
+					
+					<div class="row">
+						<div class="col-md-6">
+							<label for="edit-picture">Profile Picture</label>
+							<div id="edit-picture" class="bob"></div>
+						</div>
+						<div class="col-md-6">
+							<button id="edit-upload-picture" class="btn-edit-profile btn-submit">Upload Picture</button>
+						</div>
+					</div>
+					
+					<input type="file" class="input-file-upload hidden" id="edit-upload-picture-hidden" accept="image/*">
+
+					<div class="row">
+						<div class="col-md-6">
+							<label for="edit-firstname">First Name</label>
+							<input type="text" id="edit-firstname" placeholder="Bob">
+						</div>
+						<div class="col-md-6">
+							<label for="edit-lastname">Last Name</label>
+							<input type="text" id="edit-lastname" placeholder="Belcher">
+						</div>
+					</div>
+
+					<label for="edit-username">Username</label>
+					<input type="text" id="edit-username" placeholder="bobbbbbb">
+
+					<label for="edit-email">Email</label>
+					<input type="email" id="edit-email" placeholder="bob.belcher@gmail.com">
+
+					<label for="edit-location">Location</label>
+					<input type="text" id="edit-location" placeholder="Seymour's Bay">
+
+					<label for="edit-about-blurb">About Me Blurb</label>
+					<textarea id="edit-about-blurb" placeholder="Hey! My name is Bob. I have a restaurant named Bob's Burgers. This is my daily stream of burger puns and grumbls."></textarea>
+
+					<label for="edit-current-password">Current Password</label>
+					<input type="text" id="edit-current-password" placeholder="••••••••••••">
+
+					<label for="edit-new-password">New Password</label>
+					<input type="text" id="edit-new-passowrd" placeholder="••••••••••••">
+
+					<label for="edit-confirm-password">Confirm Password</label>
+					<input type="text" id="edit-confirm-passowrd" placeholder="••••••••••••">
+
+					<button class="btn-edit-profile btn-submit">Save Changes</button>
+
+				</section>
+			</div>
+		</div>
+	</div>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="js/vendor/util.js"></script>
+	<script src="js/src/scripts.js"></script>
+	<script src="js/vendor/less.js"></script>
+	<script type="text/javascript">
+	  less.watch();
+	</script>
+	
+</body>
+</html>

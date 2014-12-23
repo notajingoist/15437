@@ -1,0 +1,55 @@
+{% extends 'base-template.html' %}
+{% block content %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-3">
+				{% include 'navbar-template.html' with home='active' placeholder='search your grumbls...' search_action='search-home' %}
+			</div>
+
+			<div class="col-md-9">
+				{% for error in errors %}
+				<section class="panel panel-default panel-grumblr panel-message">
+					<span class="glyphicon glyphicon-exclamation-sign"></span> 
+					{{error}}
+				</section>
+				{% endfor %}
+
+				{% include 'post-tools-template.html' %}
+
+				{% include 'pagenav-template.html' %}
+
+				{% for text_post in text_posts %}
+				<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text">
+					{{ text_post.text }}
+					<span class="comment">
+						<a href="{% url 'comment' comment_redirect user.id text_post.id %}">
+							<span class="plus">+</span>
+						</a> 
+						{{text_post.comments.all.count}} comments
+					</span>
+
+					<span class="dislike">
+						<a href="{% url 'dislike' dislike_redirect user.id text_post.id %}">
+							<span class="heart">♥</span>
+						</a> 
+						{{text_post.dislikes.all.count}} dislikes
+					</span>
+				</section>
+
+					{% for comment in text_post.comments.all %} 
+						<section class="panel panel-default panel-grumblr panel-grumbl grumbl-text comment-post">
+							{{comment}}
+							<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' comment.user.id %}">{{ comment.user }}</a></span></span>
+						</section>
+					{% endfor %}
+				{% endfor %}
+				
+				<!-- <section class="panel panel-default panel-grumblr panel-grumbl grumbl-photo">
+					<img src="/static/images/family2.jpg">
+					<p>The Belcher family. From left to right: me, Louise, Linda, Tina, and Gene.</p>
+					<span class="dislike">♥</span>
+				</section> -->
+			</div>		
+		</div>
+	</div>
+{% endblock %}

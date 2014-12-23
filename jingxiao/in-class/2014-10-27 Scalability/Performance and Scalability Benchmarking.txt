@@ -1,0 +1,23 @@
+1. How long does it take to send a round-trip request over the network...
+-To another computer on the local network?
+	ping unix3.andrew.cmu.edu
+	round-trip min/avg/max/stddev = 1.279/1.461/1.781/0.227 ms
+-To California?
+	ping 8.8.8.8
+	round-trip min/avg/max/stddev = 17.071/17.333/17.694/0.264 ms
+-To Europe?
+	ping bbc.co.uk
+	round-trip min/avg/max/stddev = 80.992/81.375/81.824/0.313 ms
+-To China?
+	ping baidu.com
+	round-trip min/avg/max/stddev = 214.121/214.887/215.362/0.547 ms
+
+2. How long does it take to negotiate a database connection?
+	
+
+3. How long does it take to access data...
+	-In main memory?
+	-In a file on disk?
+	-In the database's memory (buffer cache)?
+	-In the database on disk using the primary key?
+	-In the CPU hardware cache?

@@ -1,0 +1,28 @@
+{% extends 'base-template.html' %}
+{% block content %}
+	{% include 'header-template.html' with redirect='login-register' %}
+
+	<section class="panel panel-default panel-grumblr panel-login-register">
+		<div class="forms">
+			{% if form.errors %}
+			<p class="footnote message login-error-message">
+				Incorrect username and password.
+			</p>
+			{% endif %}
+
+			{% load myfilters %}
+			<form action="{% url 'django.contrib.auth.views.login' %}" method="post" id="form-login" class="form-register-login">
+				{{ form.username.label_tag }}
+				{{ form.username|addplaceholder:'Username' }}
+
+				{{ form.password.label_tag }}
+				{{ form.password|addplaceholder:'••••••••••••' }}
+
+				<input id="submit-login" class="btn-login-register btn-submit" type="submit" value="Login">
+				<input type="hidden" name="next" value="{{ next }}">
+
+				{% csrf_token %}
+			</form>
+		</div>
+	</section>
+{% endblock %}

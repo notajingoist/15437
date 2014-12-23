@@ -1,0 +1,3 @@
+Jing' or 1=1 or first_name='Jing
+select * from sio_student where first_name='Charlie';
+//select * from sio_student where 'C' in first_name;

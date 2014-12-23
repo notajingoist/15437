@@ -1,0 +1,74 @@
+{% extends 'base-template.html' %}
+{% block content %}
+	<div class="container-fluid">
+		{% include 'header-template.html' with redirect='home' header_type='side' %}
+		<div class="row">
+			<div class="col-md-3">
+				{% include 'navbar-template.html' with edit_profile='active' placeholder='search your stream...' search_action='search-all' %}
+			</div>
+
+			<div class="col-md-9">
+				{% for field in form %}
+					{% for error in field.errors %}
+					<section class="panel panel-default panel-grumblr panel-message">
+						<span class="glyphicon glyphicon-exclamation-sign"></span>{{error}}
+					</section>
+					{% endfor %}
+				{% endfor %}
+
+				<section class="panel panel-default panel-grumblr panel-form">
+					
+					<form enctype="multipart/form-data" action="{% url 'edit-profile' %}" method="post">
+						<div class="row">
+							{% for field in form.visible_fields %}
+								{% if field.label == 'Profile Picture' %}
+									<div class="col-md-6">
+										<label for="edit-upload-picture">{{field.label_tag}}</label>
+										
+										<div id="edit-picture" style="background: url('{% url 'profile-picture' user.id %}') center center no-repeat; background-size: cover;"></div>
+									</div>
+									<div class="col-md-6 upload">
+										<!-- <div id="upload-filename">filename here</div> -->
+										<!-- <button id="edit-upload-picture" class="btn-edit-profile btn-submit">Upload Picture</button> -->
+
+										<!-- <input type="file" id="edit-upload-picture" class="btn-edit-profile btn-submit" accept="image/*"> -->
+										{{field}}
+									</div>
+								{% endif %}
+							{% endfor %}
+						</div>
+						
+						<!-- <input type="file" class="input-file-upload hidden" id="edit-upload-picture-hidden" accept="image/*"> -->
+
+						<div class="row">
+							{% for field in form.visible_fields %}
+							
+								{% if field.label == 'First Name' or field.label == 'Last Name' %}
+									<div class="col-md-6">
+										{{field.label_tag}}
+										{{field}}
+									</div>
+								{% endif %}
+							{% endfor %}
+						</div>
+
+						{% for field in form.visible_fields %}
+							{% if field.label != 'First Name' and field.label != 'Last Name' and field.label != 'Profile Picture'%}
+								{{field.label_tag}}
+								{{field}}
+							{% endif %}
+						{% endfor %}
+
+
+						{% for field in form.hidden_fields %}
+							{{field}}
+						{% endfor %}
+
+						{% csrf_token %}
+						<input class="btn-edit-profile btn-submit" type="submit" value="Save Changes">
+					</form>
+				</section>
+			</div>
+		</div>
+	</div>
+{% endblock %}

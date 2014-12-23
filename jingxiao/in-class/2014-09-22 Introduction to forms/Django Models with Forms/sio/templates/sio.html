@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Information Webapp</title>
+    <meta charset="utf-8">
+</head>
+
+<body>
+{% for error in create_student_form.non_field_errors %}
+<p style="color: red;">{{ error }}</p>
+{% endfor %}
+
+<p>Create a student:</p>
+<form action="{% url 'create-student' %}" method="post">
+  {% for field in create_student_form.visible_fields %}
+    {{field.label_tag}}
+    {{field}}
+    <p style="color: red;">{{field.errors}}</p>
+  {% endfor %}
+  
+  {% for field in create_student_form.hidden_fields %}
+    {{field}}
+  {% endfor %}
+  {% csrf_token %}
+  <input type="submit" value="Submit">
+</form>
+
+
+
+
+<hr>
+{% for error in create_course_form.non_field_errors %}
+<p style="color: red;">{{ error }}</p>
+{% endfor %}
+<p>Create a course:</p>
+<form action="{% url 'create-course' %}" method="post">
+    {% for field in create_course_form.visible_fields %}
+      {{field.label_tag}}
+      {{field}}
+      <p style="color: red;">{{field.errors}}</p>
+    {% endfor %}
+    
+    {% for field in create_course_form.hidden_fields %}
+      {{field}}
+    {% endfor %}
+   {% csrf_token %}
+   <input type="submit" value="Submit">
+</form>
+
+
+
+
+<hr>
+<p>Register a student for a course:</p>
+<form action="/sio/register-student" method="post">
+    Andrew ID: <input type="text" name="andrew_id"><br>
+    Course #:  <input type="text" name="course_number"><br>
+   {% csrf_token %}
+   <input type="submit" value="Submit">
+</form>
+
+<hr>
+<p>Current course rosters:
+<ul>
+{% for course in courses %}
+  <li>{{course}}<ul>
+  {% for student in course.students.all %}
+    <li>{{student}}</li>
+  {% endfor %}
+  </ul></li>
+{% endfor %}
+</ul>
+</p>
+
+</body>

@@ -1,0 +1,34 @@
+{% load myfilters %}
+<div class="post panel panel-default panel-grumblr panel-grumbl {% if picture %}panel-grumbl-stream{% endif %} {% if text_post.image %}grumbl-photo{% else %}grumbl-text{% endif %}" data-timestamp="{{text_post.date_created|date:'c'}}">
+	{% if text_post.image %}
+	<img src="{% url 'image' text_post.id %}">
+	{% endif %}
+	
+	{% if text_post.image %}<p>{% endif %}
+	{{ text_post.text }}
+	{% if text_post.image %}</p>{% endif %}
+
+	{% if author %}
+	<span class="post-info">Posted by <span class="author"><a href="{% url 'profile' text_post.user.username %}">{{ text_post.user.username }}</a></span></span>
+	{% endif %}
+
+	<span class="comment">
+		<span class="plus add-comment-btn" data-post-id="{{text_post.id}}">+</span>
+		<span class="show-comments-btn" data-post-id="{{text_post.id}}">
+			<span id="comment-count-{{text_post.id}}">{{text_post.comments.all.count}}</span> comments
+		</span>
+	</span>
+
+
+	<span class="dislike">
+		<a href="{% url 'dislike' dislike_redirect user.id text_post.id %}">
+			<span class="heart">♥</span>
+		</a> 
+		{{text_post.dislikes.all.count}} dislikes
+	</span>
+
+	{% if picture %}
+	<a href="{% url 'profile' text_post.user.username %}"><article class="grumbl-author-photo" style="background: url('{% url 'profile-picture' text_post.user.id %}') center center no-repeat; background-size: cover;">
+	</article></a>
+	{% endif %}
+</div>

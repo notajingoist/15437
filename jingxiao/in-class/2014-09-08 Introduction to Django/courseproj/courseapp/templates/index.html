@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Course Registration App</title>
+</head>
+
+<body>
+    <h1>Course Registration App</h1>
+
+    <h3>Create a Student</h3>
+    <form action="/create-student" method="get">
+        <label for="student_name">Student Name: </label>
+        <input type="text" name="student_name">
+        <br>
+        <input type="submit">
+        {% csrf_token %}
+    </form>
+
+    <hr>
+
+    <h3>Create a Course</h3>
+    <form action="/create-course" method="get">
+        <label for="course_name">Course Name: </label>
+        <input type="text" name="course_name">
+        <br>
+        <input type="submit">
+        {% csrf_token %}
+    </form>
+
+    <hr>
+
+    <h3>Register a Student for a Course</h3>
+    <form action="/register-for-course" method="get">
+        <label for="registered_student_name">Student Name: </label>
+        <input type="text" name="registered_student_name">
+        <br>
+        <label for="registered_course_name">Course Name: </label>
+        <input type="text" name="registered_course_name">
+        <br>
+        <input type="submit">
+        {% csrf_token %}
+    </form>
+
+    <hr>
+
+    <h3>List of Students</h3>
+    {% if student_name %}
+    <ul>
+        <li>{{student_name}}</li>
+    </ul>
+    {% endif %}
+
+    <hr>
+
+    <h3>List of Courses</h3>
+    {% if course_name %}
+    <ul>
+        <li>{{course_name}}</li>
+    </ul>
+    {% endif %}
+
+    <hr>
+
+    <h3>List of Courses & Registered Students</h3>
+    {% if registered_course_name and registered_student_name %}
+    <ul>
+        <li>
+            {{registered_course_name}}
+            <ul>
+                <li>{{registered_student_name}}</li>
+            </ul>
+        </li>
+    </ul>
+    {% endif %}
+       
+
+</body>
+
+</html>
